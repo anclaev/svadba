@@ -36,18 +36,20 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/prisma ./prisma
 
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/entrypoint.sh ./entrypoint.sh
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-RUN yarn add prisma @prisma/client --ignore-engines --frozen-lockfile
-RUN yarn prisma migrate deploy
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 USER nextjs
+
+RUN yarn add prisma @prisma/client --ignore-engines --frozen-lockfile
 
 EXPOSE 3000
 
 ENV PORT=3000
 
-CMD HOSTNAME=0.0.0.0 node server.js
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

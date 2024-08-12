@@ -101,8 +101,8 @@ model Event {
 
   time        DateTime
   description String
-  address     String
-  url         String
+  address     String?
+  url         String?
 
   guests Guest[]
 

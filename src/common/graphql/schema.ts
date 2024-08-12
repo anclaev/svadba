@@ -1,4 +1,6 @@
 export const typeDefs = `
+  scalar Date
+
   enum Sex {
     MALE
     FEMALE
@@ -15,12 +17,10 @@ export const typeDefs = `
     ADMIN
   }
 
-
   enum Side {
     GROOM
     BRIDE
   }
-
 
   enum Type {
     COLLEAGUE
@@ -36,5 +36,50 @@ export const typeDefs = `
     status: Status!
     password: String
     email: String!
+    family: Family
+    createdAt: Date!
+    updatedAt: Date!
+  }
+
+  type Family {
+    id: ID
+    name: String!
+    owner: Account!
+    ownerId: String!
+    members: [Guest]
+    createdAt: Date!
+    updatedAt: Date!
+  }
+
+  type Guest {
+    id: ID
+    first_name: String!
+    last_name: String
+    side: Side!
+    type: Type!
+    age: Age!
+    sex: Sex!
+    table: Int
+    transfer: Boolean!
+    accommodation: Boolean!
+    events: [Event]
+    family: Family!
+    familyId: String!
+    createdAt: Date!
+    updatedAt: Date!
+  }
+
+  type Event {
+    id: ID
+    index: Int!
+    alias: String!
+    name: String!
+    time: Date!
+    description: String!
+    address: String
+    url: String
+    guests: [Guest]
+    createdAt: Date!
+    updatedAt: Date!
   }
 `
