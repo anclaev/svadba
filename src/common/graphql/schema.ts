@@ -82,4 +82,15 @@ export const typeDefs = `
     createdAt: Date!
     updatedAt: Date!
   }
+
+  type Query {
+    accounts: [Account]!
+    families: [Family]!
+    guests: [Guest]!
+    events: [Event]!
+    account(id: ID!): Account
+    family(id: ID!): Family
+    guest(id: ID!): Guest
+    event(id: ID!): Event
+  }
 `
