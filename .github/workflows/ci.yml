@@ -106,7 +106,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ${{ secrets.SSH_PATH }}
-            docker pull anclaev/com:dev
+            docker pull anclaev/svadba:dev
 
       - name: Run app
         uses: appleboy/ssh-action@v1.0.3

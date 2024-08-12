@@ -10,6 +10,7 @@ WORKDIR /app
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
 RUN yarn install --ignore-engines --frozen-lockfile
+RUN yarn add -D prisma --ignore-engines --frozen-lockfile
 
 # 2. Rebuild the source code only when needed
 FROM base AS builder
@@ -21,6 +22,7 @@ COPY . .
 
 COPY .env .env.production
 
+RUN yarn prisma generate
 RUN yarn build
 
 # 3. Production image, copy all the files and run next
@@ -34,6 +36,7 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 COPY --from=builder /app/public ./public
+COPY --from=builder /app/prisma ./prisma
 
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
@@ -44,4 +47,4 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-CMD HOSTNAME=0.0.0.0 node server.js
+CMD HOSTNAME=0.0.0.0 prisma migrate deploy && node server.js

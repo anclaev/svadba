@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Пол гостя
+enum Sex {
+  MALE
+  FEMALE
+}
+
+// Возраст гостя
+enum Age {
+  ADULT
+  CHILD
+}
+
+// Статус гостя
+enum Status {
+  PENDING // Ожидает подтверждения
+  APPROVED // Подтверждён
+  ADMIN // Администратор
+}
+
+// Сторона гостя
+enum Side {
+  GROOM // Жених
+  BRIDE // Невеста
+}
+
+// Тип гостя
+enum Type {
+  COLLEAGUE // Коллега
+  FRIEND // Друг
+  BEST_FRIEND // Лучший друг
+  RELATIVE // Родственник
+  CLOSE_RELATIVE // Близкий родственник
+  PARENT // Родитель
+}
+
+model Account {
+  id       String @id @default(uuid())
+  status   Status @default(PENDING)
+  password String
+  email    String @unique
+
+  family Family?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Family {
+  id String @id @default(uuid())
+
+  name String
+
+  owner   Account @relation(fields: [ownerId], references: [id])
+  ownerId String  @unique
+
+  members Guest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Guest {
+  id String @id @default(uuid())
+
+  first_name String
+  last_name  String?
+
+  side  Side // Сторона (жених/невеста)
+  type  Type @default(RELATIVE) // Тип гостя
+  age   Age  @default(ADULT) // Взрослый/ребёнок
+  sex   Sex // Пол
+  table Int? // Номер стола
+
+  transfer      Boolean @default(false) // Нужен ли трансфер
+  accommodation Boolean @default(false) // Нужно ли проживание
+
+  events Event[] // На каких частях мероприятия будет
+
+  family   Family @relation(fields: [familyId], references: [id])
+  familyId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id    String @id @default(uuid())
+  index Int    @unique
+
+  alias String @unique
+  name  String
+
+  time        DateTime
+  description String
+  address     String
+  url         String
+
+  guests Guest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
