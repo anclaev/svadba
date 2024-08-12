@@ -43,6 +43,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 RUN npm install --save-dev prisma
 
+RUN chown -R nextjs:nodejs node_modules/.prisma
+
 USER nextjs
 
 EXPOSE 3000
