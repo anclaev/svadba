@@ -1,12 +1,17 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
+    "baseUrl": ".",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -18,9 +23,37 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+      "@components/*": [
+        "./src/common/components/*"
+      ],
+      "@enums/*": [
+        "./src/common/enums/*"
+      ],
+      "@interfaces/*": [
+        "./src/common/interfaces/*"
+      ],
+      "@utils/*": [
+        "./src/common/utils/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "environment.d.ts","**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "environment.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

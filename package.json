@@ -36,8 +36,7 @@
   },
   "lint-staged": {
     "*.(ts|tsx|sass|css)": [
-      "prettier --write",
-      "next lint --fix"
+      "prettier --write"
     ],
     "*.md": "prettier --write"
   },
