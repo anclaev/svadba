@@ -1,26 +1,51 @@
 {
-  "name": "svadba",
-  "version": "0.1.0",
+  "name": "anclaev-svadba",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "husky",
+    "commit": "npx git-cz",
+    "push": "git push --follow-tags origin && git push --follow-tags gitverse",
+    "changelog": "npx conventional-changelog -p nextjs -i CHANGELOG.md -s",
+    "release": "npx standard-version -s --release-as"
   },
   "dependencies": {
+    "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.5"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
+    "@types/node": "^22.2.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8",
-    "eslint-config-next": "14.2.5"
+    "eslint-config-next": "14.2.5",
+    "husky": "^9.1.4",
+    "lint-staged": "^15.2.8",
+    "postcss": "^8",
+    "prettier": "^3.3.3",
+    "standard-version": "^9.5.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.(ts|tsx|sass|css)": [
+      "prettier --write",
+      "next lint --fix"
+    ],
+    "*.md": "prettier --write"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog",
+      "disableScopeLowerCase": true,
+      "disableSubjectLowerCase": true
+    }
   }
 }

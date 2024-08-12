@@ -1,0 +1,121 @@
+
+name: CI
+
+on:
+  push:
+    branches: ['develop']
+
+concurrency:
+  group: 'ci'
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    if: contains(github.event.head_commit.message, '(test)')
+    name: Run tests
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache yarn dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+      - run: yarn test:cov
+
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@v2
+        with:
+          flag-name: run-${{ join(matrix.*, '-') }}
+          parallel: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  coverage:
+    name: Collect coverage
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate coverage
+        uses: coverallsapp/github-action@v2
+        with:
+          parallel-finished: true
+          carryforward: 'run-1,run-2,run-3,run-4'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    name: Build project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Load env
+        uses: DamianReeves/write-file-action@master
+        with:
+          path: .env
+          write-mode: overwrite
+          contents: |
+            ${{ secrets.CI_ENV }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver-opts: network=host
+
+      - name: Build and push image to registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: anclaev/svadba:dev
+  #          build-args: |
+  #            sentry_auth_token=${{ secrets.SENTRY_AUTH_TOKEN }}
+
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Pull image
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ${{ secrets.SSH_PATH }}
+            docker pull anclaev/com:dev
+
+      - name: Run app
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ${{ secrets.SSH_PATH }}
+            ./scripts/init-staging.sh
+            docker system prune -f

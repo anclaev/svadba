@@ -1,0 +1,13 @@
+/.husky
+/.github
+/.next
+/.idea
+node_modules
+.editorconfig
+.eslintignore
+.eslintrc.json
+.gitignore
+.prettierignore
+.prettierrc
+README.md
+CHANGELOG.md
