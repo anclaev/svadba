@@ -1,4 +1,6 @@
-export const typeDefs = `
+import { gql } from '@apollo/client'
+
+export const typeDefs = gql`
   scalar Date
 
   enum Sex {
@@ -29,6 +31,11 @@ export const typeDefs = `
     RELATIVE
     CLOSE_RELATIVE
     PARENT
+  }
+
+  type Pagination {
+    page: Int!
+    size: Int!
   }
 
   type Account {

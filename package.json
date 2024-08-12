@@ -15,7 +15,10 @@
     "prisma:local": "dotenv -e .env.local yarn prisma"
   },
   "dependencies": {
+    "@apollo/client": "^3.11.4",
     "@prisma/client": "^5.18.0",
+    "graphql": "^16.9.0",
+    "graphql-yoga": "^5.6.3",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18"
