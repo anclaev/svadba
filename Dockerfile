@@ -41,9 +41,7 @@ COPY --from=builder /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-RUN npm install --save-dev prisma
-
-RUN chown -R node:node ./node_modules
+RUN yarn add prisma @prisma/client --ignore-engines --frozen-lockfile
 
 USER nextjs
 
