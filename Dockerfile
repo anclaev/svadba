@@ -42,6 +42,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 RUN yarn add prisma @prisma/client --ignore-engines --frozen-lockfile
+RUN yarn prisma migrate deploy
 
 USER nextjs
 
@@ -49,4 +50,4 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-CMD HOSTNAME=0.0.0.0 npx prisma migrate deploy && node server.js
+CMD HOSTNAME=0.0.0.0 node server.js
