@@ -33,7 +33,7 @@ export const typeDefs = gql`
     PARENT
   }
 
-  type Pagination {
+  input Pagination {
     page: Int!
     size: Int!
   }
@@ -48,6 +48,12 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input AccountFilters {
+    status: [Status]
+    email: String
+    familyId: String
+  }
+
   type Family {
     id: ID
     name: String!
@@ -56,6 +62,11 @@ export const typeDefs = gql`
     members: [Guest]
     createdAt: Date!
     updatedAt: Date!
+  }
+
+  input FamilyFilters {
+    name: String
+    ownerId: String
   }
 
   type Guest {
@@ -76,6 +87,16 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input GuestFilters {
+    first_name: String
+    last_name: String
+    side: [Side]
+    type: [Type]
+    age: [Age]
+    sex: [Sex]
+    table: [Int]
+  }
+
   type Event {
     id: ID
     index: Int!
@@ -91,10 +112,10 @@ export const typeDefs = gql`
   }
 
   type Query {
-    accounts: [Account]!
-    families: [Family]!
-    guests: [Guest]!
-    events: [Event]!
+    accounts(params: Pagination): [Account]!
+    families(params: Pagination): [Family]!
+    guests(params: Pagination): [Guest]!
+    events(params: Pagination): [Event]!
     account(id: ID!): Account
     family(id: ID!): Family
     guest(id: ID!): Guest
