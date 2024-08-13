@@ -2,6 +2,7 @@ import PrismaUtils from '@pothos/plugin-prisma-utils'
 import PrismaPlugin from '@pothos/plugin-prisma'
 import RelayPlugin from '@pothos/plugin-relay'
 import { DateResolver } from 'graphql-scalars'
+import ZodPlugin from '@pothos/plugin-zod'
 import SchemaBuilder from '@pothos/core'
 import type PrismaTypes from '@pothos'
 
@@ -18,7 +19,7 @@ type SchemaOptions = {
 }
 
 export const builder = new SchemaBuilder<SchemaOptions>({
-  plugins: [PrismaPlugin, PrismaUtils, RelayPlugin],
+  plugins: [PrismaPlugin, PrismaUtils, RelayPlugin, ZodPlugin],
   prisma: {
     client,
     exposeDescriptions: { fields: true, models: true },

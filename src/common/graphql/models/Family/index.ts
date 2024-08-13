@@ -1,7 +1,7 @@
+import { ValidationOptions } from '@pothos/plugin-zod'
 import { builder } from '@graphql/builder'
 import Filters from '@graphql/filters'
-
-import prisma from '@utils/prisma'
+import zod from 'zod'
 
 builder.prismaObject('Family', {
   fields: (t) => ({
@@ -26,9 +26,21 @@ export const FamilySort = builder.prismaOrderBy('Family', {
 
 export const FamilyUniqueFilter = builder.prismaWhereUnique('Family', {
   fields: (t) => ({
-    id: 'String',
-    ownerId: 'String',
+    id: t.string({
+      validate: {
+        schema: zod.string().uuid({ message: 'Некорректный ID' }).optional(),
+      } as ValidationOptions<string>,
+    }),
+    ownerId: t.string({
+      validate: {
+        schema: zod.string().uuid({ message: 'Некорректный ID' }).optional(),
+      } as ValidationOptions<string>,
+    }),
   }),
+  validate: [
+    (fields) => !!fields.id || !!fields.ownerId,
+    { message: 'Необходимо указать ID или ID главы семьи' },
+  ] as ValidationOptions<{ [x: string]: unknown }>,
 })
 
 export const FamilyFilter = builder.prismaWhere('Family', {
@@ -40,34 +52,4 @@ export const FamilyFilter = builder.prismaWhere('Family', {
   },
 })
 
-builder.queryField('families', (t) =>
-  t.prismaConnection({
-    type: 'Family',
-    cursor: 'id',
-    args: {
-      filter: t.arg({
-        type: FamilyFilter,
-      }),
-      sort: t.arg({
-        type: FamilySort,
-      }),
-    },
-    resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.family.findMany({ ...query }),
-  })
-)
-
-export const FamilyUniqueQuery = (t: any) =>
-  t.prismaField({
-    type: 'Family',
-    nullable: true,
-    args: {
-      where: t.arg({
-        type: FamilyUniqueFilter,
-      }),
-    },
-    resolve: async (query: any, root: any, args: any, ctx: any, info: any) =>
-      prisma.family.findUnique({
-        ...args,
-      }),
-  })
+export * from './queries'

@@ -1,8 +1,8 @@
+import { ValidationOptions } from '@pothos/plugin-zod'
 import { builder } from '@graphql/builder'
 import Filters from '@graphql/filters'
 import Enums from '@graphql/enums'
-
-import prisma from '@utils/prisma'
+import zod from 'zod'
 
 builder.prismaObject('Account', {
   fields: (t) => ({
@@ -27,10 +27,32 @@ export const AccountSort = builder.prismaOrderBy('Account', {
 
 export const AccountUniqueFilter = builder.prismaWhereUnique('Account', {
   fields: (t) => ({
-    id: 'String',
-    email: 'String',
-    familyId: 'String',
+    id: t.string({
+      validate: {
+        schema: zod.string().uuid({ message: 'Некорректный ID' }).optional(),
+      } as ValidationOptions<string>,
+    }),
+    email: t.string({
+      validate: {
+        schema: zod
+          .string()
+          .email({ message: 'Некорректный email' })
+          .optional(),
+      } as ValidationOptions<string>,
+    }),
+    familyId: t.string({
+      validate: {
+        schema: zod
+          .string()
+          .uuid({ message: 'Некорректный ID семьи' })
+          .optional(),
+      } as ValidationOptions<string>,
+    }),
   }),
+  validate: [
+    (fields) => !!fields.id || !!fields.email || fields.familyId,
+    { message: 'Необходимо указать ID, email или ID семьи' },
+  ] as ValidationOptions<{ [x: string]: unknown }>,
 })
 
 export const AccountFilter = builder.prismaWhere('Account', {
@@ -42,34 +64,4 @@ export const AccountFilter = builder.prismaWhere('Account', {
   },
 })
 
-builder.queryField('accounts', (t) =>
-  t.prismaConnection({
-    type: 'Account',
-    cursor: 'id',
-    args: {
-      filter: t.arg({
-        type: AccountFilter,
-      }),
-      sort: t.arg({
-        type: AccountSort,
-      }),
-    },
-    resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.account.findMany({ ...query }),
-  })
-)
-
-export const AccountUniqueQuery = (t: any) =>
-  t.prismaField({
-    type: 'Account',
-    nullable: true,
-    args: {
-      where: t.arg({
-        type: AccountUniqueFilter,
-      }),
-    },
-    resolve: async (query: any, root: any, args: any, ctx: any, info: any) =>
-      prisma.account.findUnique({
-        ...args,
-      }),
-  })
+export * from './queries'
