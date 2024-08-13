@@ -3,8 +3,9 @@ generator client {
 }
 
 generator pothos {
-  provider = "prisma-pothos-types"
-  output   = "./pothos.ts"
+  provider    = "prisma-pothos-models"
+  output      = "./pothos.ts"
+  prismaUtils = true
 }
 
 datasource db {

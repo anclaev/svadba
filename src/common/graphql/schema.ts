@@ -1,9 +1,13 @@
 import { builder } from '@graphql/builder'
 
 import './enums'
+import './filters'
 
-import './types/Account'
-import './types/Family'
+import '@graphql/models/Account'
+import '@graphql/models/Family'
+
+import { AccountUniqueQuery } from '@graphql/models/Account'
+import { FamilyUniqueQuery } from '@graphql/models/Family'
 
 export const buildSchema = () => {
   builder.queryType({
@@ -11,6 +15,8 @@ export const buildSchema = () => {
       ok: t.boolean({
         resolve: () => true,
       }),
+      account: AccountUniqueQuery(t),
+      family: FamilyUniqueQuery(t),
     }),
   })
 
