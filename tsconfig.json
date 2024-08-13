@@ -35,6 +35,9 @@
       "@components/*": [
         "./src/common/components/*"
       ],
+      "@hocs/*": [
+        "./src/common/hocs/*"
+      ],
       "@enums/*": [
         "./src/common/enums/*"
       ],

@@ -1,13 +1,5 @@
-import { createSchema, createYoga } from 'graphql-yoga'
-import { resolvers, typeDefs } from '@graphql'
+import { apolloServer } from '@utils/apollo'
 
-const { handleRequest } = createYoga({
-  schema: createSchema({
-    resolvers,
-    typeDefs,
-  }),
-  graphqlEndpoint: '/api/graphql',
-  fetchAPI: { Request, Response },
-})
+const { handleRequest } = apolloServer
 
-export { handleRequest as GET, handleRequest as POST }
+export { handleRequest as GET, handleRequest as POST, handleRequest as OPTIONS }
