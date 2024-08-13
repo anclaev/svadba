@@ -3,6 +3,7 @@
 /.next
 /.idea
 node_modules
+/prisma/pothos.ts
 .editorconfig
 .eslintignore
 .eslintrc.json

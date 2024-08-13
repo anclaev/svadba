@@ -6,3 +6,4 @@ dist
 /.next
 /.idea
 public
+/prisma/pothos.ts

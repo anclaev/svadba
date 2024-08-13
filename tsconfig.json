@@ -47,11 +47,11 @@
       "@utils/*": [
         "./src/common/utils/*"
       ],
-      "@graphql": [
-        "./src/common/graphql/index"
-      ],
       "@graphql/*": [
         "./src/common/graphql/*"
+      ],
+      "@pothos": [
+        "./prisma/pothos.ts"
       ]
     }
   },

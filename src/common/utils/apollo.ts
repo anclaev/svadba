@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import { createSchema, createYoga } from 'graphql-yoga'
-import { resolvers, typeDefs } from '@graphql'
+import { createYoga } from 'graphql-yoga'
+
+import { buildSchema } from '@graphql/schema'
 
 export const apolloClient = new ApolloClient({
   uri: '/api/graphql',
@@ -8,10 +9,7 @@ export const apolloClient = new ApolloClient({
 })
 
 export const apolloServer = createYoga({
-  schema: createSchema({
-    resolvers,
-    typeDefs,
-  }),
+  schema: buildSchema(),
   graphqlEndpoint: '/api/graphql',
   fetchAPI: { Request, Response },
 })

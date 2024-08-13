@@ -371,6 +371,35 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
+"@pothos/core@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@pothos/core/-/core-4.2.0.tgz#2f07500b7000e306ad0ee19f4cf8a530952f22e7"
+  integrity sha512-dEoQCaA/pCPg3MhjGCwBF1QRbtOPysXm4nivQQsq6OrOvC7pU+KJNVdBSwpi1ZtTLtd4wg+PCC8Js9GrCyh9sw==
+
+"@pothos/plugin-prisma-utils@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-prisma-utils/-/plugin-prisma-utils-1.2.0.tgz#2a2bb65e7ba8e0f3a31eb1aa6f82251e460016a6"
+  integrity sha512-Z7ncb6DLYTC47Lo7fZmk21kTXhHkqbgm8fsyFmPGn+40M7eCe1VyvKFIsATBrah2YR5qw8Wn7WqmWwO6Jx96qw==
+  dependencies:
+    "@prisma/generator-helper" "^5.17.0"
+
+"@pothos/plugin-prisma@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-prisma/-/plugin-prisma-4.2.1.tgz#2e988a0d6891826548517785b21ebe26e1c335c9"
+  integrity sha512-leFWc+akd/EbrsAGEL3Th0fOEl3MnNTGimoLpLa+89rNppiymJz6QmpSq88jTa6yFwPiKU0EsICJ6xv0ioCzig==
+  dependencies:
+    "@prisma/generator-helper" "^5.17.0"
+
+"@pothos/plugin-relay@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-relay/-/plugin-relay-4.1.0.tgz#550de4689dd686f7a20505f1dbf164f8b2ecc4a5"
+  integrity sha512-naRKoeB3hag6m5sOlGwpn0pK01c7TJgy6GHUDRfDV09EQBXh+EwCsm/myym35gro4jR00NSK6S0S8hm0qcGONQ==
+
+"@pothos/plugin-zod@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@pothos/plugin-zod/-/plugin-zod-4.1.0.tgz#23b2de45f9c228514b1400a7b98f928226d769aa"
+  integrity sha512-KNAFllvYTZimY+rjELNRRUNVyN2zhZ0jIGsTDb9QVYZ8c5EBT3tHjuImu7t12GHnOAkuTimCEk/VngyMUQpEyw==
+
 "@prisma/client@^5.18.0":
   version "5.18.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.18.0.tgz#526e4281a448f214c0ff81d65c39243608c98294"
@@ -404,6 +433,13 @@
     "@prisma/debug" "5.18.0"
     "@prisma/engines-version" "5.18.0-25.4c784e32044a8a016d99474bd02a3b6123742169"
     "@prisma/get-platform" "5.18.0"
+
+"@prisma/generator-helper@^5.17.0":
+  version "5.18.0"
+  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-5.18.0.tgz#d018514c4638b4efc2c06a4815dc085e04850095"
+  integrity sha512-3ffmrd9KE8ssg/fwyvfwMxrDAunLF8DLFjfwYnDRE7VaNIhkUVZwB77jAwpMCtukvCsAp14WGWu4itvLMzH3GQ==
+  dependencies:
+    "@prisma/debug" "5.18.0"
 
 "@prisma/get-platform@5.18.0":
   version "5.18.0"
@@ -2400,6 +2436,13 @@ graphemer@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
+
+graphql-scalars@^1.23.0:
+  version "1.23.0"
+  resolved "https://registry.yarnpkg.com/graphql-scalars/-/graphql-scalars-1.23.0.tgz#486785d1a6f9449277054a92afc7e1fb73f459d6"
+  integrity sha512-YTRNcwitkn8CqYcleKOx9IvedA8JIERn8BRq21nlKgOr4NEcTaWEG0sT+H92eF3ALTFbPgsqfft4cw+MGgv0Gg==
+  dependencies:
+    tslib "^2.5.0"
 
 graphql-tag@^2.12.6:
   version "2.12.6"
@@ -4950,3 +4993,8 @@ zen-observable@0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
+
+zod@^3.23.8:
+  version "3.23.8"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.23.8.tgz#e37b957b5d52079769fb8097099b592f0ef4067d"
+  integrity sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==
