@@ -48,10 +48,15 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input AccountUniqueArgs {
+    id: ID
+    email: String
+  }
+
   input AccountFilters {
     status: [Status]
     email: String
-    familyId: String
+    familyId: [String]
   }
 
   type Family {
@@ -64,9 +69,14 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input FamilyUniqueArgs {
+    id: ID
+    ownerId: String
+  }
+
   input FamilyFilters {
     name: String
-    ownerId: String
+    ownerId: [String]
   }
 
   type Guest {
@@ -87,6 +97,10 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input GuestUniqueArgs {
+    id: ID
+  }
+
   input GuestFilters {
     first_name: String
     last_name: String
@@ -95,6 +109,9 @@ export const typeDefs = gql`
     age: [Age]
     sex: [Sex]
     table: [Int]
+    transfer: Boolean
+    accommodation: Boolean
+    familyId: [Int]
   }
 
   type Event {
@@ -111,14 +128,28 @@ export const typeDefs = gql`
     updatedAt: Date!
   }
 
+  input EventUniqueArgs {
+    id: ID
+    index: Int
+    alias: String
+  }
+
+  input EventFilters {
+    alias: String
+    name: String
+    description: String
+    address: String
+    url: String
+  }
+
   type Query {
-    accounts(params: Pagination): [Account]!
-    families(params: Pagination): [Family]!
-    guests(params: Pagination): [Guest]!
-    events(params: Pagination): [Event]!
-    account(id: ID!): Account
-    family(id: ID!): Family
-    guest(id: ID!): Guest
-    event(id: ID!): Event
+    accounts(params: Pagination!, filters: AccountFilters): [Account]!
+    families(params: Pagination!, filters: FamilyFilters): [Family]!
+    guests(params: Pagination!, filters: GuestFilters): [Guest]!
+    events(params: Pagination!, filters: EventFilters): [Event]!
+    account(params: AccountUniqueArgs!): Account
+    family(params: FamilyUniqueArgs!): Family
+    guest(params: GuestUniqueArgs!): Guest
+    event(params: EventUniqueArgs!): Event
   }
 `
