@@ -1,4 +1,5 @@
 import { builder } from '@graphql/builder'
+import { ZodError } from 'zod'
 
 import {
   AccountFilter,
@@ -12,6 +13,9 @@ export const AccountUniqueQuery = (t: any) =>
   t.prismaField({
     type: 'Account',
     nullable: true,
+    errors: {
+      types: [ZodError],
+    },
     args: {
       where: t.arg({
         type: AccountUniqueFilter,

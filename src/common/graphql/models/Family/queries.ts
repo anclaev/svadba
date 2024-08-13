@@ -1,4 +1,5 @@
 import { builder } from '@graphql/builder'
+import { ZodError } from 'zod'
 
 import {
   FamilyFilter,
@@ -12,6 +13,9 @@ export const FamilyUniqueQuery = (t: any) =>
   t.prismaField({
     type: 'Family',
     nullable: true,
+    errors: {
+      types: [ZodError],
+    },
     args: {
       where: t.arg({
         type: FamilyUniqueFilter,
