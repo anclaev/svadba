@@ -31,6 +31,7 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -44,7 +45,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 USER nextjs
 
-RUN yarn add prisma --ignore-engines --frozen-lockfile
+RUN npm install -g yarn-install-dev
+RUN yarn-install-dev prisma
 
 EXPOSE 3000
 
