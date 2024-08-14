@@ -76,4 +76,6 @@ export const GuestFilter = builder.prismaWhere('Guest', {
   },
 })
 
+export * from './inputs'
 export * from './queries'
+export * from './mutations'

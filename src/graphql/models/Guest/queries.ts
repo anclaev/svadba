@@ -48,3 +48,5 @@ builder.queryField('guests', (t) =>
       prisma.guest.findMany({ ..._args }),
   })
 )
+
+// TODO: Фикс полей пагинации
