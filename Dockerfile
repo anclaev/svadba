@@ -35,6 +35,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
+RUN chown nextjs:nodejs ./
 
 COPY --from=builder /app/public ./public
 
