@@ -9,12 +9,14 @@ import '@graphql/models/Guest'
 
 import { AccountUniqueQuery } from '@/graphql/models/Account'
 import { FamilyUniqueQuery } from '@/graphql/models/Family'
+import { GuestUniqueQuery } from '@graphql/models/Guest'
 
 export const buildSchema = () => {
   builder.queryType({
     fields: (t) => ({
       account: AccountUniqueQuery(t),
       family: FamilyUniqueQuery(t),
+      guest: GuestUniqueQuery(t),
     }),
   })
 

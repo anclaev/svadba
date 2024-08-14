@@ -3,23 +3,23 @@ import { ZodError } from 'zod'
 import { builder } from '@graphql/builder'
 
 import {
-  AccountFilter,
-  AccountSort,
-  AccountUniqueFilter,
-} from '@graphql/models/Account/index'
+  GuestFilter,
+  GuestSort,
+  GuestUniqueFilter,
+} from '@graphql/models/Guest/index'
 
 import prisma from '@utils/prisma'
 
-export const AccountUniqueQuery = (t: any) =>
+export const GuestUniqueQuery = (t: any) =>
   t.prismaField({
-    type: 'Account',
+    type: 'Guest',
     nullable: true,
     errors: {
       types: [ZodError],
     },
     args: {
       where: t.arg({
-        type: AccountUniqueFilter,
+        type: GuestUniqueFilter,
       }),
     },
     validate: [
@@ -27,24 +27,24 @@ export const AccountUniqueQuery = (t: any) =>
       { message: 'Необходимо указать условие поиска' },
     ],
     resolve: async (query: any, root: any, args: any, ctx: any, info: any) =>
-      prisma.account.findUnique({
+      prisma.family.findUnique({
         ...args,
       }),
   })
 
-builder.queryField('accounts', (t) =>
+builder.queryField('guests', (t) =>
   t.prismaConnection({
-    type: 'Account',
+    type: 'Guest',
     cursor: 'id',
     args: {
       where: t.arg({
-        type: AccountFilter,
+        type: GuestFilter,
       }),
       orderBy: t.arg({
-        type: AccountSort,
+        type: GuestSort,
       }),
     },
     resolve: (query, _parent, _args: any, _ctx, _info) =>
-      prisma.account.findMany({ ..._args }),
+      prisma.guest.findMany({ ..._args }),
   })
 )
