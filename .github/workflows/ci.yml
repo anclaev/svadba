@@ -86,14 +86,20 @@ jobs:
 
       - name: Build cache for Docker
         uses: actions/cache@v4
+        id: ci-yarn-cache
         with:
-          path: build-cache
-          key: ${{ runner.os }}-build-cache-${{ hashFiles('**/yarn.lock') }}
+          path: |
+            yarn-cache
+          key: ci-cache-${{ hashFiles('**/yarn.lock') }}
 
       - name: Inject build-cache into Docker
         uses: reproducible-containers/buildkit-cache-dance@4b2444fec0c0fb9dbf175a96c094720a692ef810 # v2.1.4
         with:
-          cache-source: build-cache
+          cache-map: |
+            {
+              "yarn-cache": "/root/.yarn",
+            }
+          skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
       - name: Build and push image to registry
         uses: docker/build-push-action@v3

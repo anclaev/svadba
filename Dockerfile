@@ -9,8 +9,8 @@ WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
-RUN --mount=type=cache,target=/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --ignore-engines --frozen-lockfile
-RUN --mount=type=cache,target=/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn add -D prisma --ignore-engines --frozen-lockfile
+RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --ignore-engines --frozen-lockfile
+RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn add -D prisma --ignore-engines --frozen-lockfile
 
 # 2. Rebuild the source code only when needed
 FROM base AS builder
