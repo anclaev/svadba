@@ -12,7 +12,8 @@
     "push": "git push --follow-tags origin && git push --follow-tags gitverse",
     "changelog": "npx conventional-changelog -p nextjs -i CHANGELOG.md -s",
     "release": "npx standard-version -s --release-as",
-    "prisma:local": "dotenv -e .env.local yarn prisma"
+    "prisma:local": "dotenv -e .env.local yarn prisma",
+    "depcheck": "depcheck ."
   },
   "dependencies": {
     "@apollo/client": "^3.11.4",
@@ -38,6 +39,7 @@
     "@types/react-dom": "^18",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
+    "depcheck": "^1.4.7",
     "dotenv": "^16.4.5",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
