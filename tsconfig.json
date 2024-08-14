@@ -51,7 +51,7 @@
         "./src/common/utils/*"
       ],
       "@graphql/*": [
-        "./src/common/graphql/*"
+        "./src/graphql/*"
       ],
       "@pothos": [
         "./prisma/pothos.ts"
