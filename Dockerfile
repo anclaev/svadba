@@ -22,6 +22,8 @@ COPY . .
 
 COPY .env .env.production
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN yarn prisma generate
 RUN yarn build
 
@@ -32,7 +34,6 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV NODE_NO_WARNINGS=1
-ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
@@ -46,6 +47,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 RUN npm config set -g update-notifier false
+RUN npm install -g node-gyp
 
 USER nextjs
 
