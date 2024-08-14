@@ -3,39 +3,32 @@ import { ZodError } from 'zod'
 
 import { builder } from '@graphql/builder'
 
-import { Account, AccountCreateInput } from '@graphql/models/Account/index'
+import { Family, FamilyCreateInput } from '@graphql/models/Family/index'
 
-import { hash } from '@utils/password'
 import prisma from '@utils/prisma'
 
 import { PRISMA_CODES } from '@enums/prisma-codes'
 
-import { CreateAccountDto } from '@dtos/account'
+import { CreateFamilyDto } from '@dtos/family'
 
-builder.mutationField('createAccount', (t) =>
+builder.mutationField('createFamily', (t) =>
   t.field({
-    type: Account,
+    type: Family,
     errors: {
       types: [ZodError],
     },
-    args: { data: t.arg({ type: AccountCreateInput }) },
-    resolve: async (root, args) => {
-      const { email, password } = args.data as CreateAccountDto
+    args: { data: t.arg({ type: FamilyCreateInput }) },
+    resolve: async (root, args: any) => {
+      const data = args.data as CreateFamilyDto
 
-      const hashed = await hash(password)
-
-      return prisma.account
+      return prisma.family
         .create({
-          data: {
-            email,
-            password: hashed,
-          },
+          data,
         })
-        .then((data) => ({ ...data, password: '' }))
         .catch((err) => {
           switch (err.code) {
             case PRISMA_CODES.P2002: {
-              throw new GraphQLError('Почта уже зарегистрирована')
+              throw new GraphQLError('Семья уже зарегистрирована')
             }
             default: {
               throw new GraphQLError('Некорректный запрос')

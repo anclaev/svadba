@@ -3,7 +3,7 @@ import { builder } from '@graphql/builder'
 import Filters from '@graphql/filters'
 import zod from 'zod'
 
-builder.prismaObject('Family', {
+export const Family = builder.prismaObject('Family', {
   fields: (t) => ({
     id: t.exposeID('id'),
     name: t.exposeString('name'),
@@ -52,4 +52,6 @@ export const FamilyFilter = builder.prismaWhere('Family', {
   },
 })
 
+export * from './inputs'
 export * from './queries'
+export * from './mutations'

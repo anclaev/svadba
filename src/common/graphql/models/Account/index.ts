@@ -64,5 +64,6 @@ export const AccountFilter = builder.prismaWhere('Account', {
   },
 })
 
+export * from './inputs'
 export * from './queries'
 export * from './mutations'
