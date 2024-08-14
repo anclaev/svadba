@@ -36,14 +36,14 @@ builder.queryField('families', (t) =>
     type: 'Family',
     cursor: 'id',
     args: {
-      filter: t.arg({
+      where: t.arg({
         type: FamilyFilter,
       }),
       sort: t.arg({
         type: FamilySort,
       }),
     },
-    resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.family.findMany({ ...query }),
+    resolve: (query, _parent, _args: any, _ctx, _info) =>
+      prisma.family.findMany({ ..._args }),
   })
 )

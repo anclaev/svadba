@@ -44,6 +44,9 @@
       "@interfaces/*": [
         "./src/common/interfaces/*"
       ],
+      "@dtos/*": [
+        "./src/common/dtos/*"
+      ],
       "@utils/*": [
         "./src/common/utils/*"
       ],

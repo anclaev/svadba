@@ -36,14 +36,14 @@ builder.queryField('accounts', (t) =>
     type: 'Account',
     cursor: 'id',
     args: {
-      filter: t.arg({
+      where: t.arg({
         type: AccountFilter,
       }),
       sort: t.arg({
         type: AccountSort,
       }),
     },
-    resolve: (query, _parent, _args, _ctx, _info) =>
-      prisma.account.findMany({ ...query }),
+    resolve: (query, _parent, _args: any, _ctx, _info) =>
+      prisma.account.findMany({ ..._args }),
   })
 )

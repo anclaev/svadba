@@ -17,5 +17,16 @@ export const buildSchema = () => {
     }),
   })
 
+  builder.mutationType({
+    fields: (t) => ({
+      hi: t.field({
+        type: 'String',
+        resolve: async (root, args) => {
+          return 'hii'
+        },
+      }),
+    }),
+  })
+
   return builder.toSchema()
 }

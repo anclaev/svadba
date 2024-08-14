@@ -4,7 +4,7 @@ import Filters from '@graphql/filters'
 import Enums from '@graphql/enums'
 import zod from 'zod'
 
-builder.prismaObject('Account', {
+export const Account = builder.prismaObject('Account', {
   fields: (t) => ({
     id: t.exposeID('id'),
     status: t.expose('status', { type: Enums.Status }),
@@ -65,3 +65,4 @@ export const AccountFilter = builder.prismaWhere('Account', {
 })
 
 export * from './queries'
+export * from './mutations'
