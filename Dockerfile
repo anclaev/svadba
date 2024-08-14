@@ -35,7 +35,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
-RUN chown nextjs:nodejs ./
+RUN chown -R nextjs:nodejs ./
 
 COPY --from=builder /app/public ./public
 
@@ -44,11 +44,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
-RUN npm install -g yarn-install-dev
+RUN npm install -g prisma
 
 USER nextjs
-
-RUN yarn-install-dev prisma
 
 EXPOSE 3000
 
