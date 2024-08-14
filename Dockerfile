@@ -44,7 +44,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 
 USER nextjs
 
-RUN yarn add prisma @prisma/client --ignore-engines --frozen-lockfile
+RUN yarn add prisma --ignore-engines --frozen-lockfile
 
 EXPOSE 3000
 
