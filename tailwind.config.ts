@@ -1,11 +1,6 @@
 import { nextui } from '@nextui-org/react'
 
-const config: {
-  plugins: ReturnType<Plugin>[]
-  theme: { extend: {} }
-  darkMode: string
-  content: string[]
-} = {
+const config: any = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
