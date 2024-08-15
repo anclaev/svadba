@@ -1,6 +1,5 @@
-import { ZodError } from 'zod'
-
 import { builder } from '@graphql/builder'
+import { ZodError } from 'zod'
 
 import {
   AccountFilter,
@@ -44,7 +43,15 @@ builder.queryField('accounts', (t) =>
         type: AccountSort,
       }),
     },
-    resolve: (query, _parent, _args: any, _ctx, _info) =>
-      prisma.account.findMany({ ..._args }),
+    resolve: (query: any, _parent: any, _args: any) => {
+      const { after, first, ...args } = _args
+
+      return prisma.account.findMany({ ...query, ...args })
+    },
+    totalCount: (connection: any, _args: any) => {
+      const { after, first, ...args } = _args
+
+      return prisma.account.count({ ...args })
+    },
   })
 )

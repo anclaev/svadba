@@ -43,7 +43,15 @@ builder.queryField('families', (t) =>
         type: FamilySort,
       }),
     },
-    resolve: (query, _parent, _args: any, _ctx, _info) =>
-      prisma.family.findMany({ ..._args }),
+    resolve: (query: any, _parent: any, _args: any) => {
+      const { after, first, ...args } = _args
+
+      return prisma.family.findMany({ ...query, ...args })
+    },
+    totalCount: (connection: any, _args: any) => {
+      const { after, first, ...args } = _args
+
+      return prisma.family.count({ ...args })
+    },
   })
 )

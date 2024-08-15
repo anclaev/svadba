@@ -4,9 +4,9 @@ import Filters from '@graphql/filters'
 import Enums from '@graphql/enums'
 import zod from 'zod'
 
-export const Account = builder.prismaObject('Account', {
+export const Account = builder.prismaNode('Account', {
+  id: { field: 'id' },
   fields: (t) => ({
-    id: t.exposeID('id'),
     status: t.expose('status', { type: Enums.Status }),
     password: t.exposeString('password'),
     email: t.exposeString('email'),

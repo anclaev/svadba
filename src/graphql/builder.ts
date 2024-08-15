@@ -22,7 +22,7 @@ type SchemaOptions = {
 }
 
 export const builder = new SchemaBuilder<SchemaOptions>({
-  plugins: [ErrorsPlugin, PrismaPlugin, PrismaUtils, RelayPlugin, ZodPlugin],
+  plugins: [ErrorsPlugin, RelayPlugin, PrismaPlugin, PrismaUtils, ZodPlugin],
   prisma: {
     client,
     exposeDescriptions: { fields: true, models: true },

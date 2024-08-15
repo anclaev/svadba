@@ -3,9 +3,10 @@ generator client {
 }
 
 generator pothos {
-  provider    = "prisma-pothos-types"
-  output      = "./pothos.ts"
-  prismaUtils = true
+  provider      = "prisma-pothos-types"
+  output        = "./pothos.ts"
+  prismaUtils   = true
+  documentation = true
 }
 
 datasource db {
@@ -13,39 +14,54 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Пол гостя
+/// Пол гостя
 enum Sex {
+  /// Мужчина
   MALE
+  /// Женщина
   FEMALE
 }
 
-// Возраст гостя
+/// Возраст гостя
 enum Age {
+  /// Взрослый
   ADULT
+  /// Ребёнок
   CHILD
 }
 
-// Статус гостя
+/// Статус гостя
 enum Status {
-  PENDING // Ожидает подтверждения
-  APPROVED // Подтверждён
-  ADMIN // Администратор
+  /// Ожидает подтверждения
+  PENDING
+  /// Подтверждён
+  APPROVED
+  /// Администратор
+  ADMIN
 }
 
-// Сторона гостя
+/// Сторона гостя
 enum Side {
-  GROOM // Жених
-  BRIDE // Невеста
+  /// Жених
+  GROOM
+  /// Невеста
+  BRIDE
 }
 
-// Тип гостя
+/// Тип гостя
 enum Type {
-  COLLEAGUE // Коллега
-  FRIEND // Друг
-  BEST_FRIEND // Лучший друг
-  RELATIVE // Родственник
-  CLOSE_RELATIVE // Близкий родственник
-  PARENT // Родитель
+  /// Коллега
+  COLLEAGUE
+  /// Друг
+  FRIEND
+  /// Лучший друг
+  BEST_FRIEND
+  /// Родственник
+  RELATIVE
+  /// Близкий родственник
+  CLOSE_RELATIVE
+  /// Родитель
+  PARENT
 }
 
 model Account {
@@ -56,8 +72,8 @@ model Account {
 
   family Family?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
 }
 
 model Family {
@@ -70,8 +86,8 @@ model Family {
 
   members Guest[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
 }
 
 model Guest {
@@ -80,38 +96,47 @@ model Guest {
   first_name String
   last_name  String?
 
-  side  Side // Сторона (жених/невеста)
-  type  Type @default(RELATIVE) // Тип гостя
-  age   Age  @default(ADULT) // Взрослый/ребёнок
-  sex   Sex // Пол
-  table Int? // Номер стола
+  /// Сторона (жених/невеста) гостя
+  side  Side
+  /// Тип гостя
+  type  Type @default(RELATIVE)
+  /// Возраст гостя
+  age   Age  @default(ADULT)
+  /// Пол гостя
+  sex   Sex
+  /// Номер стола
+  table Int?
 
-  transfer      Boolean @default(false) // Нужен ли трансфер
-  accommodation Boolean @default(false) // Нужно ли проживание
+  /// Нужен ли трансфер гостю
+  transfer      Boolean @default(false)
+  /// Нужно ли проживание гостю
+  accommodation Boolean @default(false)
 
-  events Event[] // На каких частях мероприятия будет
+  /// На каких частях мероприятия будет гость
+  events Event[]
 
   family   Family @relation(fields: [familyId], references: [id])
   familyId String
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
 }
 
 model Event {
   id    String @id @default(uuid())
+  /// Порядковый номер мероприятия
   index Int    @unique
 
   alias String @unique
   name  String
 
-  time        DateTime
+  time        DateTime @db.Date
   description String
   address     String?
   url         String?
 
   guests Guest[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @db.Date
+  updatedAt DateTime @updatedAt @db.Date
 }
