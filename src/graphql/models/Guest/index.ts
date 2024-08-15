@@ -5,6 +5,7 @@ import zod from 'zod'
 
 import Enums from '@graphql/enums'
 
+import { EventListFilter, EventSort } from '@graphql/models/Event'
 import { FamilyFilter } from '@graphql/models/Family'
 
 export const Guest = builder.prismaObject('Guest', {
@@ -19,7 +20,7 @@ export const Guest = builder.prismaObject('Guest', {
     table: t.exposeInt('table'),
     transfer: t.exposeBoolean('transfer'),
     accommodation: t.exposeBoolean('accommodation'),
-    // events:
+    events: t.relation('events'),
     family: t.relation('family'),
     familyId: t.exposeString('familyId'),
     createdAt: t.expose('createdAt', { type: 'Date' }),
@@ -28,7 +29,7 @@ export const Guest = builder.prismaObject('Guest', {
 })
 
 export const GuestSort = builder.prismaOrderBy('Guest', {
-  fields: {
+  fields: () => ({
     id: true,
     first_name: true,
     last_name: true,
@@ -39,10 +40,11 @@ export const GuestSort = builder.prismaOrderBy('Guest', {
     table: true,
     transfer: true,
     accommodation: true,
+    events: EventSort,
     familyId: true,
     createdAt: true,
     updatedAt: true,
-  },
+  }),
 })
 
 export const GuestUniqueFilter = builder.prismaWhereUnique('Guest', {
@@ -71,9 +73,14 @@ export const GuestFilter = builder.prismaWhere('Guest', {
     transfer: Filters.Boolean,
     accommodation: Filters.Boolean,
     family: FamilyFilter,
+    events: EventListFilter,
     createdAt: Filters.Date,
     updatedAt: Filters.Date,
   },
+})
+
+export const GuestListFilter = builder.prismaListFilter(GuestUniqueFilter, {
+  ops: ['every', 'some', 'none'],
 })
 
 export * from './inputs'

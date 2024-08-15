@@ -6,6 +6,7 @@ import './filters'
 import '@graphql/models/Account'
 import '@graphql/models/Family'
 import '@graphql/models/Guest'
+import '@graphql/models/Event'
 
 import { AccountUniqueQuery } from '@/graphql/models/Account'
 import { FamilyUniqueQuery } from '@/graphql/models/Family'
