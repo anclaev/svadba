@@ -1,6 +1,8 @@
 import { builder } from '@/graphql/builder'
 
-import './filters'
+import { generateAllCrud } from '@graphql/__generated__/autocrud'
+
+generateAllCrud()
 
 export const buildSchema = () => {
   builder.queryType({
