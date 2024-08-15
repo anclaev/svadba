@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,39 +19,16 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@public/*": [
-        "./public/*"
-      ],
-      "@styles/*": [
-        "./src/styles/*"
-      ],
-      "@components/*": [
-        "./src/common/components/*"
-      ],
-      "@hocs/*": [
-        "./src/common/hocs/*"
-      ],
-      "@enums/*": [
-        "./src/common/enums/*"
-      ],
-      "@interfaces/*": [
-        "./src/common/interfaces/*"
-      ],
-      "@dtos/*": [
-        "./src/common/dtos/*"
-      ],
-      "@utils/*": [
-        "./src/common/utils/*"
-      ],
-      "@graphql/*": [
-        "./src/graphql/*"
-      ],
-      "@pothos": [
-        "./prisma/pothos.ts"
-      ]
+      "@/*": ["./src/*"],
+      "@public/*": ["./public/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@components/*": ["./src/common/components/*"],
+      "@hocs/*": ["./src/common/hocs/*"],
+      "@enums/*": ["./src/common/enums/*"],
+      "@interfaces/*": ["./src/common/interfaces/*"],
+      "@dtos/*": ["./src/common/dtos/*"],
+      "@utils/*": ["./src/common/utils/*"],
+      "@core/*": ["./src/core/*"]
     }
   },
   "include": [
@@ -65,7 +38,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

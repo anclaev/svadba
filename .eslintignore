@@ -8,3 +8,4 @@ dist
 /prisma/pothos.ts
 public
 prisma
+_graphql
