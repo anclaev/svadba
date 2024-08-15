@@ -65,37 +65,57 @@ enum Type {
   PARENT
 }
 
+/// Аккаунт в системе
 model Account {
-  id       String @id @default(uuid())
-  status   Status @default(PENDING)
-  password String
-  email    String @unique
+  /// ID аккаунта
+  id     String @id @default(uuid())
+  /// Статус аккаунта
+  status Status @default(PENDING)
 
+  /// Пароль аккаунта
+  password String
+
+  /// Почта аккаунта
+  email String @unique
+
+  /// Семья аккаунта
   family Family?
 
   createdAt DateTime @default(now()) @db.Date
   updatedAt DateTime @updatedAt @db.Date
 }
 
+/// Приглашённая семья
 model Family {
+  /// ID семьи
   id String @id @default(uuid())
 
+  /// Название семьи
   name String
 
-  owner   Account @relation(fields: [ownerId], references: [id])
-  ownerId String  @unique
+  /// Глава семьи
+  owner Account @relation(fields: [ownerId], references: [id])
 
+  /// ID аккаунта
+  ownerId String @unique
+
+  /// Члены семьи (гости)
   members Guest[]
 
   createdAt DateTime @default(now()) @db.Date
   updatedAt DateTime @updatedAt @db.Date
 }
 
+/// Гость мероприятия
 model Guest {
+  /// ID гостя
   id String @id @default(uuid())
 
+  /// Имя гостя
   first_name String
-  last_name  String?
+
+  /// Фамилия гостя
+  last_name String?
 
   /// Сторона (жених/невеста) гостя
   side  Side
@@ -116,26 +136,48 @@ model Guest {
   /// На каких частях мероприятия будет гость
   events Event[]
 
-  family   Family @relation(fields: [familyId], references: [id])
+  /// Семья гостя
+  family Family @relation(fields: [familyId], references: [id])
+
+  /// ID семьи гостя
   familyId String
 
   createdAt DateTime @default(now()) @db.Date
   updatedAt DateTime @updatedAt @db.Date
 }
 
+/// Мероприятие события
 model Event {
+  /// ID мероприятия
   id    String @id @default(uuid())
   /// Порядковый номер мероприятия
   index Int    @unique
 
+  /// Короткое название мероприятия (транслит)
   alias String @unique
-  name  String
 
-  time        DateTime @db.Date
+  /// Название мероприятия
+  name String
+
+  /// Дата мероприятия
+  date DateTime @db.Date()
+
+  /// Время начала мероприятия
+  start DateTime @db.Time()
+
+  /// Время окончания мероприятия
+  end DateTime @db.Time()
+
+  /// Описание мероприятия
   description String
-  address     String?
-  url         String?
 
+  /// Адрес проведения мероприятия
+  address String?
+
+  /// Ссылка на материалы мероприятия
+  url String?
+
+  /// Гости, участвующие в мероприятии
   guests Guest[]
 
   createdAt DateTime @default(now()) @db.Date

@@ -9,7 +9,7 @@ import type PrismaTypes from '@pothos'
 import { ZodError } from 'zod'
 
 import { flattenErrors } from '@utils/zod'
-import client from '@utils/prisma'
+import prisma from '@utils/prisma'
 
 type SchemaOptions = {
   PrismaTypes: PrismaTypes
@@ -24,7 +24,7 @@ type SchemaOptions = {
 export const builder = new SchemaBuilder<SchemaOptions>({
   plugins: [ErrorsPlugin, RelayPlugin, PrismaPlugin, PrismaUtils, ZodPlugin],
   prisma: {
-    client,
+    client: prisma,
     exposeDescriptions: true,
     onUnusedQuery: process.env.NODE_ENV === 'production' ? null : 'warn',
   },
