@@ -12,4 +12,5 @@ export const apolloServer = createYoga({
   schema: buildSchema(),
   graphqlEndpoint: '/api/graphql',
   fetchAPI: { Request, Response },
+  landingPage: process.env.NODE_ENV !== 'production',
 })

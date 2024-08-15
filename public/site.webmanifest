@@ -1,0 +1,25 @@
+{
+    "name": "The Svadba",
+    "short_name": "The Svadba",
+    "description": "Грандиознейшее событие года",
+    "theme_color": "#1e1e1e",
+    "background_color": "#da532c",
+      "display": "standalone",
+      "display_override": ["fullscreen", "minimal-ui"],
+       "scope": "./",
+        "start_url": "/",
+    "icons": [
+        {
+            "src": "/icons/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+              "purpose": "maskable"
+        },
+        {
+            "src": "/icons/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+             "purpose": "any"
+        }
+    ]
+}
