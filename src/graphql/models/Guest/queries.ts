@@ -10,7 +10,7 @@ import {
 
 import prisma from '@utils/prisma'
 
-export const GuestUniqueQuery = (t: any) =>
+builder.queryField('guest', (t: any) =>
   t.prismaField({
     type: 'Guest',
     nullable: true,
@@ -31,6 +31,7 @@ export const GuestUniqueQuery = (t: any) =>
         ...args,
       }),
   })
+)
 
 builder.queryField('guests', (t) =>
   t.prismaConnection({

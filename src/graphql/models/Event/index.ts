@@ -86,3 +86,5 @@ export const EventUniqueFilter = builder.prismaWhereUnique('Event', {
 export const EventListFilter = builder.prismaListFilter(EventUniqueFilter, {
   ops: ['every', 'some', 'none'],
 })
+
+export * from './queries'

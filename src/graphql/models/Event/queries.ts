@@ -2,57 +2,58 @@ import { builder } from '@graphql/builder'
 import { ZodError } from 'zod'
 
 import {
-  FamilyFilter,
-  FamilySort,
-  FamilyUniqueFilter,
-} from '@graphql/models/Family/index'
+  EventFilter,
+  EventSort,
+  EventUniqueFilter,
+} from '@graphql/models/Event/index'
 
 import prisma from '@utils/prisma'
 
-builder.queryField('family', (t: any) =>
+builder.queryField('event', (t: any) =>
   t.prismaField({
-    type: 'Family',
+    type: 'Event',
     nullable: true,
     errors: {
       types: [ZodError],
     },
     args: {
       where: t.arg({
-        type: FamilyUniqueFilter,
+        type: EventUniqueFilter,
       }),
     },
     validate: [
       (args: any) => !!args.where,
       { message: 'Необходимо указать условие поиска' },
     ],
-    resolve: async (query: any, root: any, args: any, ctx: any, info: any) =>
-      prisma.family.findUnique({
-        ...args,
-      }),
+    resolve: async (query: any, root: any, args: any) =>
+      prisma.event.findUnique({ ...args }),
   })
 )
 
-builder.queryField('families', (t) =>
+builder.queryField('events', (t) =>
   t.prismaConnection({
-    type: 'Family',
+    type: 'Event',
     cursor: 'id',
+    errors: {
+      types: [ZodError],
+    },
     args: {
       where: t.arg({
-        type: FamilyFilter,
+        type: EventFilter,
       }),
-      sort: t.arg({
-        type: FamilySort,
+      orderBy: t.arg({
+        type: EventSort,
       }),
     },
     resolve: (query: any, _parent: any, _args: any) => {
       const { after, first, ...args } = _args
 
-      return prisma.family.findMany({ ...query, ...args })
+      return prisma.event.findMany({ ...query, ...args })
     },
     totalCount: (connection: any, _args: any) => {
       const { after, first, ...args } = _args
 
-      return prisma.family.count({ ...args })
+      return prisma.event.count({ ...args })
     },
   })
 )

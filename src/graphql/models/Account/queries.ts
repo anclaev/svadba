@@ -9,7 +9,7 @@ import {
 
 import prisma from '@utils/prisma'
 
-export const AccountUniqueQuery = (t: any) =>
+builder.queryField('account', (t: any) =>
   t.prismaField({
     type: 'Account',
     nullable: true,
@@ -25,16 +25,20 @@ export const AccountUniqueQuery = (t: any) =>
       (args: any) => !!args.where,
       { message: 'Необходимо указать условие поиска' },
     ],
-    resolve: async (query: any, root: any, args: any, ctx: any, info: any) =>
+    resolve: async (query: any, root: any, args: any) =>
       prisma.account.findUnique({
         ...args,
       }),
   })
+)
 
 builder.queryField('accounts', (t) =>
   t.prismaConnection({
     type: 'Account',
     cursor: 'id',
+    errors: {
+      types: [ZodError],
+    },
     args: {
       where: t.arg({
         type: AccountFilter,
