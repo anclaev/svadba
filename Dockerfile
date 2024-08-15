@@ -17,8 +17,8 @@ RUN --mount=type=cache,target=${YARN_CACHE} echo "Yarn cache before install: $(l
 
 
 RUN --mount=type=cache,target=${YARN_CACHE} \
-    yarn config set cache-folder ${YARN_CACHE} \
-    yarn install --ignore-engines --ignore-platform --frozen-lockfile \
+    yarn config set cache-folder ${YARN_CACHE} && \
+    yarn install --ignore-engines --ignore-platform --frozen-lockfile && \
     yarn add -D prisma --ignore-engines --ignore-platform --frozen-lockfile
 
 # Another log for troubleshooting. This should never be empty since the NPM modules were installed before running this line
