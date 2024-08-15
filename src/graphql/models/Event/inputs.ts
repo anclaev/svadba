@@ -1,6 +1,5 @@
 import { InputObjectRef } from '@pothos/core'
 import { builder } from '@graphql/builder'
-import { Prisma } from '@prisma/client'
 import zod from 'zod'
 
 import {

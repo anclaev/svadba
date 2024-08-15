@@ -32,6 +32,7 @@ export const EventSort = builder.prismaOrderBy('Event', {
     alias: true,
     name: true,
     date: true,
+    index: true,
     start: true,
     end: true,
     createdAt: true,
@@ -84,7 +85,7 @@ export const EventUniqueFilter = builder.prismaWhereUnique('Event', {
   ] as ValidationOptions<{ [x: string]: unknown }>,
 })
 
-export const EventListFilter = builder.prismaListFilter(EventUniqueFilter, {
+export const EventListFilter = builder.prismaListFilter(EventFilter, {
   ops: ['every', 'some', 'none'],
 })
 
