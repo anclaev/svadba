@@ -3,9 +3,10 @@ import { builder } from '@graphql/builder'
 import Filters from '@graphql/filters'
 import zod from 'zod'
 
-export const Family = builder.prismaObject('Family', {
-  fields: (t) => ({
-    id: t.exposeID('id'),
+export const Family = builder.prismaNode('Family', {
+  id: { field: 'id' },
+  fields: (t: any) => ({
+    familyId: t.exposeString('id'),
     name: t.exposeString('name'),
     owner: t.relation('owner'),
     ownerId: t.exposeString('ownerId'),
@@ -51,6 +52,8 @@ export const FamilyFilter = builder.prismaWhere('Family', {
     updatedAt: Filters.Date,
   },
 })
+
+// TODO: Решить проблему с циркулярной зависимостью FamilyFilter и GuestFilter
 
 export * from './inputs'
 export * from './queries'

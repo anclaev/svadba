@@ -3,39 +3,39 @@ import { ZodError } from 'zod'
 
 import { builder } from '@graphql/builder'
 
-import { Account, AccountCreateInput } from '@graphql/models/Account/index'
+import { Event, EventCreateInput } from '@graphql/models/Event/index'
 
-import { hash } from '@utils/password'
+import translit from '@utils/translit'
 import prisma from '@utils/prisma'
 
 import { PRISMA_CODES } from '@enums/prisma-codes'
 
-import type { CreateAccountDto } from '@dtos/account'
+import type { CreateEventDto } from '@dtos/event'
 
-builder.mutationField('createAccount', (t) =>
+builder.mutationField('createEvent', (t: any) =>
   t.field({
-    type: Account,
+    type: Event,
     errors: {
       types: [ZodError],
     },
-    args: { data: t.arg({ type: AccountCreateInput }) },
-    resolve: async (root, args) => {
-      const { email, password } = args.data as CreateAccountDto
+    args: {
+      data: t.arg({ type: EventCreateInput }),
+    },
+    resolve: async (root: any, { data }: { data: CreateEventDto }) => {
+      if (!data.alias) data.alias = translit.transform(data.name, '-')
 
-      const hashed = await hash(password)
-
-      return prisma.account
+      return prisma.event
         .create({
           data: {
-            email,
-            password: hashed,
+            ...(data as any),
+            alias: data.alias!.toLowerCase(),
           },
         })
-        .then((data) => ({ ...data, password: '' }))
+        .then((data) => data)
         .catch((err) => {
           switch (err.code) {
             case PRISMA_CODES.P2002: {
-              throw new GraphQLError('Почта уже зарегистрирована')
+              throw new GraphQLError('Мероприятие уже зарегистрировано')
             }
             default: {
               throw new GraphQLError('Некорректный запрос')

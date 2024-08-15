@@ -8,6 +8,7 @@ import { GuestListFilter } from '@graphql/models/Guest'
 export const Event = builder.prismaNode('Event', {
   id: { field: 'id' },
   fields: (t) => ({
+    eventId: t.exposeString('id'),
     index: t.exposeInt('index'),
     alias: t.exposeString('alias'),
     name: t.exposeString('name'),
@@ -39,14 +40,14 @@ export const EventSort = builder.prismaOrderBy('Event', {
 })
 
 export const EventFilter = builder.prismaWhere('Event', {
-  fields: () => ({
+  fields: (): any => ({
     id: Filters.ID,
     index: Filters.Int,
     alias: Filters.String,
     name: Filters.String,
     date: Filters.Date,
-    start: Filters.Date,
-    end: Filters.Date,
+    start: Filters.Time,
+    end: Filters.Time,
     description: Filters.String,
     address: Filters.String,
     url: Filters.String,
@@ -87,4 +88,6 @@ export const EventListFilter = builder.prismaListFilter(EventUniqueFilter, {
   ops: ['every', 'some', 'none'],
 })
 
+export * from './inputs'
 export * from './queries'
+export * from './mutations'

@@ -8,9 +8,10 @@ import Enums from '@graphql/enums'
 import { EventListFilter, EventSort } from '@graphql/models/Event'
 import { FamilyFilter } from '@graphql/models/Family'
 
-export const Guest = builder.prismaObject('Guest', {
-  fields: (t) => ({
-    id: t.exposeID('id'),
+export const Guest = builder.prismaNode('Guest', {
+  id: { field: 'id' },
+  fields: (t: any) => ({
+    guestId: t.exposeString('id'),
     first_name: t.exposeString('first_name'),
     last_name: t.exposeString('last_name'),
     side: t.expose('side', { type: Enums.Side }),

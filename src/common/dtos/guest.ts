@@ -1,6 +1,7 @@
 import { Age, Sex, Side, Type } from '@prisma/client'
+import { CreateEventWithoutGuests } from '@dtos/event'
 
-export type CreateGuestDto = {
+type CreateGuestBaseDto = {
   first_name: string
   last_name?: string
   side: Side
@@ -10,6 +11,16 @@ export type CreateGuestDto = {
   table?: number
   transfer?: boolean
   accommodation?: boolean
-  //   events:
   familyId: string
 }
+
+export type CreateGuestDto = {
+  events?: {
+    connect?: {
+      id: string
+    }
+    create?: CreateEventWithoutGuests
+  }[]
+} & CreateGuestBaseDto
+
+export type CreateGuestWithoutEventsDto = CreateGuestBaseDto

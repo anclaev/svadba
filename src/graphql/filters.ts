@@ -68,6 +68,13 @@ const Filters = {
       schema: zod.object({}).catchall(zod.date().optional()),
     },
   }),
+  Time: builder.prismaFilter('Time', {
+    name: 'TimeFilter',
+    ops: ['equals', 'not', 'in', 'lt', 'gt', 'lte', 'gte'],
+    validate: {
+      schema: zod.object({}).catchall(zod.string().time().optional()),
+    },
+  }),
   Sex: builder.prismaFilter(Sex, {
     name: 'SexFilter',
     ops: enumOps,

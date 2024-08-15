@@ -3,25 +3,36 @@ import { ZodError } from 'zod'
 
 import { builder } from '@graphql/builder'
 
-import { Guest, GuestCreateInput } from '@graphql/models/Guest/index'
+import { Guest, GuestCreateInput } from '@graphql/models/Guest'
 
 import prisma from '@utils/prisma'
 
-import { CreateGuestDto } from '@dtos/guest'
+import { PRISMA_CODES } from '@enums/prisma-codes'
 
-builder.mutationField('createGuest', (t) =>
+import type { CreateGuestDto } from '@dtos/guest'
+
+builder.mutationField('createGuest', (t: any) =>
   t.field({
     type: Guest,
     errors: {
       types: [ZodError],
     },
     args: { data: t.arg({ type: GuestCreateInput }) },
-    resolve: async (root, args: any) => {
+    resolve: async (root: any, args: any) => {
       const data = args.data as CreateGuestDto
 
-      return prisma.guest.create({ data }).catch(() => {
-        throw new GraphQLError('Некорректный запрос')
-      })
+      if (data.events)
+        return prisma.guest.create({ data: data as any }).catch((err) => {
+          switch (err.code) {
+            case PRISMA_CODES.P2002: {
+              throw new GraphQLError('Гость уже зарегистрирован')
+            }
+            default: {
+              console.log(err)
+              throw new GraphQLError('Некорректный запрос')
+            }
+          }
+        })
     },
     validate: [
       (args: any) => !!args.data,

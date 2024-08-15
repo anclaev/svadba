@@ -7,6 +7,7 @@ import zod from 'zod'
 export const Account = builder.prismaNode('Account', {
   id: { field: 'id' },
   fields: (t) => ({
+    accountId: t.exposeString('id'),
     status: t.expose('status', { type: Enums.Status }),
     password: t.exposeString('password'),
     email: t.exposeString('email'),

@@ -1,8 +1,8 @@
+import { DateResolver, TimeResolver } from 'graphql-scalars'
 import PrismaUtils from '@pothos/plugin-prisma-utils'
 import ErrorsPlugin from '@pothos/plugin-errors'
 import PrismaPlugin from '@pothos/plugin-prisma'
 import RelayPlugin from '@pothos/plugin-relay'
-import { DateResolver } from 'graphql-scalars'
 import ZodPlugin from '@pothos/plugin-zod'
 import SchemaBuilder from '@pothos/core'
 import type PrismaTypes from '@pothos'
@@ -17,6 +17,10 @@ type SchemaOptions = {
     Date: {
       Input: Date
       Output: Date
+    }
+    Time: {
+      Input: String
+      Output: String
     }
   }
 }
@@ -60,3 +64,4 @@ builder.objectType(ZodError, {
 })
 
 builder.addScalarType('Date', DateResolver)
+builder.addScalarType('Time', TimeResolver)
