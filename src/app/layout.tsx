@@ -1,3 +1,4 @@
+import { Providers } from '@/app/providers'
 import { Roboto } from 'next/font/google'
 import type { Metadata } from 'next'
 
@@ -18,8 +19,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: WithChildren) {
   return (
-    <html lang='ru'>
-      <body className={roboto.className}>{children}</body>
+    <html lang='ru' className='light'>
+      <body className={roboto.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }
