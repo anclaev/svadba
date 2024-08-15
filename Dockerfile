@@ -1,7 +1,10 @@
 FROM node:18-alpine AS base
 
+
 # 1. Install dependencies only when needed
 FROM base AS deps
+
+ENV YARN_CACHE="/usr/local/.yarn/cache"
 
 RUN apk add --no-cache libc6-compat
 
@@ -9,8 +12,17 @@ WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn install --ignore-engines --ignore-platform --frozen-lockfile
-RUN --mount=type=cache,target=/root/.yarn YARN_CACHE_FOLDER=/root/.yarn yarn add -D prisma --ignore-engines --ignore-platform --frozen-lockfile
+# Log for troubleshooting. There should be files in the directory when there's a cache hit
+RUN --mount=type=cache,target=${YARN_CACHE} echo "Yarn cache before install: $(ls -la ${YARN_CACHE})"
+
+
+RUN --mount=type=cache,target=${YARN_CACHE} \
+    yarn config set cache-folder ${YARN_CACHE} \
+    yarn install --ignore-engines --ignore-platform --frozen-lockfile \
+    yarn add -D prisma --ignore-engines --ignore-platform --frozen-lockfile
+
+# Another log for troubleshooting. This should never be empty since the NPM modules were installed before running this line
+RUN --mount=type=cache,target=${YARN_CACHE} echo "Yarn cache after install: $(ls -la ${YARN_CACHE})"
 
 # 2. Rebuild the source code only when needed
 FROM base AS builder

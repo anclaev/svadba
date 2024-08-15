@@ -63,7 +63,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Load env
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: network=host
+
+      - name: Loading env
         uses: DamianReeves/write-file-action@master
         with:
           path: .env
@@ -77,27 +83,22 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver-opts: network=host
-
       - name: Build cache for Docker
         uses: actions/cache@v4
-        id: ci-yarn-cache
+        id: yarn-ci
         with:
           path: |
-            yarn-cache
-          key: ${{ runner.os }}-ci-cache-${{ hashFiles('**/yarn.lock') }}
+            yarn
+          key: yarn-ci-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            yarn-ci-
 
-      - name: Inject build-cache into Docker
+      - name: Inject cache into Docker
         uses: reproducible-containers/buildkit-cache-dance@v3.1.0
         with:
           cache-map: |
             {
-              "yarn-cache": "/root/.yarn"
+              "yarn": "/usr/local/.yarn/cache"
             }
           skip-extraction: ${{ steps.cache.outputs.cache-hit }}
 
