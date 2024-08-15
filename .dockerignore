@@ -12,4 +12,4 @@ node_modules
 .prettierrc
 README.md
 CHANGELOG.md
-_graphql
+/src/graphql/__generated__

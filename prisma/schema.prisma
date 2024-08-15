@@ -5,9 +5,14 @@ generator client {
 generator pothos {
   provider      = "prisma-pothos-types"
   clientOutput  = "@prisma/client"
-  output        = "./pothos.ts"
+  output        = "../src/graphql/__generated__/pothos.ts"
   prismaUtils   = true
   documentation = true
+}
+
+generator pothosCrud {
+  provider            = "prisma-generator-pothos-codegen"
+  generatorConfigPath = "../pothos.config.js"
 }
 
 datasource db {
@@ -66,19 +71,24 @@ enum Type {
 }
 
 model Family {
+  /// @Pothos.omit(create, update)
   id        String   @id @default(uuid()) @db.Uuid
   ownerId   String   @unique @db.Uuid
   name      String
   owner     Guest    @relation("FamilyOwner", fields: [ownerId], references: [id])
   members   Guest[]  @relation("FamilyMember")
+  /// @Pothos.omit(create, update)
   createdAt DateTime @default(now()) @db.Date
+  /// @Pothos.omit(create, update)
   updatedAt DateTime @updatedAt @db.Date
 }
 
 model Guest {
+  /// @Pothos.omit(create, update)
   id            String   @id @default(uuid()) @db.Uuid
   familyId      String?  @db.Uuid
   status        Status   @default(PENDING)
+  /// @Pothos.omit()
   password      String
   email         String   @unique
   first_name    String
@@ -91,13 +101,18 @@ model Guest {
   transfer      Boolean  @default(false)
   accommodation Boolean  @default(false)
   family        Family?  @relation("FamilyMember", fields: [familyId], references: [id])
+  /// @Pothos.omit(create)
   ownedFamily   Family?  @relation("FamilyOwner")
+  /// @Pothos.omit(create)
   events        Event[]
+  /// @Pothos.omit(create, update)
   createdAt     DateTime @default(now()) @db.Date
+  /// @Pothos.omit(create, update)
   updatedAt     DateTime @updatedAt @db.Date
 }
 
 model Event {
+  /// @Pothos.omit(create, update)
   id          String   @id @default(uuid()) @db.Uuid
   index       Int      @unique @db.Integer
   alias       String   @unique
@@ -109,6 +124,8 @@ model Event {
   address     String?
   url         String?
   guests      Guest[]
+  /// @Pothos.omit(create, update)
   createdAt   DateTime @default(now()) @db.Date
+  /// @Pothos.omit(create, update)
   updatedAt   DateTime @updatedAt @db.Date
 }
