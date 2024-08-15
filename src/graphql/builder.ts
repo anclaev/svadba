@@ -25,7 +25,7 @@ export const builder = new SchemaBuilder<SchemaOptions>({
   plugins: [ErrorsPlugin, RelayPlugin, PrismaPlugin, PrismaUtils, ZodPlugin],
   prisma: {
     client,
-    exposeDescriptions: { fields: true, models: true },
+    exposeDescriptions: true,
     onUnusedQuery: process.env.NODE_ENV === 'production' ? null : 'warn',
   },
 })
