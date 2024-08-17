@@ -14,65 +14,68 @@ const font = Montserrat({
   preload: true,
 })
 
-export const metadata: Metadata = {
-  title: 'The Svadba',
-  description: 'Грандиознейшее мероприятие года',
-  applicationName: 'The Svadba',
-  appleWebApp: {
+export function generateMetadata() {
+  const ogImageUrl = new URL(`${process.env.ORIGIN}/assets/og.jpg`)
+  return {
     title: 'The Svadba',
-  },
-  manifest: '/site.webmanifest',
-  metadataBase: new URL(process.env.ORIGIN ?? 'http://localhost:3000'),
-  other: {
-    'apple-mobile-web-app-title': 'The Svadba',
-    'application-name': 'The Svadba',
-    'msapplication-TileColor': '#1e1e1e',
-    'theme-color': '#1e1e1e',
-  },
-  icons: [
-    {
-      type: 'image/png',
-      sizes: '32x32',
-      url: '/icons/favicon-32x32.png',
-      rel: 'icon',
+    description: 'Грандиознейшее мероприятие года',
+    applicationName: 'The Svadba',
+    appleWebApp: {
+      title: 'The Svadba',
     },
-    {
-      type: 'image/png',
-      sizes: '16x16',
-      url: '/icons/favicon-16x16.png',
-      rel: 'icon',
+    manifest: '/site.webmanifest',
+    metadataBase: new URL(process.env.ORIGIN ?? 'http://localhost:3000'),
+    other: {
+      'apple-mobile-web-app-title': 'The Svadba',
+      'application-name': 'The Svadba',
+      'msapplication-TileColor': '#1e1e1e',
+      'theme-color': '#1e1e1e',
     },
-    {
-      sizes: '180x180',
-      url: '/icons/apple-touch-icon.png',
-      rel: 'apple-touch-icon',
-    },
-    {
-      color: '#1e1e1e',
-      url: '/icons/safari-pinned-tab.svg',
-      rel: 'mask-icon',
-    },
-    {
-      url: '/favicon.ico',
-      rel: 'shortcut icon',
-    },
-  ],
-  openGraph: {
-    type: 'website',
-    title: 'The Svadba',
-    description: `Грандиознейшее событие года`,
-    locale: 'ru',
-    images: [
+    icons: [
       {
-        type: 'image/jpeg',
-        url: '/assets/og.jpg',
-        alt: 'The Svadba',
-        width: 968,
-        height: 504,
-        secureUrl: process.env.ORIGIN,
+        type: 'image/png',
+        sizes: '32x32',
+        url: '/icons/favicon-32x32.png',
+        rel: 'icon',
+      },
+      {
+        type: 'image/png',
+        sizes: '16x16',
+        url: '/icons/favicon-16x16.png',
+        rel: 'icon',
+      },
+      {
+        sizes: '180x180',
+        url: '/icons/apple-touch-icon.png',
+        rel: 'apple-touch-icon',
+      },
+      {
+        color: '#1e1e1e',
+        url: '/icons/safari-pinned-tab.svg',
+        rel: 'mask-icon',
+      },
+      {
+        url: '/favicon.ico',
+        rel: 'shortcut icon',
       },
     ],
-  },
+    openGraph: {
+      type: 'website',
+      title: 'The Svadba',
+      description: `Грандиознейшее событие года`,
+      locale: 'ru',
+      images: [
+        {
+          type: 'image/jpeg',
+          url: ogImageUrl,
+          alt: 'The Svadba',
+          width: 968,
+          height: 504,
+          secureUrl: ogImageUrl,
+        },
+      ],
+    },
+  }
 }
 
 export default function RootLayout({ children }: WithChildren) {
