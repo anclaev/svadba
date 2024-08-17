@@ -109,8 +109,8 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: anclaev/svadba:dev
-  #          build-args: |
-  #            sentry_auth_token=${{ secrets.SENTRY_AUTH_TOKEN }}
+            build-args: |
+              ORIGIN=${{ secrets.CI_ORIGIN }}
 
   deploy:
     name: Deploy app

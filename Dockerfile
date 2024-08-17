@@ -1,5 +1,6 @@
 FROM node:18-alpine AS base
 
+ARG ORIGIN
 
 # 1. Install dependencies only when needed
 FROM base AS deps
@@ -35,6 +36,7 @@ COPY . .
 COPY .env .env.production
 
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV ORIGIN=${ORIGIN}
 
 RUN yarn prisma generate
 RUN yarn build
