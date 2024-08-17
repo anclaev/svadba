@@ -1,6 +1,5 @@
 import { Providers } from '@/app/providers'
 import { Montserrat } from 'next/font/google'
-import type { Metadata } from 'next'
 
 import Header from '@components/Header'
 
@@ -18,12 +17,12 @@ export function generateMetadata() {
   const ogImageUrl = new URL(`${process.env.ORIGIN}/assets/og.jpg`)
   return {
     title: 'The Svadba',
-    description: 'Грандиознейшее мероприятие года',
+    description: 'Бракосочетание Артема и Алины',
     applicationName: 'The Svadba',
     appleWebApp: {
       title: 'The Svadba',
     },
-    manifest: '/site.webmanifest',
+    manifest: '/site.webmanifest?v=1',
     metadataBase: new URL(process.env.ORIGIN ?? 'http://localhost:3000'),
     other: {
       'apple-mobile-web-app-title': 'The Svadba',
@@ -35,34 +34,34 @@ export function generateMetadata() {
       {
         type: 'image/png',
         sizes: '32x32',
-        url: '/icons/favicon-32x32.png',
+        url: '/icons/favicon-32x32.png?v=1',
         rel: 'icon',
       },
       {
         type: 'image/png',
         sizes: '16x16',
-        url: '/icons/favicon-16x16.png',
+        url: '/icons/favicon-16x16.png??v=1',
         rel: 'icon',
       },
       {
         sizes: '180x180',
-        url: '/icons/apple-touch-icon.png',
+        url: '/icons/apple-touch-icon.png??v=1',
         rel: 'apple-touch-icon',
       },
       {
         color: '#1e1e1e',
-        url: '/icons/safari-pinned-tab.svg',
+        url: '/icons/safari-pinned-tab.svg??v=1',
         rel: 'mask-icon',
       },
       {
-        url: '/favicon.ico',
+        url: '/favicon.ico??v=1',
         rel: 'shortcut icon',
       },
     ],
     openGraph: {
       type: 'website',
       title: 'The Svadba',
-      description: `Грандиознейшее событие года`,
+      description: `Бракосочетание Артема и Алины`,
       locale: 'ru',
       images: [
         {

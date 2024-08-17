@@ -1,5 +1,7 @@
 .header {
+  --navbar-height: 30px !important;
   backdrop-filter: none !important;
+  padding: 34px 0;
 }
 
 .header-content {

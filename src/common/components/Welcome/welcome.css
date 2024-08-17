@@ -1,0 +1,12 @@
+.welcome-poster {
+  user-select: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center right;
+}
+
+.welcome-poster__img {
+  width: 95%;
+  max-width: 500px;
+  height: auto !important;
+}
