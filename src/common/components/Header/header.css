@@ -1,0 +1,7 @@
+.header {
+  backdrop-filter: none !important;
+}
+
+.header-content {
+  justify-content: space-between !important;
+}

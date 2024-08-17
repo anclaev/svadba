@@ -3,7 +3,7 @@
     "short_name": "The Svadba",
     "description": "Грандиознейшее событие года",
     "theme_color": "#1e1e1e",
-    "background_color": "#da532c",
+    "background_color": "#1e1e1e",
       "display": "standalone",
       "display_override": ["fullscreen", "minimal-ui"],
        "scope": "./",

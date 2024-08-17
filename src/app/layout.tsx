@@ -1,12 +1,14 @@
 import { Providers } from '@/app/providers'
-import { Roboto } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 import type { Metadata } from 'next'
+
+import Header from '@components/Header'
 
 import { WithChildren } from '@interfaces/props'
 
 import '@styles/global.css'
 
-const roboto = Roboto({
+const font = Montserrat({
   subsets: ['cyrillic'],
   weight: ['300', '400', '500'],
   preload: true,
@@ -24,8 +26,8 @@ export const metadata: Metadata = {
   other: {
     'apple-mobile-web-app-title': 'The Svadba',
     'application-name': 'The Svadba',
-    'msapplication-TileColor': '#da532c',
-    'theme-color': '#da532c',
+    'msapplication-TileColor': '#1e1e1e',
+    'theme-color': '#1e1e1e',
   },
   icons: [
     {
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
       rel: 'apple-touch-icon',
     },
     {
-      color: '#da532c',
+      color: '#1e1e1e',
       url: '/icons/safari-pinned-tab.svg',
       rel: 'mask-icon',
     },
@@ -60,15 +62,27 @@ export const metadata: Metadata = {
     title: 'The Svadba',
     description: `Грандиознейшее событие года`,
     locale: 'ru',
-    images: [],
+    images: [
+      {
+        type: 'image/jpeg',
+        url: '/assets/og.jpg',
+        alt: 'The Svadba',
+        width: 968,
+        height: 504,
+        secureUrl: process.env.ORIGIN,
+      },
+    ],
   },
 }
 
 export default function RootLayout({ children }: WithChildren) {
   return (
     <html lang='ru' className='light'>
-      <body className={roboto.className}>
-        <Providers>{children}</Providers>
+      <body className={font.className}>
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
       </body>
     </html>
   )
