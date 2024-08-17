@@ -6,7 +6,7 @@ import './logo.css'
 export const Logo = () => (
   <Link className='logo' href='/'>
     <Image
-      widt={302}
+      width={302}
       height={19}
       title='Logo'
       alt='Logo'
