@@ -109,8 +109,8 @@ jobs:
           cache-to: type=gha,mode=max
           push: true
           tags: anclaev/svadba:dev
-            build-args: |
-              ORIGIN=${{ secrets.CI_ORIGIN }}
+          build-args: |
+            ORIGIN=${{ secrets.CI_ORIGIN }}
 
   deploy:
     name: Deploy app
