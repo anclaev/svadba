@@ -1,7 +1,7 @@
 'use client'
 
 import { Tab, Tabs } from '@nextui-org/tabs'
-import { FC, useState } from 'react'
+import { FC, Key, useState } from 'react'
 
 import { SignUpForm } from '@components/Login/SignUp'
 import { SignInForm } from '@components/Login/SignIn'
@@ -21,7 +21,7 @@ export const LoginForm: FC = () => {
         cursor: ['bg-accent'],
       }}
       selectedKey={selected}
-      onSelectionChange={(key: string) => setSelected(key as TabState)}
+      onSelectionChange={(key: Key) => setSelected(key as TabState)}
     >
       <Tab key='sign-up' title='Хочу на свадьбу'>
         <SignUpForm />
