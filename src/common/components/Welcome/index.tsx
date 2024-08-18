@@ -1,10 +1,9 @@
 import { getImageProps } from 'next/image'
+import { Image } from '@nextui-org/image'
 
 import LoginButton from '@components/LoginButton'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
-
-import { Image } from '@nextui-org/image'
 
 import './Welcome.css'
 
@@ -19,6 +18,7 @@ export default function Welcome() {
   })
 
   const backgroundImage = getBackgroundImage(srcSet)
+
   return (
     <section
       style={{ backgroundImage }}

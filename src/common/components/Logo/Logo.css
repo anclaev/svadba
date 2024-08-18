@@ -2,4 +2,15 @@
   position: relative;
   display: block;
   user-select: none;
+  text-align: center;
+}
+
+.logo > * {
+  display: inline-block;
+}
+
+@media screen and (max-width: 600px) {
+  .logo {
+    width: 80%;
+  }
 }

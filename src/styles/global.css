@@ -41,6 +41,19 @@ body {
   position: relative;
 }
 
+.bg-accent {
+  background: var(--color-accent) !important;
+}
+
+button[data-slot='tab'][data-selected='true'] > div {
+  color: #fff !important;
+}
+
+.px-custom1 {
+  padding-right: 40px;
+  padding-left: 28px;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }

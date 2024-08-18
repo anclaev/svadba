@@ -45,3 +45,9 @@
 .welcome-date {
   @apply animate-spin-slow;
 }
+
+@media screen and (max-width: 600px) {
+  .welcome-poster {
+    width: 80%;
+  }
+}
