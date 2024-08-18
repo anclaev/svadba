@@ -22,7 +22,7 @@ export default function Welcome() {
   return (
     <section
       style={{ backgroundImage }}
-      className='flex min-h-screen flex-row items-center justify-center welcome'
+      className='flex flex-row items-center justify-center welcome'
     >
       <Image
         width={717}
