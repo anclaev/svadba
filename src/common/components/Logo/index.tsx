@@ -1,7 +1,7 @@
 import { Image } from '@nextui-org/image'
 import Link from 'next/link'
 
-import './logo.css'
+import './Logo.css'
 
 export const Logo = () => (
   <Link className='logo' href='/'>

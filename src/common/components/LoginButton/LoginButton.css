@@ -1,0 +1,6 @@
+.login-btn {
+  @apply rounded-full bg-transparent bg-no-repeat bg-center bg-cover;
+  height: 100px;
+  width: 100px;
+  background-image: url('/assets/login.svg');
+}

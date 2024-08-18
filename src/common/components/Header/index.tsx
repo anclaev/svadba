@@ -1,7 +1,7 @@
 import { Navbar, NavbarContent } from '@nextui-org/navbar'
 import Logo from '@components/Logo'
 
-import './header.css'
+import './Header.css'
 
 const Header = () => {
   return (

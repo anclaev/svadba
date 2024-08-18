@@ -1,10 +1,12 @@
 import { getImageProps } from 'next/image'
 
+import LoginButton from '@components/LoginButton'
+
 import getBackgroundImage from '@utils/getBackgroundImage'
 
 import { Image } from '@nextui-org/image'
 
-import './welcome.css'
+import './Welcome.css'
 
 export default function Welcome() {
   const {
@@ -20,15 +22,16 @@ export default function Welcome() {
   return (
     <section
       style={{ backgroundImage }}
-      className='flex min-h-screen flex-row items-center justify-center welcome-poster'
+      className='flex min-h-screen flex-row items-center justify-center welcome'
     >
       <Image
         width={717}
         height={307}
         src='/assets/poster.webp'
         alt='Poster'
-        className='welcome-poster__img'
+        className='welcome-poster'
       />
+      <LoginButton className='welcome-login' />
     </section>
   )
 }

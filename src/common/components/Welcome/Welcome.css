@@ -1,12 +1,18 @@
-.welcome-poster {
+.welcome {
+  position: relative;
   user-select: none;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center right;
+  background-position: center center;
 }
 
-.welcome-poster__img {
+.welcome-poster {
   width: 95%;
   max-width: 500px;
   height: auto !important;
+}
+
+.welcome-login {
+  @apply absolute;
+  bottom: 12%;
 }
