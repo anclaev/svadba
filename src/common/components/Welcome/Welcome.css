@@ -6,13 +6,39 @@
   background-position: center center;
 }
 
+.welcome > div {
+  text-align: center;
+}
+
 .welcome-poster {
+  display: inline-block;
   width: 95%;
   max-width: 500px;
   height: auto !important;
 }
 
 .welcome-login {
+  --date-size: 140px;
+
   @apply absolute;
-  bottom: 12%;
+  bottom: 10%;
+}
+
+.welcome-login > div:not(.login-icon) {
+  @apply absolute;
+  width: var(--date-size);
+  height: var(--date-size);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.welcome-login > div:not(.login-icon) > img {
+  width: inherit !important;
+  height: inherit !important;
+}
+
+.welcome-date {
+  @apply animate-spin-slow;
 }

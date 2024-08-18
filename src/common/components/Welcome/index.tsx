@@ -31,7 +31,15 @@ export default function Welcome() {
         alt='Poster'
         className='welcome-poster'
       />
-      <LoginButton className='welcome-login' />
+      <LoginButton className='welcome-login'>
+        <Image
+          src='/assets/date.webp'
+          width={168}
+          height={168}
+          alt='23.08.25 17:00'
+          className='welcome-date'
+        />
+      </LoginButton>
     </section>
   )
 }

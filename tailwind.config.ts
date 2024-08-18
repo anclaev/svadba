@@ -8,12 +8,28 @@ const config: any = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        'spin-slow': 'spin 8s linear infinite',
+      },
+      colors: {
+        accent: '#ffa15e',
+      },
+    },
   },
   darkMode: 'class',
   plugins: [
     nextui({
       prefix: 'svadba',
+      themes: {
+        light: {
+          colors: {
+            primary: {
+              DEFAULT: '#ffa15e',
+            },
+          },
+        },
+      },
     }),
   ],
 }
