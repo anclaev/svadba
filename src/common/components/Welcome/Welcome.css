@@ -1,19 +1,21 @@
 .welcome {
+  --welcome-width: 500px;
   position: relative;
   user-select: none;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center center;
+  background-position: 80% 50%;
 }
 
 .welcome > div {
   text-align: center;
+  margin-bottom: 3%;
 }
 
 .welcome-poster {
   display: inline-block;
   width: 95%;
-  max-width: 500px;
+  max-width: var(--welcome-width);
   height: auto !important;
 }
 
