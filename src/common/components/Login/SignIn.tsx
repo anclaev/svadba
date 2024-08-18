@@ -1,4 +1,3 @@
-import { LockFilledIcon, MailFilledIcon } from '@nextui-org/shared-icons'
 import { ModalBody, ModalFooter } from '@nextui-org/modal'
 import { Button } from '@nextui-org/button'
 import { Input } from '@nextui-org/input'
@@ -10,23 +9,12 @@ export const SignInForm: FC = () => {
       <ModalBody>
         <Input
           autoFocus
-          size='sm'
-          endContent={
-            <MailFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
-          }
+          size='md'
           label='Электронная почта'
           variant='bordered'
+          type='email'
         />
-        <Input
-          size='sm'
-          endContent={
-            <LockFilledIcon className='text-2xl text-default-400 pointer-events-none flex-shrink-0' />
-          }
-          label='Пароль'
-          placeholder='Введите ваш пароль'
-          type='password'
-          variant='bordered'
-        />
+        <Input size='md' label='Пароль' type='password' variant='bordered' />
       </ModalBody>
       <ModalFooter>
         <Button color='primary' onPress={() => {}}>

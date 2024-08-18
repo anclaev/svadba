@@ -42,6 +42,9 @@ const LoginButton: LoginButtonFC = ({ className, children }) => {
         backdrop='blur'
         isOpen={isOpen}
         onClose={onClose}
+        classNames={{
+          footer: ['py-2 justify-center'],
+        }}
       >
         <ModalContent>{() => <DynamicLoginForm />}</ModalContent>
       </Modal>
