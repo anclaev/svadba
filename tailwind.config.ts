@@ -27,6 +27,9 @@ const config: any = {
             primary: {
               DEFAULT: '#ffa15e',
             },
+            background: {
+              DEFAULT: '#1e1e1e',
+            },
           },
         },
       },

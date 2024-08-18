@@ -1,9 +1,13 @@
 .header {
-  --navbar-height: 30px !important;
-  backdrop-filter: none !important;
+  top: 0;
+  right: 0;
+  left: 0;
   padding: 34px 0;
+  transition: 0.3s;
 }
 
-.header-content {
-  justify-content: space-between !important;
+.header--scrolled {
+  --tw-bg-opacity: 0.5;
+  @apply shadow-lg;
+  background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
 }
