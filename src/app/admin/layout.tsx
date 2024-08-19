@@ -1,5 +1,6 @@
-import { WithChildren } from '@interfaces/props'
 import type { Metadata } from 'next'
+
+import { WithChildren } from '@interfaces/props'
 
 export const metadata: Metadata = {
   title: 'The Svadba',

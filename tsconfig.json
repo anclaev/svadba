@@ -28,6 +28,7 @@
       "@interfaces/*": ["./src/common/interfaces/*"],
       "@dtos/*": ["./src/common/dtos/*"],
       "@utils/*": ["./src/common/utils/*"],
+      "@hooks/*": ["./src/common/hooks/*"],
       "@core/*": ["./src/core/*"],
       "@graphql/*": ["./src/graphql/*"],
       "@pothos": ["./src/graphql/pothos.ts"]

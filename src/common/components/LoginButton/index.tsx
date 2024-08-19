@@ -9,13 +9,11 @@ import { WithChildren, WithClass } from '@interfaces/props'
 
 import './LoginButton.css'
 
-type LoginButtonFC = FC<WithChildren & WithClass>
-
 const DynamicLoginForm = dynamic(() =>
-  import('@components/Login').then((m) => m.LoginForm)
+  import('src/common/components/LoginForm').then((m) => m.LoginForm)
 )
 
-const LoginButton: LoginButtonFC = ({ className, children }) => {
+const LoginButton: FC<WithChildren & WithClass> = ({ className, children }) => {
   const [clicked, setClicked] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -37,7 +35,7 @@ const LoginButton: LoginButtonFC = ({ className, children }) => {
         </button>
       </Tooltip>
       <Modal
-        size='md'
+        size='full'
         placement='bottom-center'
         backdrop='blur'
         isOpen={isOpen}
@@ -46,7 +44,13 @@ const LoginButton: LoginButtonFC = ({ className, children }) => {
           footer: ['py-2 justify-center'],
         }}
       >
-        <ModalContent>{() => <DynamicLoginForm />}</ModalContent>
+        <ModalContent>
+          {() => (
+            <div className='flex items-center justify-center flex-col h-full'>
+              <DynamicLoginForm />
+            </div>
+          )}
+        </ModalContent>
       </Modal>
     </>
   )

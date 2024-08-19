@@ -1,24 +1,29 @@
 import { ModalBody, ModalFooter } from '@nextui-org/modal'
 import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
 import { FC } from 'react'
 
+import { LoginFormInput } from '@components/LoginForm/LoginFormInput'
+
+import useInput from '@hooks/useInput'
+
 export const SignUpForm: FC = () => {
+  const nameInput = useInput('')
+  const emailInput = useInput('')
+  const passwordInput = useInput('')
+
   return (
     <form>
       <ModalBody>
-        <Input autoFocus size='md' label='Как вас зовут?' variant='bordered' />
-        <Input
-          autoFocus
-          size='md'
+        <LoginFormInput {...nameInput} type='text' label='Как вас зовут?' />
+        <LoginFormInput
+          {...emailInput}
+          type='email'
           label='Ваша электронная почта'
-          variant='bordered'
         />
-        <Input
-          size='md'
-          label='Пароль'
+        <LoginFormInput
+          {...passwordInput}
           type='password'
-          variant='bordered'
+          label='Ваш пароль'
           description='Может быть от 5 до 20 символов'
         />
       </ModalBody>

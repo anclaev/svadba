@@ -4,6 +4,5 @@
     <work-dir-patterns value="$PROJECT_DIR$" />
     <custom-configuration-file used="true" path="$PROJECT_DIR$/.eslintrc.json" />
     <files-pattern value="**/*.{js,ts,jsx,tsx,html,css,sass,less,json}" />
-    <option name="fix-on-save" value="true" />
   </component>
 </project>

@@ -1,20 +1,24 @@
 import { ModalBody, ModalFooter } from '@nextui-org/modal'
 import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
 import { FC } from 'react'
 
+import { LoginFormInput } from '@components/LoginForm/LoginFormInput'
+
+import useInput from '@hooks/useInput'
+
 export const SignInForm: FC = () => {
+  const emailInput = useInput('')
+  const passwordInput = useInput('')
+
   return (
     <form>
       <ModalBody>
-        <Input
-          autoFocus
-          size='md'
-          label='Электронная почта'
-          variant='bordered'
+        <LoginFormInput
+          {...emailInput}
           type='email'
+          label='Электронная почта'
         />
-        <Input size='md' label='Пароль' type='password' variant='bordered' />
+        <LoginFormInput {...passwordInput} type='password' label='Пароль' />
       </ModalBody>
       <ModalFooter>
         <Button color='primary' onPress={() => {}}>

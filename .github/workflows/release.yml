@@ -79,7 +79,7 @@ jobs:
           contents: |
             ${{ secrets.RELEASE_ENV }}
 
-      - name: Login to DockerHub
+      - name: LoginForm to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
