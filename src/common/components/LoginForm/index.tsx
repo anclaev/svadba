@@ -5,6 +5,7 @@ import { FC, Key, useState } from 'react'
 
 import { SignUpForm } from '@components/SignUpForm'
 import { SignInForm } from '@components/SignInForm'
+import VKOneTap from '@components/VKOneTap'
 
 import { TabState } from '@interfaces/types'
 
@@ -33,6 +34,7 @@ export const LoginForm: FC = () => {
           <SignInForm />
         </Tab>
       </Tabs>
+      <VKOneTap />
     </div>
   )
 }

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 80",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -26,6 +26,7 @@
     "@pothos/plugin-relay": "^4.1.0",
     "@pothos/plugin-zod": "^4.1.0",
     "@prisma/client": "^5.18.0",
+    "@vkid/sdk": "^2.2.0",
     "bcrypt": "^5.1.1",
     "cyrillic-to-translit-js": "^3.2.1",
     "framer-motion": "^11.3.28",
