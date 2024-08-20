@@ -10,6 +10,14 @@ export type WithClass = {
   className?: string
 }
 
+export type WithClick = {
+  onClick?: (e: any) => void
+}
+
+export type IsModalProps = {
+  isModal?: boolean
+}
+
 export type InputProps = {
   type: InputType
   label?: string

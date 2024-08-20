@@ -10,7 +10,7 @@ const config: any = {
   theme: {
     extend: {
       animation: {
-        'spin-slow': 'spin 8s linear infinite',
+        'spin-slow': 'spin 12s linear infinite',
       },
       colors: {
         accent: '#ffa15e',

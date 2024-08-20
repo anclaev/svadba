@@ -7,14 +7,16 @@ import dynamic from 'next/dynamic'
 
 import { WithChildren, WithClass } from '@interfaces/props'
 
-import './LoginButton.css'
+import './AuthButton.css'
 
-const DynamicLoginForm = dynamic(() =>
-  import('src/common/components/LoginForm').then((m) => m.LoginForm)
+const DynamicAuthForm = dynamic(() =>
+  import('src/common/components/AuthForm').then((m) => m.AuthForm)
 )
 
-// eslint-disable-next-line no-undef
-const LoginButton: FC<WithClass & WithChildren> = ({ className, children }) => {
+export const AuthButton: FC<WithClass & WithChildren> = ({
+  className,
+  children,
+}) => {
   const [clicked, setClicked] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -27,11 +29,11 @@ const LoginButton: FC<WithClass & WithChildren> = ({ className, children }) => {
     <>
       <Tooltip content='Стать гостем' delay={300}>
         <button
-          className={`login-btn ${clicked ? 'login-btn--clicked' : ''} active:display ${className ?? ''}`}
+          className={`auth-btn ${clicked ? 'authn-btn--clicked' : ''} active:display ${className ?? ''}`}
           onClick={() => handleOpenModal()}
           onAnimationEnd={() => setClicked(false)}
         >
-          <div className='login-icon'></div>
+          <div className='auth-icon'></div>
           {children}
         </button>
       </Tooltip>
@@ -48,7 +50,7 @@ const LoginButton: FC<WithClass & WithChildren> = ({ className, children }) => {
         <ModalContent>
           {() => (
             <div className='flex items-center justify-center flex-col h-full'>
-              <DynamicLoginForm />
+              <DynamicAuthForm isModal={true} />
             </div>
           )}
         </ModalContent>
@@ -56,5 +58,3 @@ const LoginButton: FC<WithClass & WithChildren> = ({ className, children }) => {
     </>
   )
 }
-
-export default LoginButton

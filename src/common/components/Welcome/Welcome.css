@@ -20,14 +20,14 @@
   height: auto !important;
 }
 
-.welcome-login {
+.welcome-auth {
   --date-size: 140px;
 
   @apply absolute;
   bottom: 10%;
 }
 
-.welcome-login > div:not(.login-icon) {
+.welcome-auth > div:not(.auth-icon) {
   @apply absolute;
   width: var(--date-size);
   height: var(--date-size);
@@ -37,7 +37,7 @@
   pointer-events: none;
 }
 
-.welcome-login > div:not(.login-icon) > img {
+.welcome-auth > div:not(.auth-icon) > img {
   width: inherit !important;
   height: inherit !important;
 }

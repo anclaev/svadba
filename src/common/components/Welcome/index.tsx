@@ -1,7 +1,7 @@
 import { getImageProps } from 'next/image'
 import { Image } from '@nextui-org/image'
 
-import LoginButton from '@components/LoginButton'
+import { AuthButton } from '@components/AuthForm'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
 
@@ -31,7 +31,7 @@ export default function Welcome() {
         alt='Poster'
         className='welcome-poster'
       />
-      <LoginButton className='welcome-login'>
+      <AuthButton className='welcome-auth'>
         <Image
           src='/assets/date.webp'
           width={168}
@@ -39,7 +39,7 @@ export default function Welcome() {
           alt='23.08.25 17:00'
           className='welcome-date'
         />
-      </LoginButton>
+      </AuthButton>
     </section>
   )
 }

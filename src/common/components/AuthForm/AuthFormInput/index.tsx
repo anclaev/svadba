@@ -3,7 +3,7 @@ import { FC } from 'react'
 
 import { InputProps } from '@interfaces/props'
 
-export const LoginFormInput: FC<InputProps> = (props) => {
+export const AuthFormInput: FC<InputProps> = (props) => {
   switch (props.type) {
     case 'password': {
       return (

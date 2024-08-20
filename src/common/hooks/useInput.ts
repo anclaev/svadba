@@ -2,7 +2,9 @@
 
 import { useState } from 'react'
 
-const useInput = (initialValue: string) => {
+import { InputOptions } from '@interfaces/types'
+
+const useInput = (initialValue: string): InputOptions => {
   const [value, setValue] = useState(initialValue)
 
   const onChange = (event: any) => {

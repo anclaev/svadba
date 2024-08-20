@@ -2,10 +2,10 @@ import { WithChildren } from '@interfaces/props'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'План дня | The Svadba',
+  title: 'Добро пожаловать | The Svadba',
   description: 'Грандиозное мероприятие года',
 }
 
-export default function TimelineLayout({ children }: WithChildren) {
+export default function WelcomeLayout({ children }: WithChildren) {
   return <section>{children}</section>
 }
