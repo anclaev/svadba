@@ -26,7 +26,6 @@
     "@pothos/plugin-relay": "^4.1.0",
     "@pothos/plugin-zod": "^4.1.0",
     "@prisma/client": "^5.18.0",
-    "@vkid/sdk": "^2.2.0",
     "bcrypt": "^5.1.1",
     "cyrillic-to-translit-js": "^3.2.1",
     "framer-motion": "^11.3.28",
@@ -34,7 +33,6 @@
     "graphql-scalars": "^1.23.0",
     "graphql-yoga": "^5.6.3",
     "next": "14.2.5",
-    "next-auth": "^5.0.0-beta.20",
     "react": "^18",
     "react-dom": "^18",
     "zod": "^3.23.8"
@@ -45,7 +43,6 @@
     "@types/node": "^22.2.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "auth": "^1.1.1",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "depcheck": "^1.4.7",

@@ -13,7 +13,8 @@ const DynamicLoginForm = dynamic(() =>
   import('src/common/components/LoginForm').then((m) => m.LoginForm)
 )
 
-const LoginButton: FC<WithChildren & WithClass> = ({ className, children }) => {
+// eslint-disable-next-line no-undef
+const LoginButton: FC<WithClass & WithChildren> = ({ className, children }) => {
   const [clicked, setClicked] = useState<boolean>(false)
   const { isOpen, onOpen, onClose } = useDisclosure()
 
