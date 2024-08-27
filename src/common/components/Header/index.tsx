@@ -1,8 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-
-import Logo from '@components/Logo'
+import { useEffect, useState } from 'react'
 
 import './Header.css'
 
@@ -25,7 +23,7 @@ const Header = () => {
       className={`fixed z-20 flex flex-row justify-between items-center text-white ${!isTop ? 'header--scrolled' : 'bg-transparent'} header`}
     >
       <span />
-      <Logo />
+      <span>Logo</span>
       <span />
     </header>
   )

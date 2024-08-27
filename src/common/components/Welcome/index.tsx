@@ -1,7 +1,4 @@
 import { getImageProps } from 'next/image'
-import { Image } from '@nextui-org/image'
-
-import { AuthButton } from '@components/AuthForm'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
 
@@ -11,10 +8,10 @@ export default function Welcome() {
   const {
     props: { srcSet },
   } = getImageProps({
-    alt: 'Poster',
+    alt: 'Мы',
     width: 1920,
     height: 1080,
-    src: '/assets/bg2.jpg',
+    src: '/assets/we.webp',
   })
 
   const backgroundImage = getBackgroundImage(srcSet)
@@ -23,23 +20,6 @@ export default function Welcome() {
     <section
       style={{ backgroundImage }}
       className='flex flex-row items-center justify-center welcome'
-    >
-      <Image
-        width={717}
-        height={307}
-        src='/assets/poster.webp'
-        alt='Poster'
-        className='welcome-poster'
-      />
-      <AuthButton className='welcome-auth'>
-        <Image
-          src='/assets/date.webp'
-          width={168}
-          height={168}
-          alt='23.08.25 17:00'
-          className='welcome-date'
-        />
-      </AuthButton>
-    </section>
+    ></section>
   )
 }
