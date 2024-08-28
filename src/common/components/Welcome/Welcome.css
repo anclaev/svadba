@@ -1,53 +1,63 @@
 .welcome {
-  --welcome-width: 500px;
+  --welcome-margin: 130px;
+  --p-size: 24px;
+  --p-margin: 40px;
+  --timer-gap: 50px;
+  --timer-title-size: 24px;
+  --timer-value-size: 64px;
+  --timer-value-margin: 20px;
   position: relative;
-  user-select: none;
+  padding: var(--welcome-margin) 0;
+}
+
+.welcome-flower {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 400px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 80% 50%;
-  min-height: 100dvh;
+  user-select: none;
 }
 
-.welcome > div {
-  text-align: center;
-  margin-bottom: 3%;
+.welcome-flower--l {
+  left: 0;
 }
 
-.welcome-poster {
-  display: inline-block;
-  width: 95%;
-  max-width: var(--welcome-width);
-  height: auto !important;
+.welcome-flower--r {
+  transform: scale(-1, 1);
+  right: 0;
 }
 
-.welcome-auth {
-  --date-size: 140px;
-
-  @apply absolute;
-  bottom: 10%;
+.welcome-content {
+  max-width: 800px;
+  font-size: var(--p-size);
+  line-height: 1.5em;
 }
 
-.welcome-auth > div:not(.auth-icon) {
-  @apply absolute;
-  width: var(--date-size);
-  height: var(--date-size);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+.welcome-content > p {
+  display: block;
+  margin-bottom: var(--p-margin);
 }
 
-.welcome-auth > div:not(.auth-icon) > img {
-  width: inherit !important;
-  height: inherit !important;
+.welcome-timer > div.welcome-timer-item:not(:last-child) {
+  margin-right: var(--timer-gap);
 }
 
-.welcome-date {
-  @apply animate-spin-slow;
+.welcome-timer-item__value {
+  font-size: var(--timer-value-size);
+  line-height: 1;
+  font-weight: bold;
+  margin-bottom: var(--timer-value-margin);
 }
 
-@media screen and (max-width: 600px) {
-  .welcome-poster {
-    width: 80%;
-  }
+.welcome-timer-item__value {
+  font-size: var(--timer-value-size);
+  line-height: 1;
+  font-weight: bold;
+  margin-bottom: var(--timer-value-margin);
+}
+
+.welcome-timer-item__title {
+  font-size: var(--timer-title-size);
 }

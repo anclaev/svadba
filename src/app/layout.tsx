@@ -1,5 +1,6 @@
-import { Providers } from '@/app/providers'
 import { Montserrat } from 'next/font/google'
+import { Providers } from '@/app/providers'
+import localFont from 'next/font/local'
 
 import Header from '@components/Header'
 
@@ -7,9 +8,19 @@ import { WithChildren } from '@interfaces/props'
 
 import '@styles/global.css'
 
-const font = Montserrat({
+const montserrat = Montserrat({
   subsets: ['cyrillic'],
   weight: ['300', '400', '500'],
+  preload: true,
+  variable: '--font-montserrat',
+})
+
+const trajanPro = localFont({
+  src: '../common/fonts/Trajan Pro 3 Regular.otf',
+  adjustFontFallback: 'Times New Roman',
+  display: 'swap',
+  variable: '--font-trajan-pro',
+  weight: '400',
   preload: true,
 })
 
@@ -22,39 +33,39 @@ export function generateMetadata() {
     appleWebApp: {
       title: 'The Svadba',
     },
-    manifest: '/site.webmanifest?v=1',
+    manifest: '/site.webmanifest?v=2',
     metadataBase: new URL(process.env.ORIGIN ?? 'http://localhost:3000'),
     other: {
       'apple-mobile-web-app-title': 'The Svadba',
       'application-name': 'The Svadba',
-      'msapplication-TileColor': '#1e1e1e',
-      'theme-color': '#1e1e1e',
+      'msapplication-TileColor': '#faf6ef',
+      'theme-color': '#faf6ef',
     },
     icons: [
       {
         type: 'image/png',
         sizes: '32x32',
-        url: '/icons/favicon-32x32.png?v=1',
+        url: '/icons/favicon-32x32.png?v=2',
         rel: 'icon',
       },
       {
         type: 'image/png',
         sizes: '16x16',
-        url: '/icons/favicon-16x16.png??v=1',
+        url: '/icons/favicon-16x16.png?v=2',
         rel: 'icon',
       },
       {
         sizes: '180x180',
-        url: '/icons/apple-touch-icon.png??v=1',
+        url: '/icons/apple-touch-icon.png?v=2',
         rel: 'apple-touch-icon',
       },
       {
-        color: '#1e1e1e',
-        url: '/icons/safari-pinned-tab.svg??v=1',
+        color: '#faf6ef',
+        url: '/icons/safari-pinned-tab.svg?v=2',
         rel: 'mask-icon',
       },
       {
-        url: '/favicon.ico??v=1',
+        url: '/favicon.ico?v=2',
         rel: 'shortcut icon',
       },
     ],
@@ -79,8 +90,11 @@ export function generateMetadata() {
 
 export default function RootLayout({ children }: WithChildren) {
   return (
-    <html lang='ru' className='light'>
-      <body className={font.className}>
+    <html
+      lang='ru'
+      className={`svadba ${trajanPro.variable} ${montserrat.variable} font-montserrat`}
+    >
+      <body>
         <Providers>
           <Header />
           {children}
