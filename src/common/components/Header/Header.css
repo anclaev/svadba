@@ -7,7 +7,7 @@
 }
 
 .header--scrolled {
-  --tw-bg-opacity: 0.5;
+  --tw-bg-opacity: 0.7;
   @apply shadow-lg;
   background-color: rgba(0, 0, 0, var(--tw-bg-opacity));
 }

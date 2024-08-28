@@ -8,6 +8,10 @@
   }
 }
 
+*::selection {
+  background: hsl(var(--svadba-earth-300));
+}
+
 body {
   position: relative;
 }
@@ -21,10 +25,10 @@ button[data-slot='tab'][data-selected='true'] > div {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--svadba-background);
+  background: hsl(var(--svadba-background));
 }
 
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--svadba-background);
+  background: hsl(var(--svadba-primary));
 }

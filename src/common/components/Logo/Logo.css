@@ -6,12 +6,17 @@
   text-align: center;
 }
 
-.logo > * {
-  display: inline-block;
+.logo-icon {
+  --logo-icon-size: 40px;
 }
 
-@media screen and (max-width: 600px) {
-  .logo {
-    width: 80%;
+.logo-icon img {
+  width: var(--logo-icon-size);
+  height: var(--logo-icon-size);
+}
+
+@media screen and (max-width: 576px) {
+  .logo-icon {
+    --logo-icon-size: 30px;
   }
 }
