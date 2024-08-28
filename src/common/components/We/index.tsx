@@ -2,9 +2,9 @@ import { getImageProps } from 'next/image'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
 
-import './Welcome.css'
+import './We.css'
 
-export default function Welcome() {
+export default function We() {
   const {
     props: { srcSet },
   } = getImageProps({
@@ -19,7 +19,7 @@ export default function Welcome() {
   return (
     <section
       style={{ backgroundImage }}
-      className='flex flex-row items-center justify-center welcome'
+      className='flex flex-row items-center justify-center we'
     ></section>
   )
 }

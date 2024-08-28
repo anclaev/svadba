@@ -1,5 +1,6 @@
-import { Providers } from '@/app/providers'
 import { Montserrat } from 'next/font/google'
+import { Providers } from '@/app/providers'
+import localFont from 'next/font/local'
 
 import Header from '@components/Header'
 
@@ -7,9 +8,19 @@ import { WithChildren } from '@interfaces/props'
 
 import '@styles/global.css'
 
-const font = Montserrat({
+const montserrat = Montserrat({
   subsets: ['cyrillic'],
   weight: ['300', '400', '500'],
+  preload: true,
+  variable: '--font-montserrat',
+})
+
+const trajanPro = localFont({
+  src: '../common/fonts/Trajan Pro 3 Regular.otf',
+  adjustFontFallback: 'Times New Roman',
+  display: 'swap',
+  variable: '--font-trajan-pro',
+  weight: '400',
   preload: true,
 })
 
@@ -79,8 +90,11 @@ export function generateMetadata() {
 
 export default function RootLayout({ children }: WithChildren) {
   return (
-    <html lang='ru' className='svadba'>
-      <body className={font.className}>
+    <html
+      lang='ru'
+      className={`svadba ${trajanPro.variable} ${montserrat.variable} font-montserrat`}
+    >
+      <body>
         <Providers>
           <Header />
           {children}

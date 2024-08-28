@@ -1,9 +1,9 @@
-import Welcome from '@components/Welcome'
+import We from 'src/common/components/We'
 
 export default function Home() {
   return (
     <main className='home'>
-      <Welcome />
+      <We />
     </main>
   )
 }

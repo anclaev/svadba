@@ -74,6 +74,10 @@ const config: Config = {
       animation: {
         'spin-slow': 'spin 12s linear infinite',
       },
+      fontFamily: {
+        trajanPro: ['var(--font-trajan-pro)'],
+        montserrat: ['var(--font-montserrat)'],
+      },
     },
     colors: {
       base: '#1e1e1e',

@@ -1,4 +1,5 @@
-.logo {
+.logo,
+.logo-icon {
   position: relative;
   display: block;
   user-select: none;

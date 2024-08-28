@@ -1,0 +1,9 @@
+.we {
+  --we-width: 500px;
+  position: relative;
+  user-select: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  min-height: 100dvh;
+}
