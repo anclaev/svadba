@@ -1,7 +1,5 @@
+'use client'
 import { getImageProps } from 'next/image'
-import { Image } from '@nextui-org/image'
-
-import { AuthButton } from '@components/AuthForm'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
 
@@ -11,35 +9,51 @@ export default function Welcome() {
   const {
     props: { srcSet },
   } = getImageProps({
-    alt: 'Poster',
-    width: 1920,
-    height: 1080,
-    src: '/assets/bg2.jpg',
+    alt: 'Flower',
+    width: 339,
+    height: 700,
+    src: '/assets/flower-1.webp',
   })
 
-  const backgroundImage = getBackgroundImage(srcSet)
+  const flowerImage = getBackgroundImage(srcSet)
 
   return (
-    <section
-      style={{ backgroundImage }}
-      className='flex flex-row items-center justify-center welcome'
-    >
-      <Image
-        width={717}
-        height={307}
-        src='/assets/poster.webp'
-        alt='Poster'
-        className='welcome-poster'
-      />
-      <AuthButton className='welcome-auth'>
-        <Image
-          src='/assets/date.webp'
-          width={168}
-          height={168}
-          alt='23.08.25 17:00'
-          className='welcome-date'
-        />
-      </AuthButton>
+    <section className='welcome'>
+      <div
+        className='welcome-flower welcome-flower--l'
+        style={{ backgroundImage: flowerImage }}
+      ></div>
+      <div
+        className='welcome-flower welcome-flower--r'
+        style={{ backgroundImage: flowerImage }}
+      ></div>
+      <div className='welcome-content content flex justify-center items-center flex-col text-center'>
+        <div className='welcome-desc'>
+          <p>
+            Дорогие гости! Скоро в нашей жизни состоится важное событие — наша
+            свадьба!
+          </p>
+        </div>
+        <p>Мы с удовольствием хотим разделить этот день с вами через</p>
+        <div className='welcome-timer flex flex-row'>
+          <div className='welcome-timer-item flex flex-col'>
+            <span className='welcome-timer-item__value'>375</span>
+            <span className='welcome-timer-item__title'>дней</span>
+          </div>
+          <div className='welcome-timer-item flex flex-col'>
+            <span className='welcome-timer-item__value'>17</span>
+            <span className='welcome-timer-item__title'>часов</span>
+          </div>
+          <div className='welcome-timer-item flex flex-col'>
+            <span className='welcome-timer-item__value'>31</span>
+            <span className='welcome-timer-item__title'>минут</span>
+          </div>
+          <div className='welcome-timer-item flex flex-col'>
+            <span className='welcome-timer-item__value'>07</span>
+            <span className='welcome-timer-item__title'>секунд</span>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }
