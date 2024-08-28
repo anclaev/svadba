@@ -79,7 +79,7 @@ export function generateMetadata() {
 
 export default function RootLayout({ children }: WithChildren) {
   return (
-    <html lang='ru' className='light'>
+    <html lang='ru' className='svadba'>
       <body className={font.className}>
         <Providers>
           <Header />
