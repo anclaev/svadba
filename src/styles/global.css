@@ -20,6 +20,12 @@ button[data-slot='tab'][data-selected='true'] > div {
   color: #fff !important;
 }
 
+.content {
+  width: 95%;
+  max-width: 1065px;
+  margin: 0 auto;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
 }

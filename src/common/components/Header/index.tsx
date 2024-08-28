@@ -1,15 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@nextui-org/react'
 import { Image } from '@nextui-org/image'
 
 import Logo from '@components/Logo'
 
 import './Header.css'
+import { EVENT_DATE } from '@core/constants'
 
 const Header = () => {
   const [isTop, setIsTop] = useState<boolean>(true)
+
+  const date = useMemo(() => EVENT_DATE.format('DD/MM/YY').toString(), [])
 
   useEffect(() => {
     const scrollHandler = () =>
@@ -27,7 +30,7 @@ const Header = () => {
       className={`fixed z-20 flex flex-row justify-between items-center text-white ${!isTop ? 'header--scrolled' : 'bg-transparent'} header`}
     >
       <Logo icon />
-      <span className='header-date'>23/08/25</span>
+      <span className='header-date'>{date}</span>
 
       <Button
         isIconOnly

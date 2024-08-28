@@ -17,11 +17,11 @@ export default function We() {
   const backgroundImage = getBackgroundImage(srcSet)
 
   return (
-    <div
+    <section
       style={{ backgroundImage }}
       className='flex flex-row items-center justify-center we'
     >
       <h1 className='we__title'>Artem & Alina</h1>
-    </div>
+    </section>
   )
 }

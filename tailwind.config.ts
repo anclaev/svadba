@@ -1,6 +1,7 @@
 import resolveConfig from 'tailwindcss/resolveConfig'
 import { nextui } from '@nextui-org/react'
-import { Config } from 'tailwindcss'
+
+const nextUiPlugin: any = (config: any) => nextui(config)
 
 const ebony = {
   100: '#8F9886',
@@ -62,7 +63,7 @@ const wheat = {
   900: '#D5B772',
 }
 
-const config: Config = {
+const config: any = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -93,10 +94,10 @@ const config: Config = {
 
 const resolved = resolveConfig(config)
 
-const { colors } = resolved.theme
+const { colors } = resolved.theme as any
 
 config.plugins = [
-  nextui({
+  nextUiPlugin({
     prefix: 'svadba',
     themes: {
       svadba: {
