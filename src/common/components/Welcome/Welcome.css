@@ -2,22 +2,25 @@
   --welcome-margin: 130px;
   --p-size: 24px;
   --p-margin: 40px;
-  --timer-gap: 50px;
+  --timer-gap-r: 50px;
+  --timer-gap-b: 0px;
   --timer-title-size: 24px;
   --timer-value-size: 64px;
   --timer-value-margin: 20px;
   position: relative;
   padding: var(--welcome-margin) 0;
+  overflow-x: hidden;
 }
 
 .welcome-flower {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 400px;
+  width: 500px;
   background-repeat: no-repeat;
   background-size: cover;
   user-select: none;
+  z-index: -1;
 }
 
 .welcome-flower--l {
@@ -41,7 +44,8 @@
 }
 
 .welcome-timer > div.welcome-timer-item:not(:last-child) {
-  margin-right: var(--timer-gap);
+  margin-right: var(--timer-gap-r);
+  margin-bottom: var(--timer-gap-b);
 }
 
 .welcome-timer-item__value {
@@ -60,4 +64,39 @@
 
 .welcome-timer-item__title {
   font-size: var(--timer-title-size);
+}
+
+@media screen and (max-width: 768px) {
+  .welcome {
+    --p-size: 18px;
+  }
+
+  .welcome-content {
+    max-width: 576px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .welcome {
+    --welcome-margin: 20px;
+    --timer-gap-r: 0px;
+    --timer-gap-b: 24px;
+  }
+
+  .welcome-timer {
+    flex-direction: column;
+  }
+
+  .welcome-flower {
+    top: 80px;
+  }
+
+  .welcome-flower--l {
+    left: -50px;
+    width: 500px;
+  }
+
+  .welcome-flower--r {
+    display: none;
+  }
 }

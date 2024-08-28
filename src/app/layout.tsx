@@ -33,39 +33,40 @@ export function generateMetadata() {
     appleWebApp: {
       title: 'The Svadba',
     },
-    manifest: '/site.webmanifest?v=2',
+    manifest: '/site.webmanifest?v=3',
     metadataBase: new URL(process.env.ORIGIN ?? 'http://localhost:3000'),
     other: {
       'apple-mobile-web-app-title': 'The Svadba',
       'application-name': 'The Svadba',
       'msapplication-TileColor': '#faf6ef',
+      'msapplication-config': '/icons/browserconfig.xml?v=3',
       'theme-color': '#faf6ef',
     },
     icons: [
       {
         type: 'image/png',
         sizes: '32x32',
-        url: '/icons/favicon-32x32.png?v=2',
+        url: '/icons/favicon-32x32.png?v=3',
         rel: 'icon',
       },
       {
         type: 'image/png',
         sizes: '16x16',
-        url: '/icons/favicon-16x16.png?v=2',
+        url: '/icons/favicon-16x16.png?v=3',
         rel: 'icon',
       },
       {
         sizes: '180x180',
-        url: '/icons/apple-touch-icon.png?v=2',
+        url: '/icons/apple-touch-icon.png?v=3',
         rel: 'apple-touch-icon',
       },
       {
         color: '#faf6ef',
-        url: '/icons/safari-pinned-tab.svg?v=2',
+        url: '/icons/safari-pinned-tab.svg?v=3',
         rel: 'mask-icon',
       },
       {
-        url: '/favicon.ico?v=2',
+        url: '/favicon.ico?v=3',
         rel: 'shortcut icon',
       },
     ],
