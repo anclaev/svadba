@@ -1,7 +1,9 @@
+import { Section } from '@components/Section'
+
 import './AboutUs.css'
 
 const AboutUs = () => {
-  return <section></section>
+  return <Section title={'О нас'}>Контент</Section>
 }
 
 export default AboutUs

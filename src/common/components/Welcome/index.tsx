@@ -2,10 +2,12 @@
 import { getImageProps } from 'next/image'
 
 import getBackgroundImage from '@utils/getBackgroundImage'
+import { EVENT_DATE } from '@core/constants'
+import useTimer from '@hooks/useTimer'
 
 import './Welcome.css'
 
-export default function Welcome() {
+const Welcome = () => {
   const {
     props: { srcSet },
   } = getImageProps({
@@ -14,6 +16,8 @@ export default function Welcome() {
     height: 700,
     src: '/assets/flower-1.webp',
   })
+
+  const { days, hours, minutes, seconds } = useTimer(EVENT_DATE.toDate())
 
   const flowerImage = getBackgroundImage(srcSet)
 
@@ -29,27 +33,25 @@ export default function Welcome() {
       ></div>
       <div className='welcome-content content flex justify-center items-center flex-col text-center'>
         <div className='welcome-desc'>
-          <p>
-            Дорогие гости! Скоро в нашей жизни состоится важное событие — наша
-            свадьба!
-          </p>
+          <p>Дорогие гости!</p>
+          <p>Скоро в нашей жизни состоится важное событие — наша свадьба!</p>
+          <p>Мы с удовольствием хотим разделить этот день с вами через</p>
         </div>
-        <p>Мы с удовольствием хотим разделить этот день с вами через</p>
         <div className='welcome-timer flex flex-row'>
           <div className='welcome-timer-item flex flex-col'>
-            <span className='welcome-timer-item__value'>375</span>
+            <span className='welcome-timer-item__value'>{days}</span>
             <span className='welcome-timer-item__title'>дней</span>
           </div>
           <div className='welcome-timer-item flex flex-col'>
-            <span className='welcome-timer-item__value'>17</span>
+            <span className='welcome-timer-item__value'>{hours}</span>
             <span className='welcome-timer-item__title'>часов</span>
           </div>
           <div className='welcome-timer-item flex flex-col'>
-            <span className='welcome-timer-item__value'>31</span>
+            <span className='welcome-timer-item__value'>{minutes}</span>
             <span className='welcome-timer-item__title'>минут</span>
           </div>
           <div className='welcome-timer-item flex flex-col'>
-            <span className='welcome-timer-item__value'>07</span>
+            <span className='welcome-timer-item__value'>{seconds}</span>
             <span className='welcome-timer-item__title'>секунд</span>
           </div>
         </div>
@@ -57,3 +59,5 @@ export default function Welcome() {
     </section>
   )
 }
+
+export default Welcome

@@ -4,7 +4,7 @@ import getBackgroundImage from '@utils/getBackgroundImage'
 
 import './We.css'
 
-export default function We() {
+const We = () => {
   const {
     props: { srcSet },
   } = getImageProps({
@@ -25,3 +25,5 @@ export default function We() {
     </section>
   )
 }
+
+export default We

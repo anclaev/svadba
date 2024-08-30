@@ -1,6 +1,6 @@
 .we {
   --we-height: 100dvh;
-  --title-size: 64px;
+  --title-size: 56px;
   --divider-height: 300px;
   position: relative;
   user-select: none;
@@ -41,14 +41,14 @@
 
 @media screen and (max-width: 768px) {
   .we {
-    --title-size: 48px;
+    --title-size: 36px;
     --divider-height: 200px;
   }
 }
 
 @media screen and (max-width: 576px) {
   .we {
-    --title-size: 36px;
+    --title-size: 24px;
     --divider-height: 150px;
     --we-height: 90dvh;
   }

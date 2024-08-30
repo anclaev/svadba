@@ -1,6 +1,6 @@
 .welcome {
   --welcome-margin: 130px;
-  --p-size: 24px;
+  --p-size: 20px;
   --p-margin: 40px;
   --timer-gap-r: 50px;
   --timer-gap-b: 0px;
@@ -16,20 +16,21 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 500px;
+  width: 100%;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-position: left center;
+  background-size: contain;
   user-select: none;
   z-index: -1;
 }
 
 .welcome-flower--l {
-  left: 0;
+  left: -50px;
 }
 
 .welcome-flower--r {
   transform: scale(-1, 1);
-  right: 0;
+  right: -50px;
 }
 
 .welcome-content {
@@ -38,9 +39,15 @@
   line-height: 1.5em;
 }
 
-.welcome-content > p {
+.welcome-desc {
   display: block;
   margin-bottom: var(--p-margin);
+}
+
+.welcome-desc > p:first-child:first-letter {
+  font-size: calc(var(--p-size) + 4px);
+  font-weight: bold;
+  font-family: var(--font-trajan-pro);
 }
 
 .welcome-timer > div.welcome-timer-item:not(:last-child) {
@@ -53,6 +60,7 @@
   line-height: 1;
   font-weight: bold;
   margin-bottom: var(--timer-value-margin);
+  letter-spacing: 0.1em;
 }
 
 .welcome-timer-item__value {
@@ -79,6 +87,7 @@
 @media screen and (max-width: 576px) {
   .welcome {
     --welcome-margin: 20px;
+    --p-margin: 60px;
     --timer-gap-r: 0px;
     --timer-gap-b: 24px;
   }
@@ -88,15 +97,18 @@
   }
 
   .welcome-flower {
-    top: 80px;
+    top: 300px;
   }
 
   .welcome-flower--l {
-    left: -50px;
-    width: 500px;
+    left: -150px;
   }
 
   .welcome-flower--r {
-    display: none;
+    right: -150px;
   }
 }
+
+/**
+  TODO: Сдвинуть поближе цветочки
+ */
