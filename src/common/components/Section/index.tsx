@@ -12,7 +12,7 @@ export type SectionProps = {
 export const Section: FC<SectionProps> = ({ title, children, className }) => {
   return (
     <section className={`section ${className ? className : ''}`}>
-      <h2>{title}</h2>
+      <h2 className='section__title'>{title}</h2>
       {children}
     </section>
   )

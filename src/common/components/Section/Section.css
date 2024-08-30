@@ -1,2 +1,20 @@
 .section {
+  --title-size: 36px;
+  --margin-x: 20px;
+  --margin-y: 40px;
+}
+
+.section__title {
+  font-family: var(--font-trajan-pro);
+  font-size: var(--title-size);
+  line-height: calc(var(--title-size) * 1.1);
+  text-align: center;
+  margin: var(--margin-y) var(--margin-x);
+}
+
+@media (max-width: 576px) {
+  .section {
+    --title-size: 24px;
+    --margin-y: 40px 20px;
+  }
 }

@@ -8,12 +8,20 @@
   }
 }
 
+html:root {
+  --svadba-base: #1e1e1e;
+}
+
 *::selection {
   background: hsl(var(--svadba-earth-300));
 }
 
 body {
   position: relative;
+}
+
+main {
+  margin-bottom: 30px;
 }
 
 button[data-slot='tab'][data-selected='true'] > div {
@@ -37,4 +45,10 @@ button[data-slot='tab'][data-selected='true'] > div {
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--svadba-primary));
+}
+
+@media (max-width: 576px) {
+  main {
+    margin-bottom: 20px;
+  }
 }

@@ -86,14 +86,23 @@
 
 @media screen and (max-width: 576px) {
   .welcome {
-    --welcome-margin: 20px;
-    --p-margin: 60px;
+    --welcome-margin: 0px;
+    --p-margin: 20px;
+    --p-size: 16px;
     --timer-gap-r: 0px;
-    --timer-gap-b: 24px;
+    --timer-gap-b: 20px;
+    --timer-title-size: 18px;
+    --timer-value-size: 56px;
+    --timer-value-margin: 10px;
   }
 
   .welcome-timer {
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .welcome-timer-item {
+    margin: 20px !important;
   }
 
   .welcome-flower {

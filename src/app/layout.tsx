@@ -3,6 +3,7 @@ import { Providers } from '@/app/providers'
 import localFont from 'next/font/local'
 
 import Header from '@components/Header'
+import Footer from '@components/Footer'
 
 import { WithChildren } from '@interfaces/props'
 
@@ -99,6 +100,7 @@ export default function RootLayout({ children }: WithChildren) {
         <Providers>
           <Header />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
