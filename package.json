@@ -5,7 +5,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md}\"",
     "check-types": "turbo run check-types",
     "prepare": "husky"
   },
@@ -41,9 +41,8 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css}": [
-      "turbo format",
-      "turbo lint"
+    "*.{js,jsx,ts,tsx,css,md}": [
+      "yarn format"
     ]
   }
 }
