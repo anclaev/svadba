@@ -27,11 +27,12 @@ Install deps:
   stage: install
   extends: .prepare
   script:
-    - yarn
+    - yarn install --cache-folder .yarn
   cache:
     untracked: true
     paths:
-      - node_modules
+      - node_modules/
+      - .yarn
 
 # Build apps:
 #   stage: build
