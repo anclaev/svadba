@@ -62,7 +62,8 @@ E2E tests:
   needs:
     - Install deps
   script:
-    - yarn playwright install
+    - yarn add -D @playwright/test
+    - yarn playwright install --with-deps
     - CI=true yarn turbo e2e
 # Unit tests:
 #   stage: tests
