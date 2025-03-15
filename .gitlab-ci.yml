@@ -27,7 +27,7 @@ Install deps:
   stage: install
   extends: .prepare
   script:
-    - yarn install --cache-folder .yarn
+    - yarn install
   cache:
     untracked: true
     paths:
