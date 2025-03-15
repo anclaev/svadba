@@ -169,8 +169,8 @@ Deploy:
   script:
     - *get_version
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-      && ./scripts/down-staging.sh
-      && ./scripts/deploy-staging.sh $PROJECT_VERSION"
+      && ./scripts/down.sh
+      && ./scripts/deploy.sh $PROJECT_VERSION"
   environment:
     name: production
     url: $PUBLIC_URL_PRODUCTION
