@@ -23,6 +23,8 @@ RUN yarn --frozen-lockfile
  
 COPY --from=builder /app/out/full/ .
 
+
+RUN yarn turbo run db:generate
 RUN yarn turbo run build
  
 # ----------------- Run the production image -----------------
