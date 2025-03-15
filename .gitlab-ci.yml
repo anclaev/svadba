@@ -65,9 +65,8 @@ E2E tests:
   extends: .prepare
   needs:
     - Install deps
-  before_script:
-    - yarn playwright install
   script:
+    - yarn playwright install
     - CI=true yarn turbo e2e
 # Unit tests:
 #   stage: tests
