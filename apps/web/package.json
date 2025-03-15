@@ -1,6 +1,8 @@
 {
   "name": "web",
   "version": "0.1.0",
+  "description": "Web interface for Svadba",
+  "author": "Artem Samarin <av@anclaev.ru>",
   "private": true,
   "scripts": {
     "format": "prettier --write \"(e2e|test)/*.(ts|js|tsx|jsx)\" \"src/**/*.(ts|js|tsx|jsx|css|scss)\"",

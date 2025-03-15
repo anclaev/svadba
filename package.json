@@ -1,5 +1,8 @@
 {
   "name": "@av/svadba",
+  "version": "0.1.0",
+  "description": "Project of Svadba",
+  "author": "Artem Samarin <av@anclaev.ru>",
   "private": true,
   "scripts": {
     "build": "turbo run build",

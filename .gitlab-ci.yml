@@ -16,10 +16,10 @@ variables:
 
 stages:
   - install
-  # - build
   - tests
-  # - push
-  # - analyze
+  - analyze
+  - build
+  - release
   # - deploy
 
 Install deps:
@@ -32,30 +32,20 @@ Install deps:
       - node_modules/
       - .yarn
 
-# Build apps:
-#   stage: build
-#   needs:
-#     - Install deps
-#   script:
-#     - yarn turbo build --affected
-#   cache:
-#     untracked: true
-#     path:
-#       - apps/web/.next/standalone
-#       - apps/web/.next/static
-#       - apps/bot/dist
-
-# Unit tests:
-#   stage: tests
-#   needs:
-#     - Install deps
-#   script:
-#     - yarn turbo test:ci
-#   artifacts:
-#     when: always
-#     paths:
-#       - apps/bot/junit.xml
-#       - apps/web/junit.xml
+Unit tests:
+  stage: tests
+  needs:
+    - Install deps
+  script:
+    - yarn turbo test:ci
+  artifacts:
+    when: always
+    paths:
+      - apps/bot/junit.xml
+      - apps/web/junit.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: true
 
 E2E tests:
   stage: tests
@@ -64,86 +54,103 @@ E2E tests:
     - Install deps
   script:
     - CI=true yarn turbo e2e
-# Unit tests:
-#   stage: tests
-#   needs:
-#     - Build apps
-#   image: oven/bun:alpine
-#   script: bun run test:ci
-#   coverage: /All files[^|]*|[^|]*\s+([\d\.]+)/
-#   artifacts:
-#     when: always
-#     paths:
-#       - junit.xml
-#     reports:
-#       junit: junit.xml
-#       coverage_report:
-#         coverage_format: cobertura
-#         path: coverage/cobertura-coverage.xml
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: true
 
-# e2e tests:
-#   stage: tests
-#   needs:
-#     - install & lint
-#   image: oven/bun:alpine
-#   before_script:
-#     - bun playwright install
-#   script: CI=true bun playwright test
-#   artifacts:
-#     when: always
-#     paths:
-#       - junit-e2e.xml
-#     reports:
-#       junit: junit-e2e.xml
+Analyze code:
+  stage: analyze
+  image:
+    name: sonarsource/sonar-scanner-cli:11
+    entrypoint: [""]
+  needs:
+    - Unit tests
+  script:
+    - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
+  allow_failure: true
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
 
-# analyze code:
-#   stage: analyze
-#   needs:
-#     - unit tests
-#   services:
-#     - docker:28.0.1-dind
-#   image:
-#     name: sonarsource/sonar-scanner-cli:11
-#     entrypoint: [""]
-#   cache:
-#     key: "${CI_JOB_NAME}"
-#     paths:
-#       - .sonar/cache
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-#     GIT_DEPTH: "0"
-#   script:
-#     - sonar-scanner -Dsonar.host.url="${SONAR_HOST_URL}"
-#   allow_failure: false
-#   rules:
-#     - if: $CI_COMMIT_BRANCH == 'main'
-#     - if: $CI_COMMIT_BRANCH == 'develop'
+# Staging images
 
-# build image (dev):
-#   extends: .docker
-#   stage: push
-#   needs:
-#     - unit tests
-#   rules:
-#     - if: $CI_COMMIT_BRANCH == "develop"
-#   script:
-#     - docker build -f docker/Dockerfile -t $CI_IMAGE_TAG:$CI_COMMIT_SHORT_SHA .
-#     - docker push $CI_IMAGE_TAG:$CI_COMMIT_SHORT_SHA
-#   tags:
-#     - development
-#   environment: development
+Build web (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
 
-# build image:
-#   extends: .docker
-#   stage: push
-#   needs:
-#     # - analyze code
-#     - e2e tests
-#   rules:
-#     - if: $CI_COMMIT_BRANCH == "main"
-#   script:
-#     - docker build -f docker/Dockerfile -t $CI_IMAGE_TAG:latest .
-#     - docker push $CI_IMAGE_TAG:latest
-#   tags:
-#     - production
-#   environment: production
+Build bot (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
+
+# Production images
+
+Build web:
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+    - E2E tests
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - docker build -f apps/web/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_WEB:latest .
+    - docker push $CI_IMAGE_TAG_WEB --all-tags
+  tags:
+    - production
+  environment: production
+
+Build bot:
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+    - E2E tests
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_BOT:latest .
+    - docker push $CI_IMAGE_TAG_BOT --all-tags
+  tags:
+    - production
+  environment: production
+
+  # Release
+
+Release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - Build bot
+    - Build web
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "Running the release job."
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: "Release $CI_COMMIT_TAG"
+    description: "./CHANGELOG.md"
