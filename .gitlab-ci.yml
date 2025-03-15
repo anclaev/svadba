@@ -21,8 +21,9 @@ stages:
 
 Install deps:
   stage: install
-  script:
+  before_script:
     - corepack enable
+  script:
     - yarn
   cache:
     untracked: true
@@ -47,6 +48,8 @@ Unit tests:
   stage: tests
   needs:
     - Install deps
+  before_script:
+    - corepack enable
   script:
     - yarn turbo test:ci
   artifacts:
@@ -59,6 +62,8 @@ E2E tests:
   stage: tests
   needs:
     - Install deps
+  before_script:
+    - corepack enable
   script:
     - yarn playwright install
     - CI=true yarn turbo e2e
