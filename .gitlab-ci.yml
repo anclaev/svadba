@@ -26,11 +26,11 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs"
 
 stages:
-  # - install
-  # - tests
-  # - analyze
-  # - build
-  # - release
+  - install
+  - tests
+  - analyze
+  - build
+  - release
   - deploy
 
 Install deps:
