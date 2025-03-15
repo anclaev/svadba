@@ -26,6 +26,8 @@ RUN yarn turbo run build
 # ----------------- Run the production image -----------------
 FROM base AS runner
 
+# RUN yarn add -D prisma
+
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
 USER nestjs
@@ -34,5 +36,4 @@ COPY --from=installer --chown=nestjs:nestjs /app .
  
 EXPOSE 3001
 
-# ENTRYPOINT [ "sh", "-c", "bun run db:deploy && bun next start" ]
-CMD ["node", "apps/bot/dist/main"]
+ENTRYPOINT [ "sh", "-c", "node apps/bot/dist/main" ]
