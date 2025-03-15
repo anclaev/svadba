@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -16,6 +16,13 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "#infra/*": ["./src/infra/*"],
+      "#app/*": ["./src/app/*"],
+      "#api/*": ["./src/api/*"],
+      "#domain/*": ["./src/domain/*"],
+      "#prisma": ["./generated/client/index"]
+    }
   }
 }

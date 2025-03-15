@@ -1,12 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "ui": "tui",
-  "globalEnv": ["DATABASE_URL"],
+  "ui": "stream",
+  "globalEnv": ["DATABASE_URL", "TELEGRAM_BOT_TOKEN"],
   "tasks": {
     "build": {
       "dependsOn": ["^db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
