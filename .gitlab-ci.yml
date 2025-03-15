@@ -11,6 +11,10 @@ default:
   before_script:
     - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
+.get_version: &get_version
+  - 'export PROJECT_VERSION=$(cat package.json | grep version | head -1 | awk -F: ''{ print $2 }'' | sed ''s/[",]//g'' | tr -d ''[[:space:]]'')'
+  - "Current version is: $PROJECT_VERSION"
+
 .prepare-ssh:
   before_script:
     - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
@@ -48,13 +52,10 @@ Unit tests:
     - Install deps
   script:
     - yarn turbo test:ci
-  artifacts:
-    when: always
-    paths:
-      - apps/bot/junit.xml
-      - apps/web/junit.xml
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: false
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
 
 E2E tests:
@@ -66,6 +67,8 @@ E2E tests:
     - CI=true yarn turbo e2e
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: false
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
 
 # Staging images
@@ -76,9 +79,9 @@ Build web (staging):
   needs:
     - Unit tests
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "develop"
   script:
-    - docker build -f apps/web/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
   tags:
     - staging
@@ -90,9 +93,9 @@ Build bot (staging):
   needs:
     - Unit tests
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "develop"
   script:
-    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
   tags:
     - staging
@@ -107,9 +110,10 @@ Build web:
     - Unit tests
     - E2E tests
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - docker build -f apps/web/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_WEB:latest .
+    - *get_version
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
     - docker push $CI_IMAGE_TAG_WEB --all-tags
   tags:
     - production
@@ -122,30 +126,14 @@ Build bot:
     - Unit tests
     - E2E tests
   rules:
-    - if: $CI_COMMIT_TAG
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_BOT:latest .
+    - *get_version
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
     - docker push $CI_IMAGE_TAG_BOT --all-tags
   tags:
     - production
   environment: production
-
-# Release
-
-Release:
-  stage: release
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
-  needs:
-    - Build bot
-    - Build web
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
-    - echo "Running the release job."
-  release:
-    tag_name: $CI_COMMIT_TAG
-    name: "Release $CI_COMMIT_TAG"
-    description: "./CHANGELOG.md"
 
 # Deploy
 
@@ -156,9 +144,44 @@ Deploy (staging):
     - Build web (staging)
     - Build bot (staging)
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "develop"
   extends: .prepare-ssh
   script:
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
       && ./scripts/down-staging.sh
       && ./scripts/deploy-staging.sh $CI_COMMIT_SHORT_SHA"
+  environment: staging
+  tags:
+    - staging
+
+Deploy:
+  image: alpine:latest
+  stage: deploy
+  needs:
+    - Build web
+    - Build bot
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  extends: .prepare-ssh
+  script:
+    - *get_version
+    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+      && ./scripts/down-staging.sh
+      && ./scripts/deploy-staging.sh $PROJECT_VERSION"
+  environment: production
+  tags:
+    - production
+
+# Release
+
+Release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "Running the release job."
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: "Release $CI_COMMIT_TAG"
+    description: "./CHANGELOG.md"

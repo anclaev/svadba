@@ -1,3 +1,5 @@
+ARG VERSION=null
+
 FROM node:18-alpine AS base
 WORKDIR /app
 RUN apk update
@@ -23,6 +25,7 @@ COPY --from=builder /app/out/full/ .
 RUN yarn turbo run build
  
 # ----------------- Run the production image -----------------
+LABEL version=$VERSION
 FROM base AS runner
 
 RUN addgroup --system --gid 1001 nodejs

@@ -1,3 +1,5 @@
+ARG VERSION=null
+
 FROM node:18-alpine AS base
 WORKDIR /app
 RUN apk update
@@ -25,6 +27,7 @@ RUN yarn turbo run build
  
 # ----------------- Run the production image -----------------
 FROM base AS runner
+LABEL version=$VERSION
 RUN corepack enable
 
 RUN addgroup --system --gid 1001 nestjs
