@@ -5,10 +5,6 @@ default:
   before_script:
     - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
-.prepare:
-  before_script:
-    - corepack enable
-
 .docker:
   image: docker:28.0.1
 
@@ -27,7 +23,8 @@ Install deps:
   stage: install
   extends: .prepare
   script:
-    - yarn install
+    - corepack enable
+    - yarn
   cache:
     untracked: true
     paths:
