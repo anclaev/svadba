@@ -1,5 +1,8 @@
 default:
   image: node:18-alpine
+  before_script:
+    - corepack enable
+    - yarn install
 
 .docker:
   image: docker:28.0.1
@@ -21,8 +24,6 @@ stages:
 
 Install deps:
   stage: install
-  before_script:
-    - corepack enable
   script:
     - yarn
   cache:
@@ -48,8 +49,6 @@ Unit tests:
   stage: tests
   needs:
     - Install deps
-  before_script:
-    - corepack enable
   script:
     - yarn turbo test:ci
   artifacts:
@@ -62,8 +61,6 @@ E2E tests:
   stage: tests
   needs:
     - Install deps
-  before_script:
-    - corepack enable
   script:
     - yarn playwright install
     - CI=true yarn turbo e2e
