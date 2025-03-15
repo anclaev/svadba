@@ -12,8 +12,9 @@ default:
     - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
 .get_version: &get_version
+  - "apk update && apk add bash"
   - 'export PROJECT_VERSION=$(cat package.json | grep version | head -1 | awk -F: ''{ print $2 }'' | sed ''s/[",]//g'' | tr -d ''[[:space:]]'')'
-  - "Current version is: $PROJECT_VERSION"
+  - 'echo "Current version is: $PROJECT_VERSION"'
 
 .prepare-ssh:
   before_script:
@@ -150,7 +151,9 @@ Deploy (staging):
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
       && ./scripts/down-staging.sh
       && ./scripts/deploy-staging.sh $CI_COMMIT_SHORT_SHA"
-  environment: staging
+  environment:
+    name: staging
+    url: $PUBLIC_URL_STAGING
   tags:
     - staging
 
@@ -168,7 +171,9 @@ Deploy:
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
       && ./scripts/down-staging.sh
       && ./scripts/deploy-staging.sh $PROJECT_VERSION"
-  environment: production
+  environment:
+    name: production
+    url: $PUBLIC_URL_PRODUCTION
   tags:
     - production
 
