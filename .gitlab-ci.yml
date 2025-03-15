@@ -50,7 +50,7 @@ Unit tests:
   needs:
     - Install deps
   script:
-    - yarn turbo test:ci
+    - yarn turbo test:ci --affected
   artifacts:
     when: always
     paths:
@@ -59,12 +59,11 @@ Unit tests:
 
 E2E tests:
   stage: tests
+  image: mcr.microsoft.com/playwright:v1.51.0-noble
   needs:
     - Install deps
   script:
-    - yarn add -D @playwright/test
-    - yarn playwright install --with-deps
-    - CI=true yarn turbo e2e
+    - CI=true yarn turbo e2e # --affected
 # Unit tests:
 #   stage: tests
 #   needs:
