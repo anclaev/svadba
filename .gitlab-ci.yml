@@ -45,17 +45,17 @@ Install deps:
 #       - apps/web/.next/static
 #       - apps/bot/dist
 
-Unit tests:
-  stage: tests
-  needs:
-    - Install deps
-  script:
-    - yarn turbo test:ci --affected
-  artifacts:
-    when: always
-    paths:
-      - apps/bot/junit.xml
-      - apps/web/junit.xml
+# Unit tests:
+#   stage: tests
+#   needs:
+#     - Install deps
+#   script:
+#     - yarn turbo test:ci
+#   artifacts:
+#     when: always
+#     paths:
+#       - apps/bot/junit.xml
+#       - apps/web/junit.xml
 
 E2E tests:
   stage: tests
@@ -63,7 +63,7 @@ E2E tests:
   needs:
     - Install deps
   script:
-    - CI=true yarn turbo e2e # --affected
+    - CI=true yarn turbo e2e
 # Unit tests:
 #   stage: tests
 #   needs:

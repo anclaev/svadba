@@ -1,5 +1,5 @@
 {
-  "name": "svadba",
+  "name": "@av/svadba",
   "private": true,
   "scripts": {
     "build": "turbo run build",

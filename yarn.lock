@@ -109,6 +109,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@av/svadba@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@av/svadba@workspace:."
+  dependencies:
+    "@commitlint/cli": "npm:^19.8.0"
+    commitizen: "npm:^4.3.1"
+    cz-customizable: "npm:^7.4.0"
+    husky: "npm:^9.1.7"
+    lint-staged: "npm:^15.5.0"
+    prettier: "npm:^3.5.3"
+    turbo: "npm:^2.4.4"
+    typescript: "npm:5.8.2"
+  languageName: unknown
+  linkType: soft
+
 "@babel/code-frame@npm:^7.0.0, @babel/code-frame@npm:^7.10.4, @babel/code-frame@npm:^7.12.13, @babel/code-frame@npm:^7.16.7, @babel/code-frame@npm:^7.26.2":
   version: 7.26.2
   resolution: "@babel/code-frame@npm:7.26.2"
@@ -11802,21 +11817,6 @@ __metadata:
   checksum: 10c0/6c4032340701a9950865f7ae8ef38578d8d7053f5e10518076e6554a9381fa91bd9c6850193695c141f32b21f979c985db07265a758867bac95de05f7d8aeb39
   languageName: node
   linkType: hard
-
-"svadba@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "svadba@workspace:."
-  dependencies:
-    "@commitlint/cli": "npm:^19.8.0"
-    commitizen: "npm:^4.3.1"
-    cz-customizable: "npm:^7.4.0"
-    husky: "npm:^9.1.7"
-    lint-staged: "npm:^15.5.0"
-    prettier: "npm:^3.5.3"
-    turbo: "npm:^2.4.4"
-    typescript: "npm:5.8.2"
-  languageName: unknown
-  linkType: soft
 
 "symbol-observable@npm:4.0.0":
   version: 4.0.0
