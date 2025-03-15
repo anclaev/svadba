@@ -78,7 +78,7 @@ Build web (staging):
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
-    - docker build -f apps/bot/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker build -f apps/web/Dockerfile -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
   tags:
     - staging
@@ -160,5 +160,5 @@ Deploy (staging):
   extends: .prepare-ssh
   script:
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-      && docker pull $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
-      && docker rmi $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA"
+      && ./scripts/down-staging.sh
+      && ./scripts/deploy-staging.sh $CI_COMMIT_SHORT_SHA"
