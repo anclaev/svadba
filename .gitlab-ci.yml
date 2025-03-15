@@ -180,4 +180,6 @@ Deploy (staging):
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   extends: .prepare-ssh
   script:
-    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH && docker pull $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA"
+    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+      && docker pull $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
+      && docker rmi $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA"

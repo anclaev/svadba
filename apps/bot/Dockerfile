@@ -14,7 +14,7 @@ RUN turbo prune bot --docker
  
 # ---------------- Install and build the project -----------------
 FROM base AS installer
-RUN corepack enable 
+# RUN corepack enable 
  
 COPY --from=builder /app/out/json/ .
 RUN yarn --frozen-lockfile
@@ -25,8 +25,7 @@ RUN yarn turbo run build
  
 # ----------------- Run the production image -----------------
 FROM base AS runner
-
-# RUN yarn add -D prisma
+RUN corepack enable
 
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
@@ -36,4 +35,5 @@ COPY --from=installer --chown=nestjs:nestjs /app .
  
 EXPOSE 3001
 
+#ENTRYPOINT [ "sh", "-c", "yarn turbo db:deploy && node apps/bot/dist/main" ] 
 ENTRYPOINT [ "sh", "-c", "node apps/bot/dist/main" ]
