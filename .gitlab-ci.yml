@@ -158,7 +158,6 @@ stages:
 #     description: "./CHANGELOG.md"
 
 Deploy (staging):
-  image: alpine:latest
   stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
