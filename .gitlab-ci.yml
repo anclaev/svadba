@@ -58,7 +58,8 @@ Unit tests:
       allow_failure: false
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
-
+    - if: $CI_COMMIT_TAG
+      when: manual
 E2E tests:
   stage: tests
   image: mcr.microsoft.com/playwright:v1.51.0-noble
@@ -71,6 +72,8 @@ E2E tests:
       allow_failure: false
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
+    - if: $CI_COMMIT_TAG
+      when: manual
 
 # Staging images
 
@@ -184,6 +187,8 @@ Release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   rules:
     - if: $CI_COMMIT_TAG
+  before_script:
+    - echo "Prepare release..."
   script:
     - echo "Running the release job."
   release:
