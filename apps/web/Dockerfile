@@ -24,7 +24,7 @@ RUN yarn turbo run build
  
 # ----------------- Run the production image -----------------
 FROM base AS runner
- 
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
