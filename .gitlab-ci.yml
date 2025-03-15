@@ -8,7 +8,6 @@ default:
 .prepare:
   before_script:
     - corepack enable
-    - yarn global add turbo@latest
 
 .docker:
   image: docker:28.0.1
@@ -40,7 +39,7 @@ Install deps:
 #   needs:
 #     - Install deps
 #   script:
-#     - turbo build --affected
+#     - yarn turbo build --affected
 #   cache:
 #     untracked: true
 #     path:
@@ -54,7 +53,7 @@ Unit tests:
   needs:
     - Install deps
   script:
-    - turbo test:ci
+    - yarn turbo test:ci
   artifacts:
     when: always
     paths:
@@ -69,7 +68,7 @@ E2E tests:
   before_script:
     - yarn playwright install
   script:
-    - CI=true turbo e2e
+    - CI=true yarn turbo e2e
 # Unit tests:
 #   stage: tests
 #   needs:
