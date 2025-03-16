@@ -10917,7 +10917,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.4, postcss@npm:^8.4.41":
+"postcss@npm:^8.4.4, postcss@npm:^8.4.41, postcss@npm:^8.5.3":
   version: 8.5.3
   resolution: "postcss@npm:8.5.3"
   dependencies:
@@ -13422,6 +13422,7 @@ __metadata:
     jest-junit: "npm:^16.0.0"
     lucide-react: "npm:^0.482.0"
     next: "npm:15.2.2"
+    postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
