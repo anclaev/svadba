@@ -1,6 +1,6 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core'
-// import { PrismaClientExceptionFilter } from 'nestjs-prisma'
-import { HttpStatus } from '@nestjs/common'
+import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface'
+import { NestFactory } from '@nestjs/core'
+import * as fs from 'fs'
 
 import { AppModule } from '#app/app.module'
 
@@ -10,24 +10,22 @@ import { loggerFactory } from '#infra/core/logger'
 async function bootstrap() {
   const logger = loggerFactory({})
 
-  const app = await NestFactory.create(AppModule, { logger })
+  const isDev = process.env.NODE_ENV === 'development'
+  const httpsOptions: HttpsOptions = {}
 
-  const { httpAdapter } = app.get(HttpAdapterHost)
+  if (isDev) {
+    httpsOptions.cert = fs.readFileSync('./src/certs/localhost.crt')
+    httpsOptions.key = fs.readFileSync('./src/certs/localhost.key')
+  }
+
+  const app = await NestFactory.create(AppModule, { logger, httpsOptions })
 
   const config = app.get(ConfigService)
   const host = config.env('HOST')
   const port = config.env('PORT')
 
-  // app.useGlobalFilters(
-  //   new PrismaClientExceptionFilter(httpAdapter, {
-  //     P2000: HttpStatus.BAD_REQUEST,
-  //     P2002: HttpStatus.CONFLICT,
-  //     P2025: HttpStatus.NOT_FOUND,
-  //   })
-  // )
-
   await app.listen(port).finally(() => {
-    logger.log(`Сервис успешно запущен! (${host}:${port})`)
+    logger.log(`Сервис успешно запущен! (https://${host}:${port})`)
   })
 }
 
