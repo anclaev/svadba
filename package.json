@@ -7,8 +7,10 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "NODE_ENV=development turbo run dev",
-    "dev:web": "turbo dev --filter=web",
+    "dev:web": "NODE_ENV=development turbo dev --filter=web",
     "dev:bot": "NODE_ENV=development turbo dev --filter=bot",
+    "build:web": "turbo run build --filter=web",
+    "build:bot": "turbo run build --filter=bot",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md}\"",
     "check-types": "turbo run check-types",

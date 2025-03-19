@@ -2,17 +2,26 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { useState } from 'react'
 
 import { z } from 'zod'
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
+import { TurnstileWidget } from '../utils/turnstile-widget'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 
 import { SignInFormSchema } from './schema'
 
-export const SignInForm = () => {
+import type { TurnstileStatus } from '@/types/turnstile'
+
+export const AuthSignInForm = () => {
+  const [turnstileStatus, setTurnstileStatus] =
+    useState<TurnstileStatus>('required')
+
+  const [turnstileError, setTurnstileError] = useState<string | null>(null)
+
   const form = useForm<z.infer<typeof SignInFormSchema>>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
@@ -25,6 +34,13 @@ export const SignInForm = () => {
 
   function onSubmit(values: z.infer<typeof SignInFormSchema>) {
     console.log(values)
+
+    if (turnstileStatus !== 'success') {
+      setTurnstileError('Пожалуйста, подтвердите, что вы человек')
+      return
+    } else {
+      setTurnstileError(null)
+    }
   }
 
   return (
@@ -56,6 +72,10 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
+
+        <TurnstileWidget setStatus={setTurnstileStatus} />
+        {turnstileError && <Label>{turnstileError}</Label>}
+
         <Button type="submit" className="cursor-pointer float-right">
           Войти
         </Button>

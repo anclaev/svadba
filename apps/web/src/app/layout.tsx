@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import './globals.css'
 
-import { Toaster } from '@/components/ui/sonner'
+// import { Toaster } from '@/components/ui/sonner'
 import { Header } from '@/components/header'
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className={`antialiased selection:bg-wheat-500`}>
         <Header />
         {children}
-        <Toaster />
+        {/* <Toaster /> */}
       </body>
     </html>
   )

@@ -1,7 +1,9 @@
+'use client'
+
 import Image from 'next/image'
 
+import { AuthLoginDialog } from '../auth-login-dialog'
 import { Dialog, DialogTrigger } from '../ui/dialog'
-import { LoginDialog } from '../login-dialog'
 import { Button } from '../ui/button'
 
 import {
@@ -10,10 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '../ui/tooltip'
-
-import LoginIcon from '@/assets/login.svg'
-
-import './index.css'
 
 export const Header = () => {
   return (
@@ -26,11 +24,16 @@ export const Header = () => {
             <DialogTrigger asChild>
               <TooltipTrigger asChild>
                 <Button variant="ghost" size="icon" className="cursor-pointer">
-                  <LoginIcon className="size-7.5 header__login" />
+                  <Image
+                    src="/assets/icons/login.svg"
+                    alt="login"
+                    width={30}
+                    height={30}
+                  />
                 </Button>
               </TooltipTrigger>
             </DialogTrigger>
-            <LoginDialog />
+            <AuthLoginDialog />
           </Dialog>
           <TooltipContent>
             <p>Вход</p>

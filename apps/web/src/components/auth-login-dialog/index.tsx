@@ -1,8 +1,10 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
-import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
-import { SignInForm } from '../sign-in-form'
+'use client'
 
-export const LoginDialog = () => {
+import { DialogContent, DialogHeader, DialogTitle } from '../ui/dialog'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
+import { AuthSignInForm } from '../auth-sign-in-form'
+
+export const AuthLoginDialog = () => {
   return (
     <DialogContent className="sm:max-w-[400px]">
       <DialogHeader>
@@ -11,12 +13,12 @@ export const LoginDialog = () => {
         </DialogTitle>
       </DialogHeader>
       <Tabs defaultValue="sign-in">
-        <TabsList className="grid w-full grid-cols-2 mb-2.5 mt-2">
+        <TabsList className="grid w-full grid-cols-2 mb-2.5 mt-2 select-none">
           <TabsTrigger value="sign-in">Вход</TabsTrigger>
           <TabsTrigger value="sign-up">Регистрация</TabsTrigger>
         </TabsList>
         <TabsContent value="sign-in">
-          <SignInForm />
+          <AuthSignInForm />
         </TabsContent>
         <TabsContent value="sign-up">Форма регистрации</TabsContent>
       </Tabs>
