@@ -1,0 +1,95 @@
+'use client'
+
+import { getImageProps } from 'next/image'
+import { useMemo } from 'react'
+
+import { EVENT_DATE } from '@/core/constants/event-date'
+import useTimer from '@/core/hooks/use-timer'
+import getBackgroundImage from '@/core/utils/get-background-image'
+
+export const WelcomeSection = () => {
+  const { days, hours, minutes, seconds } = useTimer(EVENT_DATE.toDate())
+
+  const flowerSrc = useMemo(() => {
+    const {
+      props: { srcSet },
+    } = getImageProps({
+      alt: 'Flower',
+      width: 375,
+      height: 825,
+      src: '/assets/flower.webp',
+    })
+
+    return getBackgroundImage(srcSet)
+  }, [])
+
+  return (
+    <section
+      id="welcome"
+      className=" relative flex justify-center items-center flex-col text-center pt-18 pb-14 md:pt-32 md:pb-28 overflow-x-hidden text-sm md:text-base"
+    >
+      <div id="welcome__desc" className="max-w-xl w-full pl-5 pr-5">
+        <p className="pb-5">
+          Дорогие гости! Мы будем счастливы разделить с вами радость
+          неповторимого для нас дня - дня нашей свадьбы!
+        </p>
+        <p className="pb-5">
+          Приглашаем присоединиться к нашему празднику и украсить его своим
+          присутствием через:
+        </p>
+      </div>
+      <div
+        id="welcome-timer"
+        className="flex flex-row flex-wrap select-none pl-5 pr-5 items-center justify-center"
+      >
+        <div
+          id="welcome-timer__days"
+          className="flex flex-col pl-7 pr-7 min-w-[115px] md:min-w-[150px] pb-5"
+        >
+          <span className="pb-2.5 font-bold text-4xl md:text-6xl">{days}</span>
+          <span>дней</span>
+        </div>
+        <div
+          id="welcome-timer__hours"
+          className="flex flex-col pl-7 pr-7 min-w-[115px] md:min-w-[150px] pb-5"
+        >
+          <span className="pb-2.5 font-bold text-4xl md:text-6xl">{hours}</span>
+          <span>часов</span>
+        </div>
+        <div
+          id="welcome-timer__minutes"
+          className="flex flex-col pl-7 pr-7 min-w-[115px] md:min-w-[150px] pb-5"
+        >
+          <span className="pb-2.5 font-bold text-4xl md:text-6xl">
+            {minutes}
+          </span>
+          <span>минут</span>
+        </div>
+        <div
+          id="welcome-timer__seconds"
+          className="flex flex-col pl-7 pr-7 min-w-[115px] md:min-w-[150px] pb-5"
+        >
+          <span className="pb-2.5 font-bold text-4xl md:text-6xl">
+            {seconds}
+          </span>
+          <span>секунд</span>
+        </div>
+      </div>
+      <div
+        className="absolute top-[10%] bottom-0 w-full bg-no-repeat bg-contain select-none z-[-1] lg:right-[0px] right-[110px] hidden sm:block"
+        style={{
+          backgroundImage: flowerSrc,
+          backgroundPosition: 'left center',
+        }}
+      ></div>
+      <div
+        className="absolute top-[10%] bottom-0 w-full bg-no-repeat bg-contain select-none z-[-1] lg:left-[0px] left-[110px] hidden sm:block"
+        style={{
+          backgroundImage: flowerSrc,
+          backgroundPosition: 'left center',
+          transform: 'scale(-1,1)',
+        }}
+      ></div>
+    </section>
+  )
+}

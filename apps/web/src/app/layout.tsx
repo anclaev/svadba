@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { EnvProvider } from '@/core/providers/env-provider'
 
 // import { Toaster } from '@/components/ui/sonner'
+import { Footer } from '@/shared/footer'
 import { Header } from '@/shared/header'
 
 import './globals.css'
@@ -23,6 +24,7 @@ export default function RootLayout({
         <EnvProvider>
           <Header />
           {children}
+          <Footer />
           {/* <Toaster /> */}
         </EnvProvider>
       </body>

@@ -6190,6 +6190,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.3.7, debug@npm:^4.4.0":
   version: 4.4.0
   resolution: "debug@npm:4.4.0"
@@ -11730,7 +11737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -11838,6 +11845,18 @@ __metadata:
     iconv-lite: "npm:0.6.3"
     unpipe: "npm:1.0.0"
   checksum: 10c0/f8daf4b724064a4811d118745a781ca0fb4676298b8adadfd6591155549cfea0a067523cf7dd3baeb1265fecc9ce5dfb2fc788c12c66b85202a336593ece0f87
+  languageName: node
+  linkType: hard
+
+"react-countdown@npm:^2.3.6":
+  version: 2.3.6
+  resolution: "react-countdown@npm:2.3.6"
+  dependencies:
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    react: ">= 15"
+    react-dom: ">= 15"
+  checksum: 10c0/defb75cb9802c499eb0d5f6c8c6e4269de1005f9c05d5162bccf45063782fd2f5f87acd95d11f70e623fa75085a546b9d0fb0df27c5287ed6a86334342d903cf
   languageName: node
   linkType: hard
 
@@ -14223,6 +14242,7 @@ __metadata:
     "@types/react-dom": "npm:^19"
     class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
+    dayjs: "npm:^1.11.13"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.2.2"
     eslint-plugin-tailwindcss: "npm:^3.18.0"
@@ -14236,6 +14256,7 @@ __metadata:
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
     react: "npm:^19.0.0"
+    react-countdown: "npm:^2.3.6"
     react-dom: "npm:^19.0.0"
     react-hook-form: "npm:^7.54.2"
     sonner: "npm:^2.0.1"
