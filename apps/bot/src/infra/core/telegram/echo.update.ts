@@ -1,11 +1,11 @@
 import {
+  Command,
   Help,
   InjectBot,
-  On,
   Message,
+  On,
   Start,
   Update,
-  Command,
 } from 'nestjs-telegraf'
 
 import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
@@ -13,11 +13,11 @@ import { Telegraf } from 'telegraf'
 
 import { BOT_NAME } from '#infra/core'
 
-import { ResponseTimeInterceptor } from '#infra/core/telegram/interceptors/response-time.interceptor'
 import { TelegrafExceptionFilter } from '#infra/core/telegram/filters/telegraf-exception.filter'
-import { ReverseTextPipe } from '#infra/core/telegram/pipes/reverse-text.pipe'
-import { Context } from '#infra/core/telegram/interfaces/context.interface'
 import { AdminGuard } from '#infra/core/telegram/guards/admin.guard'
+import { ResponseTimeInterceptor } from '#infra/core/telegram/interceptors/response-time.interceptor'
+import { Context } from '#infra/core/telegram/interfaces/context.interface'
+import { ReverseTextPipe } from '#infra/core/telegram/pipes/reverse-text.pipe'
 
 @Update()
 @UseInterceptors(ResponseTimeInterceptor)

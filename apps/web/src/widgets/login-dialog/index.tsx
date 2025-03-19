@@ -3,11 +3,12 @@
 import { DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs'
 
-import { SignInForm } from './auth-form'
+import { SignInForm } from './sign-in-form'
+import { SignUpForm } from './sign-up-form'
 
 export const LoginDialog = () => {
   return (
-    <DialogContent className="sm:max-w-[400px]">
+    <DialogContent className="sm:max-w-[400px]" aria-describedby="Вход">
       <DialogHeader>
         <DialogTitle className="text-center font-normal">
           Личный кабинет гостя
@@ -21,7 +22,9 @@ export const LoginDialog = () => {
         <TabsContent value="sign-in">
           <SignInForm />
         </TabsContent>
-        <TabsContent value="sign-up">Форма регистрации</TabsContent>
+        <TabsContent value="sign-up">
+          <SignUpForm />
+        </TabsContent>
       </Tabs>
     </DialogContent>
   )

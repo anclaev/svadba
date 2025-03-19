@@ -3,7 +3,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button } from '@/shared/ui/button'
 import {
@@ -16,10 +15,13 @@ import {
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 
-import { Turnstile } from '@/shared/turnstile'
+import {
+  SignInFormSchema,
+  SignInFormValues,
+} from '@/core/schemes/sign-in-form-schema'
 
 import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
-import { SignInFormSchema } from '@/core/schemes/sign-in-form-schema'
+import { Turnstile } from '@/shared/turnstile'
 
 import type { TurnstileStatus } from '@/shared/turnstile/types'
 
@@ -29,7 +31,7 @@ export const SignInForm = () => {
 
   const [turnstileError, setTurnstileError] = useState<string | null>(null)
 
-  const form = useForm<z.infer<typeof SignInFormSchema>>({
+  const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInFormSchema),
     defaultValues: {
       login: '',
@@ -39,7 +41,7 @@ export const SignInForm = () => {
 
   const { errors } = form.formState
 
-  function onSubmit(values: z.infer<typeof SignInFormSchema>) {
+  function onSubmit(values: SignInFormValues) {
     console.log(values)
 
     if (turnstileStatus !== 'success') {
@@ -80,8 +82,8 @@ export const SignInForm = () => {
           )}
         />
 
-        <Turnstile setStatus={setTurnstileStatus} />
-        {turnstileError && <Label>{turnstileError}</Label>}
+        <Turnstile setStatus={setTurnstileStatus} hidden={true} />
+        {/* {turnstileError && <Label>{turnstileError}</Label>} */}
 
         <Button type="submit" className="cursor-pointer float-right">
           Войти

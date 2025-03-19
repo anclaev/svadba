@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { TelegrafExecutionContext, TelegrafException } from 'nestjs-telegraf'
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
+import { TelegrafException, TelegrafExecutionContext } from 'nestjs-telegraf'
 
 import { Context } from '#infra/core/telegram/interfaces/context.interface'
 

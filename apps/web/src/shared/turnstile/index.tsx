@@ -7,7 +7,7 @@ import type { TurnsitleComponent } from './types'
 
 import './index.css'
 
-export const Turnstile: TurnsitleComponent = ({ setStatus }) => {
+export const Turnstile: TurnsitleComponent = ({ setStatus, hidden }) => {
   const env = useEnv()
 
   const setErrorCallback = useCallback(() => {
@@ -38,6 +38,7 @@ export const Turnstile: TurnsitleComponent = ({ setStatus }) => {
       onLoad={setRequiredCallback}
       theme="light"
       size="normal"
+      className={hidden ? 'hidden' : ''}
     />
   )
 }
