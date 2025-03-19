@@ -5,6 +5,7 @@ import { Section } from '@/shared/section'
 import { Timing } from '@/features/timing'
 
 import { HOME_SECTIONS } from '@/core/constants/home-sections'
+import { DressCode } from '@/features/dress-code'
 
 export default function Home() {
   return (
@@ -17,11 +18,7 @@ export default function Home() {
             return <Timing section={section} key={section.alias} />
           }
           case 'dress-code': {
-            return (
-              <Section {...section} key={section.alias}>
-                dresscode
-              </Section>
-            )
+            return <DressCode section={section} key={section.alias} />
           }
           case 'place': {
             return (

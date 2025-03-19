@@ -19,7 +19,7 @@ export const Section: SectionComponent = ({
           <h2
             className="font-trajan text-xl sm:text-2xl md:text-3xl lg:text-4xl 
           pb-8 
-          lg:pb-16 
+          lg:pb-12 
           pl-5 pr-5 text-center"
           >
             {title}
