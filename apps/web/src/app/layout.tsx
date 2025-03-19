@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 
-import { EnvProvider } from '@/env/provider'
+import { EnvProvider } from '@/core/providers/env-provider'
 
 // import { Toaster } from '@/components/ui/sonner'
-import { Header } from '@/components/header'
+import { Header } from '@/shared/header'
 
 import './globals.css'
 

@@ -1,4 +1,4 @@
-import { validateEnvs } from './lib/utils'
+import { validateEnvs } from '@/core/utils/validate-envs'
 
 export function register() {
   validateEnvs()

@@ -152,6 +152,7 @@ __metadata:
     lint-staged: "npm:^15.5.0"
     mkcert: "npm:^3.2.0"
     prettier: "npm:^3.5.3"
+    prettier-plugin-organize-imports: "npm:^4.1.0"
     ts-node: "npm:^10.9.2"
     turbo: "npm:^2.4.4"
     typescript: "npm:5.8.2"
@@ -11548,6 +11549,20 @@ __metadata:
   dependencies:
     fast-diff: "npm:^1.1.2"
   checksum: 10c0/81e0027d731b7b3697ccd2129470ed9913ecb111e4ec175a12f0fcfab0096516373bf0af2fef132af50cafb0a905b74ff57996d615f59512bb9ac7378fcc64ab
+  languageName: node
+  linkType: hard
+
+"prettier-plugin-organize-imports@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "prettier-plugin-organize-imports@npm:4.1.0"
+  peerDependencies:
+    prettier: ">=2.0"
+    typescript: ">=2.9"
+    vue-tsc: ^2.1.0
+  peerDependenciesMeta:
+    vue-tsc:
+      optional: true
+  checksum: 10c0/fb2d6d415bac96b65a77ea7de9f708e8613436aeb9d82bbe63edeb312fd1362c0d3c57319bd4cc4adfc8b9964fb6c205cbbf8efd9546931b0f9874c0ae624a6a
   languageName: node
   linkType: hard
 

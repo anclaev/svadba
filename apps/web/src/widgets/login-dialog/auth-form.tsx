@@ -1,0 +1,92 @@
+'use client'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button } from '@/shared/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from '@/shared/ui/form'
+import { Input } from '@/shared/ui/input'
+import { Label } from '@/shared/ui/label'
+
+import { Turnstile } from '@/shared/turnstile'
+
+import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
+import { SignInFormSchema } from '@/core/schemes/sign-in-form-schema'
+
+import type { TurnstileStatus } from '@/shared/turnstile/types'
+
+export const SignInForm = () => {
+  const [turnstileStatus, setTurnstileStatus] =
+    useState<TurnstileStatus>('required')
+
+  const [turnstileError, setTurnstileError] = useState<string | null>(null)
+
+  const form = useForm<z.infer<typeof SignInFormSchema>>({
+    resolver: zodResolver(SignInFormSchema),
+    defaultValues: {
+      login: '',
+      password: '',
+    },
+  })
+
+  const { errors } = form.formState
+
+  function onSubmit(values: z.infer<typeof SignInFormSchema>) {
+    console.log(values)
+
+    if (turnstileStatus !== 'success') {
+      setTurnstileError(TURNSTILE_ERROR)
+      return
+    } else {
+      setTurnstileError(null)
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="login"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Логин</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              {errors.login && <Label>{errors.login.message}</Label>}
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Пароль</FormLabel>
+              <FormControl>
+                <Input {...field} type="password" />
+              </FormControl>
+              {errors.password && <Label>{errors.password.message}</Label>}
+            </FormItem>
+          )}
+        />
+
+        <Turnstile setStatus={setTurnstileStatus} />
+        {turnstileError && <Label>{turnstileError}</Label>}
+
+        <Button type="submit" className="cursor-pointer float-right">
+          Войти
+        </Button>
+      </form>
+    </Form>
+  )
+}
