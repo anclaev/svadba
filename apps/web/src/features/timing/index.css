@@ -1,0 +1,51 @@
+.timing-item,
+.timing-time {
+  position: relative;
+  --dott-size: 20px;
+}
+
+.timing-time {
+  --dott-size: 20px;
+  --left-margin: -10px;
+}
+
+.timing-time:before,
+.timing-item:after {
+  content: '';
+  position: absolute;
+  background-color: var(--color-wheat-500);
+  top: 50%;
+}
+
+.timing-time:before {
+  left: var(--left-margin);
+  transform: translateY(-50%);
+  width: var(--dott-size);
+  height: var(--dott-size);
+  border-radius: 50%;
+}
+
+.timing-item:after {
+  left: calc(75px + 39px);
+}
+
+.timing-item:not(:last-child):after {
+  width: 3px;
+  height: calc(var(--spacing) * 10 + 75px);
+}
+
+@media (max-width: 768px) {
+  .timing-time {
+    --dott-size: 12px;
+    --left-margin: -6px;
+  }
+
+  .timing-item:after {
+    left: calc(50px + 15px);
+  }
+
+  .timing-item:not(:last-child):after {
+    width: 2px;
+    height: calc(var(--spacing) * 8 + 50px);
+  }
+}

@@ -26,7 +26,7 @@ export const WelcomeSection = () => {
   return (
     <section
       id="welcome"
-      className=" relative flex justify-center items-center flex-col text-center pt-18 pb-14 md:pt-32 md:pb-28 overflow-x-hidden text-sm md:text-base"
+      className=" relative flex justify-center items-center flex-col text-center pt-14 pb-8 md:pt-32 md:pb-28 overflow-x-hidden text-sm md:text-base"
     >
       <div id="welcome__desc" className="max-w-xl w-full pl-5 pr-5">
         <p className="pb-5">
