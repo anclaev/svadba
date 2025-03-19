@@ -1,11 +1,15 @@
 import { Turnstile } from 'next-turnstile'
+import React, { useCallback } from 'react'
+
+import { useEnv } from '@/env/provider'
 
 import type { TurnsitleWidgetComponent } from '@/types/turnstile'
-import React, { useCallback } from 'react'
 
 import './index.css'
 
 export const TurnstileWidget: TurnsitleWidgetComponent = ({ setStatus }) => {
+  const env = useEnv()
+
   const setErrorCallback = useCallback(() => {
     setStatus('error')
   }, [setStatus])
@@ -24,7 +28,7 @@ export const TurnstileWidget: TurnsitleWidgetComponent = ({ setStatus }) => {
 
   return (
     <Turnstile
-      siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+      siteKey={env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
       retry="auto"
       refreshExpired="auto"
       sandbox={process.env.NODE_ENV === 'development'}

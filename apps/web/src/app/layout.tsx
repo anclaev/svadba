@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 
-import './globals.css'
+import { EnvProvider } from '@/env/provider'
 
 // import { Toaster } from '@/components/ui/sonner'
 import { Header } from '@/components/header'
+
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'The Svadba',
@@ -18,9 +20,11 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`antialiased selection:bg-wheat-500`}>
-        <Header />
-        {children}
-        {/* <Toaster /> */}
+        <EnvProvider>
+          <Header />
+          {children}
+          {/* <Toaster /> */}
+        </EnvProvider>
       </body>
     </html>
   )

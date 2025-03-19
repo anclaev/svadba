@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { z } from 'zod'
 
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form'
-import { TurnstileWidget } from '../utils/turnstile-widget'
+import { TurnstileWidget } from '../widgets/turnstile-widget'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
