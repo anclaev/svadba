@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { Button } from '@/shared/ui/button'
 import {
@@ -70,6 +71,8 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
     } else {
       setTurnstileError(null)
     }
+
+    toast('Регистрация в разработке.')
   }
 
   return (
