@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import Image, { getImageProps } from 'next/image'
 import { FC, useMemo } from 'react'
 
@@ -87,7 +90,13 @@ export const Timing: FC<withSection> = ({ section }) => {
     >
       <div className="grid gap-y-8 lg:gap-y-10 pl-3 pr-3 md:pl-5 md:pr-5 z-1">
         {timingItems.map((item, index) => (
-          <div key={index} className="flex items-center timing-item">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: 'easeIn', delay: 1 * index }}
+            key={index}
+            className="flex items-center timing-item"
+          >
             <Image
               src={item.iconSrc}
               alt={item.title}
@@ -108,7 +117,7 @@ export const Timing: FC<withSection> = ({ section }) => {
               </sup>
             </span>
             <span className="text-base md:text-xl">{item.title}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
       <div

@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import Image, { getImageProps } from 'next/image'
 import Link from 'next/link'
 import { useMemo } from 'react'
@@ -36,7 +39,12 @@ export const Place: PlaceComponent = ({ section }) => {
           backgroundImage: placeSrc,
         }}
       >
-        <div className="bg-wheat-100 pt-7 pl-7 pb-7 pr-7 rounded-[20px] shadow-xl text-center flex flex-col">
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeIn' }}
+          className="bg-wheat-100 pt-7 pl-7 pb-7 pr-7 rounded-[20px] shadow-xl text-center flex flex-col"
+        >
           <span className="font-trajan text-xl sm:text-2xl font-bold">
             Парк отель
           </span>
@@ -89,7 +97,7 @@ export const Place: PlaceComponent = ({ section }) => {
               </PrimaryButton>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </Section>
   )

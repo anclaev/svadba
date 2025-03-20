@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FC } from 'react'
 
@@ -28,14 +31,17 @@ export const DressCode: FC<withSection> = ({ section }) => {
       </Link>
       <div className="grid dress-code-colors max-w-[990px] w-[90%]">
         {DRESS_CODE_COLORS.map((color, index) => (
-          <div
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, ease: 'easeIn' }}
             key={index}
             className={`
               w-[100px] h-[100px]
               md:w-[150px] md:h-[150px] 
               rounded-full`}
             style={{ backgroundColor: color }}
-          ></div>
+          ></motion.div>
         ))}
       </div>
     </Section>

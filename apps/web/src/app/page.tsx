@@ -1,5 +1,5 @@
 import { OurBackground } from '@/features/our-background'
-import { WelcomeSection } from '@/features/welcome-section'
+import { Welcome } from '@/features/welcome'
 import { Section } from '@/shared/section'
 
 import { Timing } from '@/features/timing'
@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <main>
       <OurBackground />
-      <WelcomeSection />
+      <Welcome />
       {HOME_SECTIONS.map((section) => {
         switch (section.alias) {
           case 'timing': {

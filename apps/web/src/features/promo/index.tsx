@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 import { SignUpForm } from '@/widgets/login-dialog/sign-up-form'
@@ -20,17 +23,39 @@ export const Promo = () => (
         Пожалуйста, зарегистрируйтесь до 1 августа, чтобы мы могли филигранно
         организовать мероприятие.
       </span>
-      <div className="w-full flex flex-col items-center justify-center grow">
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 0.8, ease: 'easeIn' }}
+        className="w-full flex flex-col items-center justify-center grow"
+      >
         <SignUpForm className="promo__form" />
-      </div>
+      </motion.div>
       <div className="font-trajan">
-        <span className="block mb-7 lg:mb-10">
+        <motion.span
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeIn' }}
+          className="block mb-7 lg:mb-10"
+        >
           Мы ждём вас на нашей свадьбе!
-        </span>
-        <span className="block text-3xl lg:text-4xl mb-2 lg:mb-3">
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeIn', delay: 0.8 }}
+          className="block text-3xl lg:text-4xl mb-2 lg:mb-3"
+        >
           С любовью,
-        </span>
-        <span className="block text-4xl lg:text-5xl">Алина и Артём!</span>
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeIn', delay: 1.6 }}
+          className="block text-4xl lg:text-5xl"
+        >
+          Алина и Артём!
+        </motion.span>
       </div>
     </div>
     <Image
