@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { Button } from '@/shared/ui/button'
@@ -34,7 +34,7 @@ import { Turnstile } from '@/shared/turnstile'
 
 import type { TurnstileStatus } from '@/shared/turnstile/types'
 
-export const SignUpForm = () => {
+export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
   const [turnstileStatus, setTurnstileStatus] =
     useState<TurnstileStatus>('required')
 
@@ -74,7 +74,10 @@ export const SignUpForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={`space-y-6 ${className ? className : ''}`}
+      >
         <FormField
           control={form.control}
           name="name"
@@ -157,7 +160,7 @@ export const SignUpForm = () => {
         {/* {turnstileError && <Label>{turnstileError}</Label>} */}
 
         <Button type="submit" className="cursor-pointer float-right">
-          Войти
+          Зарегистрироваться
         </Button>
       </form>
     </Form>
