@@ -10,7 +10,6 @@ import { configSchema } from './config.schema'
  * */
 export const validate = (env: Record<string, any>): Record<string, any> => {
   const loggerOptions = loggerOptionsFactory({
-    label: 'Config',
     exitOnError: false,
   })
 
@@ -20,7 +19,7 @@ export const validate = (env: Record<string, any>): Record<string, any> => {
 
   if (!result.success) {
     result.error.errors.forEach((err) => {
-      logger.error(err.message)
+      logger.error(err.message, { context: 'Config' })
     })
 
     process.exit(1)

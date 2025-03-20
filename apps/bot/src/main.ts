@@ -25,7 +25,7 @@ async function bootstrap() {
   const port = config.env('PORT')
 
   await app.listen(port).finally(() => {
-    logger.log(`Сервис успешно запущен! (https://${host}:${port})`)
+    logger.log(`Сервис успешно запущен! (https://${host}:${port})`, 'App')
   })
 }
 

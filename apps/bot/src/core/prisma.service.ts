@@ -1,24 +1,19 @@
 import {
   INestApplication,
   Injectable,
-  LoggerService,
+  Logger,
   OnModuleInit,
 } from '@nestjs/common'
 
 import { PrismaClient } from '#prisma'
-
-import { loggerFactory } from './logger'
 
 /**
  * Сервис подключения к базе данных
  */
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
-  private readonly logger: LoggerService
-
-  constructor() {
+  constructor(private readonly logger: Logger) {
     super()
-    this.logger = loggerFactory({ label: 'Prisma' })
   }
 
   // istanbul ignore next
@@ -28,19 +23,21 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
       // istanbul ignore next
       .catch(() => {
         // istanbul ignore next
-        this.logger.error('Ошибка подключения к базе данных!', {
-          label: 'Prisma',
-        })
+        this.logger.error(
+          'Ошибка подключения к базе данных!',
+          {},
+          PrismaService.name
+        )
         // istanbul ignore next
         process.exit(1)
       })
       // istanbul ignore next
       .then(() => {
         // istanbul ignore next
-        this.logger.log({
-          message: 'Подключение к базе данных установлено!',
-          level: 'info',
-        })
+        this.logger.log(
+          'Подключение к базе данных установлено!',
+          PrismaService.name
+        )
       })
 
     // istanbul ignore next
