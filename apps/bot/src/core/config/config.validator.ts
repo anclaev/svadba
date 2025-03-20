@@ -1,7 +1,7 @@
 import { createLogger } from 'winston'
 
-import { configSchema } from '#infra/core/config/config.schema'
-import { loggerOptionsFactory } from '#infra/core/logger'
+import { loggerOptionsFactory } from '../logger'
+import { configSchema } from './config.schema'
 
 /**
  * Валидация конфигурации приложения

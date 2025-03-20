@@ -19,10 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "#infra/*": ["./src/infra/*"],
-      "#app/*": ["./src/app/*"],
-      "#api/*": ["./src/api/*"],
-      "#domain/*": ["./src/domain/*"],
+      "#/*": ["./src/*"],
       "#prisma": ["./generated/client/index"]
     }
   }

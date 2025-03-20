@@ -2,10 +2,10 @@ import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.i
 import { NestFactory } from '@nestjs/core'
 import * as fs from 'fs'
 
-import { AppModule } from '#app/app.module'
+import { AppModule } from '#/app/app.module'
 
-import { ConfigService } from '#infra/core/config/config.service'
-import { loggerFactory } from '#infra/core/logger'
+import { ConfigService } from '#/core/config/config.service'
+import { loggerFactory } from '#/core/logger'
 
 async function bootstrap() {
   const logger = loggerFactory({})

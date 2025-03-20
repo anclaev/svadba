@@ -11,13 +11,13 @@ import {
 import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import { Telegraf } from 'telegraf'
 
-import { BOT_NAME } from '#infra/core'
+import { BOT_NAME } from '../core/constants'
 
-import { TelegrafExceptionFilter } from '#infra/core/telegram/filters/telegraf-exception.filter'
-import { AdminGuard } from '#infra/core/telegram/guards/admin.guard'
-import { ResponseTimeInterceptor } from '#infra/core/telegram/interceptors/response-time.interceptor'
-import { Context } from '#infra/core/telegram/interfaces/context.interface'
-import { ReverseTextPipe } from '#infra/core/telegram/pipes/reverse-text.pipe'
+import { TelegrafExceptionFilter } from './filters/telegraf-exception.filter'
+import { AdminGuard } from './guards/admin.guard'
+import { ResponseTimeInterceptor } from './interceptors/response-time.interceptor'
+import { Context } from './interfaces/context.interface'
+import { ReverseTextPipe } from './pipes/reverse-text.pipe'
 
 @Update()
 @UseInterceptors(ResponseTimeInterceptor)

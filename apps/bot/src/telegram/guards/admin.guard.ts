@@ -2,7 +2,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { TelegrafException, TelegrafExecutionContext } from 'nestjs-telegraf'
 
-import { Context } from '#infra/core/telegram/interfaces/context.interface'
+import { Context } from '../interfaces/context.interface'
 
 @Injectable()
 export class AdminGuard implements CanActivate {

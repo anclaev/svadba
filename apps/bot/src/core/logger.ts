@@ -2,7 +2,7 @@ import { LoggerService } from '@nestjs/common'
 import { WinstonModule } from 'nest-winston'
 import { format, LoggerOptions, transports } from 'winston'
 
-import { APP_NAME } from '#infra/core'
+import { APP_NAME } from './constants'
 
 /**
  * Параметры логгера

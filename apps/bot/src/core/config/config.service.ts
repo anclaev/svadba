@@ -1,5 +1,5 @@
-import { ConfigService as RootConfigService } from '@nestjs/config'
 import { Injectable } from '@nestjs/common'
+import { ConfigService as RootConfigService } from '@nestjs/config'
 
 import { Config } from './config.schema'
 

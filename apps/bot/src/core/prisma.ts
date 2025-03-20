@@ -7,7 +7,7 @@ import {
 
 import { PrismaClient } from '#prisma'
 
-import { loggerFactory } from '#infra/core/logger'
+import { loggerFactory } from './logger'
 
 /**
  * Сервис подключения к базе данных

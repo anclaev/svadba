@@ -3,16 +3,18 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { CqrsModule } from '@nestjs/cqrs'
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 
-import { InjectionToken } from '#app/injection-token'
+import { InjectionTokens } from '#/app/injection-tokens'
 
-import { ConfigModule } from '#infra/core/config/config.module'
-import { PrismaService } from '#infra/core/prisma'
-import { TelegramModule } from '#infra/core/telegram/telegram.module'
+import { PrismaService } from '#/core/prisma'
 
-import { AppController } from '#api/app.controller'
+import { ConfigModule } from '#/core/config/config.module'
+import { MinioModule } from '#/minio/minio.module'
+import { TelegramModule } from '#/telegram/telegram.module'
+
+import { AppController } from '#/api/app.controller'
 
 /**
- * Слой инфраструктуры приложения
+ * Инфраструктура приложения
  */
 const infra: Provider[] = [
   {
@@ -20,16 +22,16 @@ const infra: Provider[] = [
     useClass: ZodValidationPipe,
   },
   { provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor },
-  { provide: InjectionToken.PRISMA_SERVICE, useClass: PrismaService },
+  { provide: InjectionTokens.PRISMA_SERVICE, useClass: PrismaService },
 ]
 
 /**
- * Слой API приложения
+ * API приложения
  */
 const api = [AppController]
 
 @Module({
-  imports: [ConfigModule, CqrsModule, TelegramModule],
+  imports: [ConfigModule, CqrsModule, MinioModule, TelegramModule],
   controllers: [...api],
   providers: [...infra],
 })
