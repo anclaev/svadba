@@ -1,0 +1,26 @@
+.place-container {
+  background-size: cover;
+  background-position: right center;
+}
+
+@media (max-width: 768px) {
+  .place-container {
+    background-position: 75% center;
+    min-height: 300px;
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .place-container {
+    padding: 20px;
+  }
+
+  .place-container > div {
+    width: 100%;
+  }
+
+  .place-button {
+    width: 100%;
+  }
+}

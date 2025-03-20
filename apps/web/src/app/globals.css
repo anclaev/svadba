@@ -156,3 +156,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+.link {
+  position: relative;
+}
+
+.link:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background-color: var(--color-chamoisee-700);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.link:hover:after {
+  opacity: 1;
+}
