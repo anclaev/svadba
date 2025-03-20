@@ -16,6 +16,7 @@ const config: Config = {
     // ...
     '^@/(.*)$': '<rootDir>/$1',
   },
+  passWithNoTests: true,
 }
 
 export default createJestConfig(config)

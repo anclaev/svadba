@@ -1,0 +1,9 @@
+#turnstile-widget {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+#turnstile-widget.hidden {
+  display: none !important;
+}

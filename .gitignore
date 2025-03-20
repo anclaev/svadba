@@ -5,6 +5,7 @@ node_modules
 .pnp
 .pnp.*
 
+
 # Local env files
 .env
 .env.local
@@ -38,3 +39,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 junit.xml
+
+# SSL 
+*.crt
+*.key

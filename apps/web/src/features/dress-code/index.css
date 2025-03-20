@@ -1,0 +1,18 @@
+.dress-code-colors {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  justify-items: center;
+  grid-gap: 30px 60px;
+}
+
+@media (max-width: 768px) {
+  .dress-code-colors {
+    grid-gap: 15px 30px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .dress-code-colors {
+    grid-gap: 15px 15px;
+  }
+}

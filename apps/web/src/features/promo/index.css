@@ -1,0 +1,13 @@
+.promo__form {
+  width: 100%;
+  max-width: 500px;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+.promo__form > *:not(button) {
+  width: 100%;
+}

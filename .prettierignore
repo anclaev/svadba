@@ -2,3 +2,5 @@ node_modules
 .turbo
 .yarn
 generated
+docker
+config

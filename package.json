@@ -1,16 +1,24 @@
 {
   "name": "@av/svadba",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Project of Svadba",
   "author": "Artem Samarin <av@anclaev.ru>",
   "private": true,
   "scripts": {
     "build": "turbo run build",
-    "dev": "turbo run dev",
+    "dev": "NODE_ENV=development turbo run dev",
+    "dev:web": "NODE_ENV=development turbo dev --filter=web",
+    "dev:bot": "NODE_ENV=development turbo dev --filter=bot",
+    "build:web": "turbo run build --filter=web",
+    "build:bot": "turbo run build --filter=bot",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md}\"",
     "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "standard-version",
+    "release:minor": "standard-version --release-as minor",
+    "release:patch": "standard-version --release-as patch",
+    "release:major": "standard-version --release-as major"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",
@@ -18,7 +26,10 @@
     "cz-customizable": "^7.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.0",
+    "mkcert": "^3.2.0",
     "prettier": "^3.5.3",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "ts-node": "^10.9.2",
     "turbo": "^2.4.4",
     "typescript": "5.8.2"
   },
@@ -47,5 +58,8 @@
     "*.{js,jsx,ts,tsx,css,md}": [
       "yarn format"
     ]
+  },
+  "dependencies": {
+    "standard-version": "^9.5.0"
   }
 }

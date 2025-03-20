@@ -1,0 +1,42 @@
+.primary-button {
+  position: relative;
+  --line-width: 60px;
+}
+
+.primary-button:after,
+.primary-button:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--color-wheat-100);
+  width: var(--line-width);
+  height: 1px;
+  transition: width 0.5s;
+}
+
+.primary-button:before {
+  left: 0;
+}
+
+.primary-button:after {
+  right: 0;
+}
+
+.primary-button:hover {
+  --line-width: 0px;
+}
+
+@media (max-width: 768px) {
+  .primary-button {
+    --line-width: 40px;
+  }
+}
+
+@media (max-width: 500px) {
+  .primary-button {
+    --line-width: 20px;
+    padding: 12px 36px;
+    font-size: 14px;
+  }
+}

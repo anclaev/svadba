@@ -1,11 +1,12 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "ui": "stream",
+  "globalEnv": ["DATABASE_URL", "TELEGRAM_BOT_TOKEN", "NODE_ENV"],
   "tasks": {
     "build": {
       "dependsOn": ["^db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -26,12 +27,10 @@
     },
     "db:migrate": {
       "cache": false,
-      "persistent": true,
-      "env": ["DATABASE_URL"]
+      "persistent": true
     },
     "db:deploy": {
-      "cache": false,
-      "env": ["DATABASE_URL"]
+      "cache": false
     },
     "test": {},
     "test:cov": {},
