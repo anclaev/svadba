@@ -34,14 +34,14 @@ enum GuestRole {
 
 model User {
   id                 Int              @id @default(autoincrement())
-  telegramId         Int              @unique @map("telegram_id")
+  telegramId         Int?             @unique @map("telegram_id")
   status             UserStatus       @default(CREATED)
   role               UserRole         @default(PUBLIC)
   login              String           @unique
   password           String
   name               String
   isTelegramVerified Boolean          @default(false) @map("telegram_verified")
-  createdAt          DateTime         @default(now()) @map("created_at")
+  createdAt          DateTime?        @default(now()) @map("created_at")
   guest              Guest?
   uploads            Upload[]
   externalLinks      ExternalLink[]
@@ -50,13 +50,13 @@ model User {
 }
 
 model Guest {
-  id        Int       @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   side      Side
-  role      GuestRole @default(GUEST)
+  role      GuestRole? @default(GUEST)
   answers   Json?
-  createdAt DateTime  @default(now()) @map("created_at")
-  user      User      @relation(fields: [userId], references: [id])
-  userId    Int       @unique @map("user_id")
+  createdAt DateTime?  @default(now()) @map("created_at")
+  user      User       @relation(fields: [userId], references: [id])
+  userId    Int        @unique @map("user_id")
 }
 
 model Upload {

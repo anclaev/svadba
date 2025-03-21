@@ -1,7 +1,15 @@
-import { Controller, Post } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Post,
+} from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 
-import { User } from '#/users/domain/user'
+import { CreateUserDto } from './dtos/create-user.dto'
+
+import { User } from '../domain/user'
 
 import { CreateUserCommand } from '../application/commands/create-user.command'
 
@@ -10,7 +18,20 @@ export class UserController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post('create')
-  async createUser(): Promise<User> {
-    return await this.commandBus.execute(new CreateUserCommand())
+  async createUser(@Body() dto: CreateUserDto): Promise<User> {
+    const result = await this.commandBus.execute(new CreateUserCommand(dto))
+
+    if (!(result instanceof User)) {
+      switch (result) {
+        case 'USER_ALREADY_EXISTS': {
+          throw new ConflictException('Пользователь уже создан.')
+        }
+        default: {
+          throw new BadRequestException(result)
+        }
+      }
+    }
+
+    return result
   }
 }

@@ -1,9 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-
-import { UserRepository } from '#/users/domain/user.repository'
+import * as argon2 from 'argon2'
 
 import { User } from '#/users/domain/user'
+import { UserRepository } from '#/users/domain/user.repository'
+
 import { CreateUserCommand } from './create-user.command'
+
+import { UserError } from '#/users/infra/errors'
 
 @CommandHandler(CreateUserCommand)
 export class CreateUserCommandHandler
@@ -11,13 +14,22 @@ export class CreateUserCommandHandler
 {
   constructor(private repository: UserRepository) {}
 
-  async execute(): Promise<User> {
-    const user = new User()
+  async execute({ dto }: CreateUserCommand): Promise<User | UserError> {
+    const hashedPassword = await argon2.hash(dto.password)
 
-    await this.repository.save(user)
+    const user = new User({
+      ...dto,
+      password: hashedPassword,
+    })
 
-    user.commit()
+    const result = await this.repository.create(user)
 
-    return user
+    if (!result) {
+      return UserError.USER_ALREADY_EXISTS
+    }
+
+    result.commit()
+
+    return result
   }
 }
