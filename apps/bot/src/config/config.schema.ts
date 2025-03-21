@@ -29,7 +29,7 @@ export const configSchema = z.object({
     .nonempty({ message: 'Хост S3-хранилища не установлен' }),
   S3_PORT: z.coerce
     .number({ message: 'Порт S3-хранилища не установлен' })
-    .min(1000)
+    .min(1)
     .max(10000),
   S3_BUCKET: z
     .string({ message: 'Имя бакета S3-хранилища не установлено' })
