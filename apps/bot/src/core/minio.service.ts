@@ -19,9 +19,7 @@ export class MinioService extends Minio.Client implements OnModuleInit {
       port: config.env('S3_PORT'),
       accessKey: config.env('S3_ACCESS_TOKEN'),
       secretKey: config.env('S3_SECRET_TOKEN'),
-      useSSL:
-        config.env('NODE_ENV') === 'staging' ||
-        config.env('NODE_ENV') === 'production',
+      useSSL: false,
     })
     this.bucket = config.env('S3_BUCKET')
   }
