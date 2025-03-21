@@ -1,6 +1,6 @@
 import { createLogger } from 'winston'
 
-import { loggerOptionsFactory } from '../logger'
+import { loggerOptionsFactory } from '#/common/logger'
 import { configSchema } from './config.schema'
 
 /**

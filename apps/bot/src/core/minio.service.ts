@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
 import * as Minio from 'minio'
 
-import { ConfigService } from './config/config.service'
+import { ConfigService } from '../config/config.service'
 
 /**
  * Сервис подключения к Minio

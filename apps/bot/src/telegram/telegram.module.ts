@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common'
 import { TelegrafModule } from 'nestjs-telegraf'
 
-import { BOT_NAME } from '../core/constants'
+import { BOT_NAME } from '../common/constants'
 
-import { ConfigModule } from '../core/config/config.module'
-import { ConfigService } from '../core/config/config.service'
+import { ConfigModule } from '../config/config.module'
+import { ConfigService } from '../config/config.service'
 
 import { EchoModule } from './echo.module'
 

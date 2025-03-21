@@ -4,8 +4,9 @@ import * as fs from 'fs'
 
 import { AppModule } from '#/app/app.module'
 
-import { ConfigService } from '#/core/config/config.service'
-import { loggerFactory } from '#/core/logger'
+import { loggerFactory } from '#/common/logger'
+
+import { ConfigService } from '#/config/config.service'
 
 async function bootstrap() {
   const logger = loggerFactory({})

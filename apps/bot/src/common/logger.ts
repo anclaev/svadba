@@ -5,7 +5,7 @@ import {
 } from 'nest-winston'
 import { format, LoggerOptions, transports } from 'winston'
 
-import { APP_NAME } from './constants'
+import { APP_NAME } from '../common/constants'
 
 /**
  * Параметры логгера

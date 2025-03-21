@@ -11,7 +11,7 @@ import {
 import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import { Telegraf } from 'telegraf'
 
-import { BOT_NAME } from '../core/constants'
+import { BOT_NAME } from '../common/constants'
 
 import { TelegrafExceptionFilter } from './filters/telegraf-exception.filter'
 import { AdminGuard } from './guards/admin.guard'
