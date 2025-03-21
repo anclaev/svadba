@@ -1,17 +1,23 @@
 import { Module } from '@nestjs/common'
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { CqrsModule } from '@nestjs/cqrs'
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 
 import { ConfigModule } from '#/config/config.module'
 import { CoreModule } from '#/core/core.module'
 import { TelegramModule } from '#/telegram/telegram.module'
 import { UploadModule } from '#/upload/upload.module'
+import { UsersModule } from '#/users/users.module'
 
 import { AppController } from './app.controller'
 
 @Module({
-  imports: [CqrsModule, ConfigModule, CoreModule, TelegramModule, UploadModule],
+  imports: [
+    ConfigModule,
+    CoreModule,
+    TelegramModule,
+    UploadModule,
+    UsersModule,
+  ],
   controllers: [AppController],
   providers: [
     {
