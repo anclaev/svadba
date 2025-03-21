@@ -19,7 +19,10 @@ async function bootstrap() {
     httpsOptions.key = fs.readFileSync('./src/certs/localhost.key')
   }
 
-  const app = await NestFactory.create(AppModule, { logger, httpsOptions })
+  const app = await NestFactory.create(AppModule, {
+    logger,
+    httpsOptions: isDev ? httpsOptions : undefined,
+  })
 
   const config = app.get(ConfigService)
   const host = config.env('HOST')
