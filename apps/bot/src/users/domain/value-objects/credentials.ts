@@ -1,6 +1,6 @@
-import { JsonValue } from "@prisma/client/runtime/library"
+import { JsonValue } from '@prisma/client/runtime/library'
 
-import type { Credentials as CredentialsType } from "../../infra/types"
+import type { Credentials as CredentialsType } from '../../infra/types'
 
 export class Credentials {
   public version: number

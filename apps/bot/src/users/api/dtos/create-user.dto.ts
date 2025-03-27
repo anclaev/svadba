@@ -1,3 +1,4 @@
+import { ApiSchema } from '@nestjs/swagger'
 import { createZodDto } from 'nestjs-zod'
 import { z } from 'zod'
 
@@ -34,4 +35,8 @@ const CreateUserSchema = z.object({
     .optional(),
 })
 
+@ApiSchema({
+  name: 'CreateUserDto',
+  description: 'Данные для создания пользователя',
+})
 export class CreateUserDto extends createZodDto(CreateUserSchema) {}

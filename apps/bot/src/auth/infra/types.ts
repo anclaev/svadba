@@ -1,4 +1,4 @@
-import { User } from "#/users/domain/user"
+import { User } from '#/users/domain/user'
 
 export type LoginResult = {
   user: User
@@ -8,15 +8,15 @@ export type LoginResult = {
 }
 
 export const Tokens = {
-  ACCESS: "ACCESS",
-  REFRESH: "REFRESH",
-  CONFIRMATION: "CONFIRMATION",
-  RESET: "RESET",
+  ACCESS: 'ACCESS',
+  REFRESH: 'REFRESH',
+  CONFIRMATION: 'CONFIRMATION',
+  RESET: 'RESET',
 } as const
 
 export const Cookies = {
-  AUTH_COOKIE: "auth-cookie",
-  REFRESH_COOKIE: "refresh-cookie",
+  AUTH_COOKIE: 'auth-cookie',
+  REFRESH_COOKIE: 'refresh-cookie',
 } as const
 
 export type Tokens = (typeof Tokens)[keyof typeof Tokens]

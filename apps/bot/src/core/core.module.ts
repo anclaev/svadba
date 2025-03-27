@@ -1,12 +1,13 @@
 import { createKeyv } from '@keyv/redis'
+import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Global, Logger, Module } from '@nestjs/common'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { seconds, ThrottlerModule } from '@nestjs/throttler'
 import Redis from 'ioredis'
 
 import { ConfigService } from '#/config/config.service'
-
-import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
-import { seconds, ThrottlerModule } from '@nestjs/throttler'
+import { join } from 'path'
 import { MinioService } from './minio.service'
 import { PrismaService } from './prisma.service'
 import { RedisService } from './redis.service'
@@ -45,6 +46,9 @@ import { RedisService } from './redis.service'
           })
         ),
       }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'assets'),
     }),
   ],
   providers: [Logger, PrismaService, MinioService, RedisService],

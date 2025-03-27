@@ -25,6 +25,6 @@ export class UploadService {
 
     return this.minio.putObject(this.bucket, filename, file.buffer, file.size, {
       mimetype: file.mimetype,
-    }) as Promise<UploadedObjectInfo>
+    })
   }
 }

@@ -1,3 +1,3 @@
-import { GetUserHandler } from "./get-user.handler"
+import { GetUserHandler } from './get-user.handler'
 
 export default [GetUserHandler]

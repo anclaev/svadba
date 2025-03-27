@@ -1,6 +1,6 @@
-import { CanActivate, ExecutionContext, mixin, Type } from "@nestjs/common"
-import { IReqWithUser } from "#/auth/infra/interfaces"
-import { UserRole } from "#prisma"
+import { IReqWithUser } from '#/auth/infra/interfaces'
+import { UserRole } from '#prisma'
+import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common'
 
 export const RolesGuard = (roles?: UserRole[]): Type<CanActivate> => {
   class RoleGuardMixin implements CanActivate {

@@ -10,6 +10,16 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common'
+import {
+  ApiBody,
+  ApiConflictResponse,
+  ApiCookieAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { ThrottlerGuard } from '@nestjs/throttler'
 import { randomUUID } from 'crypto'
 import { Request, Response } from 'express'
 
@@ -23,9 +33,8 @@ import { AuthenticatedUser } from '../application/decorators/user.decorator'
 import { LocalAuthGuard } from '../application/guards/local-auth.guard'
 import { RefreshGuard } from '../application/guards/refresh.guard'
 
+import { LoginDto } from './dtos/login.dto'
 import { SignUpDto } from './dtos/sign-up.dto'
-
-import { ThrottlerGuard } from '@nestjs/throttler'
 
 import {
   AuthCookieData,
@@ -34,6 +43,7 @@ import {
   Tokens,
 } from '../infra/types'
 
+@ApiTags('Авторизация')
 @Controller('auth')
 @UseGuards(ThrottlerGuard)
 export class AuthController {
@@ -46,12 +56,22 @@ export class AuthController {
     this.NODE_ENV = this.config.env('NODE_ENV')
   }
 
+  @ApiOperation({ summary: 'Получение данных о себе' })
+  @ApiCookieAuth()
+  @ApiUnauthorizedResponse({ description: 'Пользователь не авторизован' })
+  @ApiOkResponse({ description: 'Данные о пользователе', type: User })
   @Auth()
   @Get()
   getAuthenticatedUser(@AuthenticatedUser() authenticatedUser: User): User {
     return authenticatedUser
   }
 
+  @ApiOperation({ summary: 'Регистрация пользователя' })
+  @ApiBody({ description: 'Данные для регистрации', type: SignUpDto })
+  @ApiOkResponse({ description: 'Данные о пользователе', type: User })
+  @ApiConflictResponse({
+    description: 'Гость с данным логином уже зарегистрирован.',
+  })
   @Post('sign-up')
   @HttpCode(200)
   async signUp(
@@ -80,6 +100,10 @@ export class AuthController {
     return user
   }
 
+  @ApiOperation({ summary: 'Авторизация пользователя через пароль' })
+  @ApiBody({ description: 'Данные для авторизации', type: LoginDto })
+  @ApiUnauthorizedResponse({ description: 'Неверные учетные данные' })
+  @ApiOkResponse({ description: 'Данные о пользователе', type: User })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(200)
@@ -95,6 +119,12 @@ export class AuthController {
     return user
   }
 
+  @ApiOperation({ summary: 'Обновление токена доступа' })
+  @ApiOkResponse({ description: 'Токен доступа обновлен', example: 'ok' })
+  @ApiUnauthorizedResponse({
+    description: 'Ошибка обновления токена',
+  })
+  @ApiCookieAuth()
   @Get('refresh')
   @UseGuards(RefreshGuard)
   async refreshToken(
@@ -119,6 +149,10 @@ export class AuthController {
     return { message: 'ok' }
   }
 
+  @ApiOperation({ summary: 'Выход пользователя' })
+  @ApiOkResponse({ description: 'Выход пользователя выполнен' })
+  @ApiUnauthorizedResponse({ description: 'Пользователь не авторизован' })
+  @ApiCookieAuth()
   @Auth()
   @Post('logout')
   @HttpCode(200)

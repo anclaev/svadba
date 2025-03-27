@@ -6,7 +6,7 @@ import {
   User,
   UserRole,
   UserStatus,
-} from "#prisma"
+} from '#prisma'
 
 export type GuestAnswers = Prisma.JsonValue
 

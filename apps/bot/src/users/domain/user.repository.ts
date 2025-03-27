@@ -1,4 +1,4 @@
-import { User } from "./user"
+import { User } from './user'
 
 export abstract class UserRepository {
   abstract create(user: User): Promise<User | null>

@@ -1,6 +1,6 @@
-import { Request } from "express"
+import { Request } from 'express'
 
-import { User } from "#/users/domain/user"
+import { User } from '#/users/domain/user'
 
 export interface ISingleJwt {
   secret: string

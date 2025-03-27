@@ -1,11 +1,11 @@
-import { Cache, CACHE_MANAGER } from "@nestjs/cache-manager"
-import { Inject, Injectable, Logger, OnModuleInit } from "@nestjs/common"
+import { Cache, CACHE_MANAGER } from '@nestjs/cache-manager'
+import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common'
 
 @Injectable()
 export class RedisService implements OnModuleInit {
   constructor(
     @Inject(CACHE_MANAGER) private cache: Cache,
-    private readonly logger: Logger,
+    private readonly logger: Logger
   ) {}
 
   async onModuleInit() {
@@ -16,16 +16,16 @@ export class RedisService implements OnModuleInit {
     // })
 
     try {
-      await this.cache.set("init", "init", 100)
+      await this.cache.set('init', 'init', 100)
 
       this.logger.log(
-        "Подключение к серверу Redis установлено!",
-        "RedisService",
+        'Подключение к серверу Redis установлено!',
+        'RedisService'
       )
 
-      await this.cache.del("init")
+      await this.cache.del('init')
     } catch {
-      this.logger.error("Ошибка подключения к серверу Redis", "RedisService")
+      this.logger.error('Ошибка подключения к серверу Redis', 'RedisService')
       process.exit(1)
     }
   }

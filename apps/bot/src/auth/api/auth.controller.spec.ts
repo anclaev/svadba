@@ -5,7 +5,7 @@
 // import { ConfigService } from "#/config/config.service"
 // import { AuthService } from "../application/auth.service"
 
-describe("AuthController", () => {
+describe('AuthController', () => {
   // let controller: AuthController
 
   // beforeEach(async () => {
@@ -26,7 +26,7 @@ describe("AuthController", () => {
   //   controller = module.get<AuthController>(AuthController)
   // })
 
-  it("should be defined", () => {
+  it('should be defined', () => {
     // expect(controller).toBeDefined()
     expect(2 * 2).toBe(4)
   })

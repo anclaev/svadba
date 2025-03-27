@@ -1,23 +1,77 @@
-import { UserRole, UserStatus } from "#prisma"
-import * as argon2 from "argon2"
-import { Exclude } from "class-transformer"
+import { UserRole, UserStatus } from '#prisma'
+import { ApiProperty, ApiSchema } from '@nestjs/swagger'
+import * as argon2 from 'argon2'
+import { Exclude } from 'class-transformer'
 
-import { RootAggregate } from "#/common/root-aggregate"
+import { RootAggregate } from '#/common/root-aggregate'
 
-import { Credentials } from "./value-objects/credentials"
-import { Guest } from "./value-objects/guest"
+import { Credentials } from './value-objects/credentials'
+import { Guest } from './value-objects/guest'
 
-import type { CreateUserProps, SavedUserModel, UserModel } from "../infra/types"
+import type { CreateUserProps, SavedUserModel, UserModel } from '../infra/types'
 
+@ApiSchema({ name: 'Пользователь', description: 'Схема пользователя' })
 export class User extends RootAggregate {
+  @ApiProperty({
+    description: 'Идентификатор пользователя',
+    example: 1,
+    type: 'number',
+  })
   private id: number | null = null
+
+  @ApiProperty({
+    description: 'ID аккаунта Telegram',
+    example: 56938452783,
+    type: 'number',
+  })
   private telegramId: number | null
+
+  @ApiProperty({
+    description: 'Статус аккаунта',
+    type: 'string',
+    example: 'CREATED',
+  })
   public status: UserStatus
+
+  @ApiProperty({
+    description: 'Системная роль пользователя',
+    type: 'string',
+    example: 'PUBLIC',
+  })
   public role: UserRole
+
+  @ApiProperty({
+    description: 'Логин пользователя',
+    type: 'string',
+    example: 'John_Doe',
+  })
   public login: string
+
+  @ApiProperty({
+    description: 'Имя пользователя',
+    type: 'string',
+    example: 'John Doe',
+  })
   public name: string
+
+  @ApiProperty({
+    description: 'Подтверждён ли Telegram',
+    type: 'boolean',
+    example: false,
+  })
   public isTelegramVerified: boolean
+
+  @ApiProperty({
+    description: 'Информация о госте',
+    type: () => Guest,
+  })
   public guest?: Guest | null
+
+  @ApiProperty({
+    description: 'Дата создания пользователя',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
   public createdAt: Date | null = null
 
   @Exclude()
@@ -44,7 +98,7 @@ export class User extends RootAggregate {
       dto.guestRole,
       dto.answers,
       dto.guestCreatedAt,
-      dto.guestId,
+      dto.guestId
     )
 
     this.credentials = dto.credentials
@@ -63,8 +117,8 @@ export class User extends RootAggregate {
       createdAt: data.createdAt ? data.createdAt : undefined,
       password: data.password,
       name: data.name,
-      side: data.guest ? data.guest.side : "BRIDE",
-      guestRole: data.guest && data.guest.role ? data.guest.role : "GUEST",
+      side: data.guest ? data.guest.side : 'BRIDE',
+      guestRole: data.guest && data.guest.role ? data.guest.role : 'GUEST',
       answers: data.guest ? data.guest.answers : {},
       guestId: data.guest ? data.guest.id : undefined,
       guestCreatedAt:

@@ -1,7 +1,7 @@
-import { applyDecorators, SetMetadata, UseGuards } from "@nestjs/common"
-import { UserRole } from "#prisma"
+import { UserRole } from '#prisma'
+import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common'
 
-import { RolesGuard } from "../guards/roles.guard"
+import { RolesGuard } from '../guards/roles.guard'
 
 export const Roles = (roles?: UserRole[]) =>
-  applyDecorators(SetMetadata("roles", roles), UseGuards(RolesGuard(roles)))
+  applyDecorators(SetMetadata('roles', roles), UseGuards(RolesGuard(roles)))
