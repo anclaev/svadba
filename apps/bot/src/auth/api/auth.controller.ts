@@ -224,7 +224,7 @@ export class AuthController {
       httpOnly: true,
       signed: true,
       secure: true,
-      path: '/auth/refresh',
+      path: '/api/auth/refresh',
       domain: this.config.env('HOST'),
       maxAge: this.config.env('JWT_REFRESH_TIME') * 1000,
     })

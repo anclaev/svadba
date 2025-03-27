@@ -18,6 +18,9 @@ export const configSchema = z.object({
     .min(1000)
     .max(10000)
     .default(3001),
+  ORIGIN: z
+    .string({ message: 'Некорректная настройка CORS.' })
+    .default('localhost'),
   APP_VERSION: z
     .string({ message: 'Версия приложения не предоставлена.' })
     .nonempty({ message: 'Версия приложения не может быть пустой.' }),
