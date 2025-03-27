@@ -5,6 +5,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as compression from 'compression'
 import * as cookieParser from 'cookie-parser'
+import * as bearerToken from 'express-bearer-token'
 import * as fs from 'fs'
 import helmet from 'helmet'
 import { patchNestJsSwagger } from 'nestjs-zod'
@@ -46,6 +47,7 @@ async function bootstrap() {
   app.use(cookieParser(config.env('COOKIE_SECRET')))
   app.use(helmet())
   app.use(compression())
+  app.use(bearerToken())
 
   app.enableShutdownHooks()
 

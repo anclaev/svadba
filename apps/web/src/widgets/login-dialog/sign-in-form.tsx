@@ -21,6 +21,8 @@ import {
   SignInFormValues,
 } from '@/core/schemes/sign-in-form-schema'
 
+import { login } from '@/core/actions/login'
+
 import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
 import { Turnstile } from '@/shared/turnstile'
 
@@ -42,7 +44,7 @@ export const SignInForm = () => {
 
   const { errors } = form.formState
 
-  function onSubmit(values: SignInFormValues) {
+  async function onSubmit(values: SignInFormValues) {
     console.log(values)
 
     if (turnstileStatus !== 'success') {
@@ -51,6 +53,13 @@ export const SignInForm = () => {
     } else {
       setTurnstileError(null)
     }
+
+    const loginData = new FormData()
+
+    loginData.append('login', values.login)
+    loginData.append('login', values.password)
+
+    await login(loginData)
 
     toast('Личный кабинет в разработке.')
   }

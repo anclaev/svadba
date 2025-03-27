@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Request } from 'express'
-import { Strategy } from 'passport-jwt'
+import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { ConfigService } from '#/config/config.service'
 
@@ -23,16 +23,27 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
       ignoreExpiration: false,
       passReqToCallback: true,
       secretOrKey: config.env('JWT_REFRESH_SECRET'),
-      jwtFromRequest: (req) => {
-        const data = req.signedCookies[
-          Cookies.REFRESH_COOKIE
-        ] as RefreshCookieData
-        if (!data) {
-          return null
-        }
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        (req) => {
+          const data = req.signedCookies[
+            Cookies.REFRESH_COOKIE
+          ] as RefreshCookieData
+          if (!data) {
+            return null
+          }
 
-        return data.refresh_token
-      },
+          return data.refresh_token
+        },
+        (req: Request) => {
+          const token = req.token
+
+          if (!token) {
+            return null
+          }
+
+          return token
+        },
+      ]),
     })
   }
 
@@ -43,11 +54,17 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
 
     const data = req.signedCookies[Cookies.REFRESH_COOKIE] as RefreshCookieData
 
-    if (!data.refresh_token) {
+    const token: string | null = data
+      ? data.refresh_token
+        ? data.refresh_token
+        : null
+      : req.token || null
+
+    if (!token) {
       throw new UnauthorizedException('Некорректный токен обновления.')
     }
 
-    const user = await this.auth.verifyRefreshToken(data.refresh_token, payload)
+    const user = await this.auth.verifyRefreshToken(token, payload)
 
     if (isNull(user)) {
       throw new UnauthorizedException('Токен обновления просрочен.')

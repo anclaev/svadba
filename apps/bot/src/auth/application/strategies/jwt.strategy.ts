@@ -31,6 +31,15 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
           return data.access_token
         },
+        (req: Request) => {
+          const token = req.token
+
+          if (!token) {
+            return null
+          }
+
+          return token
+        },
       ]),
       secretOrKey: config.env('JWT_ACCESS_SECRET'),
       ignoreExpiration: false,

@@ -5577,6 +5577,7 @@ __metadata:
     eslint: "npm:^9.18.0"
     eslint-config-prettier: "npm:^10.0.1"
     eslint-plugin-prettier: "npm:^5.2.2"
+    express-bearer-token: "npm:^3.0.0"
     globals: "npm:^16.0.0"
     helmet: "npm:^8.1.0"
     ioredis: "npm:^5.6.0"
@@ -6682,7 +6683,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-parser@npm:^1.4.7":
+"cookie-parser@npm:^1.4.4, cookie-parser@npm:^1.4.7":
   version: 1.4.7
   resolution: "cookie-parser@npm:1.4.7"
   dependencies:
@@ -6717,6 +6718,13 @@ __metadata:
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
+  languageName: node
+  linkType: hard
+
+"cookie@npm:^1.0.1":
+  version: 1.0.2
+  resolution: "cookie@npm:1.0.2"
+  checksum: 10c0/fd25fe79e8fbcfcaf6aa61cd081c55d144eeeba755206c058682257cb38c4bd6795c6620de3f064c740695bb65b7949ebb1db7a95e4636efb8357a335ad3f54b
   languageName: node
   linkType: hard
 
@@ -8194,6 +8202,16 @@ __metadata:
   version: 3.1.2
   resolution: "exponential-backoff@npm:3.1.2"
   checksum: 10c0/d9d3e1eafa21b78464297df91f1776f7fbaa3d5e3f7f0995648ca5b89c069d17055033817348d9f4a43d1c20b0eab84f75af6991751e839df53e4dfd6f22e844
+  languageName: node
+  linkType: hard
+
+"express-bearer-token@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "express-bearer-token@npm:3.0.0"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    cookie-parser: "npm:^1.4.4"
+  checksum: 10c0/58b3b52c7533df9a18d1a2fca63766afe65b438f7415f41de6e7cd8dfd29e2e0c8f59cb964c6a0eb8fc051e0ab5ebc22bb1b3085a464148fb9da5cdce64b0d38
   languageName: node
   linkType: hard
 

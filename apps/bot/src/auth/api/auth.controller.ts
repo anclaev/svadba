@@ -38,6 +38,7 @@ import { SignUpDto } from './dtos/sign-up.dto'
 
 import {
   AuthCookieData,
+  Authorized,
   Cookies,
   RefreshCookieData,
   Tokens,
@@ -68,7 +69,10 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Регистрация пользователя' })
   @ApiBody({ description: 'Данные для регистрации', type: SignUpDto })
-  @ApiOkResponse({ description: 'Данные о пользователе', type: User })
+  @ApiOkResponse({
+    description: 'Данные о пользователе с токенами доступа',
+    type: User,
+  })
   @ApiConflictResponse({
     description: 'Гость с данным логином уже зарегистрирован.',
   })
@@ -77,7 +81,7 @@ export class AuthController {
   async signUp(
     @Body() dto: SignUpDto,
     @Res({ passthrough: true }) res: Response
-  ): Promise<User> {
+  ): Promise<Authorized> {
     const result = await this.auth.signUp(dto)
 
     if (typeof result === 'string') {
@@ -97,30 +101,36 @@ export class AuthController {
 
     this.setCookies(access_token, refresh_token, refresh_token_id, res)
 
-    return user
+    return { user, access_token, refresh_token }
   }
 
   @ApiOperation({ summary: 'Авторизация пользователя через пароль' })
   @ApiBody({ description: 'Данные для авторизации', type: LoginDto })
   @ApiUnauthorizedResponse({ description: 'Неверные учетные данные' })
-  @ApiOkResponse({ description: 'Данные о пользователе', type: User })
+  @ApiOkResponse({
+    description: 'Данные о пользователе с токенами доступа',
+    type: User,
+  })
   @UseGuards(LocalAuthGuard)
   @Post('login')
   @HttpCode(200)
   async login(
     @AuthenticatedUser() authenticatedUser: User,
     @Res({ passthrough: true }) res: Response
-  ) {
+  ): Promise<Authorized> {
     const { user, access_token, refresh_token, refresh_token_id } =
       await this.auth.login(authenticatedUser)
 
     this.setCookies(access_token, refresh_token, refresh_token_id, res)
 
-    return user
+    return { user, access_token, refresh_token }
   }
 
   @ApiOperation({ summary: 'Обновление токена доступа' })
-  @ApiOkResponse({ description: 'Токен доступа обновлен', example: 'ok' })
+  @ApiOkResponse({
+    description: 'Данные о пользователе с токенами доступа',
+    example: 'ok',
+  })
   @ApiUnauthorizedResponse({
     description: 'Ошибка обновления токена',
   })
@@ -130,7 +140,7 @@ export class AuthController {
   async refreshToken(
     @AuthenticatedUser() authenticatedUser: User,
     @Res({ passthrough: true }) res: Response
-  ) {
+  ): Promise<Authorized> {
     const refresh_token_id = randomUUID()
 
     const access_token = await this.auth.generateToken(
@@ -146,7 +156,7 @@ export class AuthController {
 
     this.setCookies(access_token, refresh_token, refresh_token_id, res)
 
-    return { message: 'ok' }
+    return { user: authenticatedUser, access_token, refresh_token }
   }
 
   @ApiOperation({ summary: 'Выход пользователя' })
