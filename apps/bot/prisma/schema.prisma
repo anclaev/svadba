@@ -43,6 +43,7 @@ model User {
   isTelegramVerified Boolean          @default(false) @map("telegram_verified")
   createdAt          DateTime?        @default(now()) @map("created_at")
   guest              Guest?
+  credentials        Json[]           @default([])
   uploads            Upload[]
   externalLinks      ExternalLink[]
   dresscodeColors    DresscodeColor[]

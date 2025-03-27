@@ -1,6 +1,6 @@
-import { GuestRole, Side } from '#prisma'
+import { GuestRole, Side } from "#prisma"
 
-import type { GuestAnswers } from '#/users/infra/types'
+import type { GuestAnswers } from "#/users/infra/types"
 
 export class Guest {
   private id: number | null
@@ -13,12 +13,14 @@ export class Guest {
     side: Side,
     role?: GuestRole,
     answers?: GuestAnswers,
-    createdAt?: Date
+    createdAt?: Date,
+    id?: number,
   ) {
     this.side = side
     this.role = role ?? GuestRole.GUEST
     this.answers = answers ?? {}
     this.createdAt = createdAt ?? null
+    this.id = id ?? null
   }
 
   public getId(): number | null {

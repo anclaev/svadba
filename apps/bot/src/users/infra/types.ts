@@ -6,7 +6,7 @@ import {
   User,
   UserRole,
   UserStatus,
-} from '#prisma'
+} from "#prisma"
 
 export type GuestAnswers = Prisma.JsonValue
 
@@ -23,6 +23,7 @@ export type SavedUserModel = User & {
 }
 
 export type CreateUserProps = {
+  id?: number
   login: string
   password: string
   name: string
@@ -31,6 +32,16 @@ export type CreateUserProps = {
   telegramId?: number
   status?: UserStatus
   role?: UserRole
+  guestId?: number
   guestRole?: GuestRole
+  guestCreatedAt?: Date
   answers?: Prisma.JsonValue
+  credentials?: Credentials[]
+  createdAt?: Date
+}
+
+export type Credentials = {
+  version: number
+  lastPassword: string | null
+  passwordUpdatedAt: Date | null
 }

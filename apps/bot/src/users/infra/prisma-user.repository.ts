@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable } from "@nestjs/common"
 
-import { PrismaService } from '#/core/prisma.service'
+import { PrismaService } from "#/core/prisma.service"
 
-import { User } from '../domain/user'
-import { UserRepository } from '../domain/user.repository'
+import { User } from "../domain/user"
+import { UserRepository } from "../domain/user.repository"
 
 @Injectable()
 export class PrismaUserRepository extends UserRepository {
@@ -37,6 +37,7 @@ export class PrismaUserRepository extends UserRepository {
         role: userModel.role,
         status: userModel.status,
         isTelegramVerified: userModel.isTelegramVerified,
+        credentials: [],
         guest: {
           create: {
             role: userModel.guest!.role,
@@ -50,9 +51,41 @@ export class PrismaUserRepository extends UserRepository {
       },
     })
 
-    user.fromModel(createdUserModel)
+    return User.fromModel(createdUserModel)
+  }
 
-    return user
+  async findById(id: number): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        guest: true,
+      },
+    })
+
+    if (!user) {
+      return null
+    }
+
+    return User.fromModel(user)
+  }
+
+  async findByLogin(login: string): Promise<User | null> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        login,
+      },
+      include: {
+        guest: true,
+      },
+    })
+
+    if (!user) {
+      return null
+    }
+
+    return User.fromModel(user)
   }
 
   // findById(id: string): User {

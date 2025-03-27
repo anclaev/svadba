@@ -1,22 +1,23 @@
-import { Module } from '@nestjs/common'
-import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
-import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
+import { Module } from "@nestjs/common"
+import { APP_INTERCEPTOR, APP_PIPE } from "@nestjs/core"
+import { ZodSerializerInterceptor, ZodValidationPipe } from "nestjs-zod"
 
-import { ConfigModule } from '#/config/config.module'
-import { CoreModule } from '#/core/core.module'
-import { TelegramModule } from '#/telegram/telegram.module'
-import { UploadModule } from '#/upload/upload.module'
-import { UsersModule } from '#/users/users.module'
+import { AuthModule } from "#/auth/auth.module"
+import { ConfigModule } from "#/config/config.module"
+import { CoreModule } from "#/core/core.module"
+import { TelegramModule } from "#/telegram/telegram.module"
+import { UsersModule } from "#/users/users.module"
 
-import { AppController } from './app.controller'
+import { AppController } from "./app.controller"
 
 @Module({
   imports: [
     ConfigModule,
     CoreModule,
     TelegramModule,
-    UploadModule,
+    // UploadModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
