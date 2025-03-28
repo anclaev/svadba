@@ -31,22 +31,27 @@ export async function fetchUserProfile(): Promise<FetchProfileActionResponse> {
     return { user: refreshResponse.user }
   }
 
-  const res = await fetch(
-    `${process.env.API_URL}${API_ENDPOINTS.AUTH_PROFILE}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}${API_ENDPOINTS.AUTH_PROFILE}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          mode: 'cors',
+        },
+      }
+    )
+
+    if (!res.ok) {
+      return { error: { message: 'Что-то пошло не так.' } }
     }
-  )
 
-  if (!res.ok) {
-    return { error: { message: 'Что-то пошло не так.' } }
+    const data = (await res.json()) as ApiAuthProfileResponse
+
+    return { user: data }
+  } catch {
+    return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
   }
-
-  const data = (await res.json()) as ApiAuthProfileResponse
-
-  return { user: data }
 }

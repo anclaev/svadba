@@ -53,7 +53,7 @@ export const Header = () => {
 
       <div className="grow-[0.33] flex items-center justify-end">
         {loading ? (
-          <div className="flex items-center space-x-0 sm:space-x-3 opacity-75">
+          <div className="flex items-center space-x-2 sm:space-x-3 opacity-75">
             <Skeleton className="h-7 w-7 rounded-full" />
             <div className="hidden sm:block space-y-2">
               <Skeleton className="h-2 w-[75px]" />

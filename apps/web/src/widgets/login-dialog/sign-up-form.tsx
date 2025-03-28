@@ -1,6 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -29,6 +31,10 @@ import {
   SignUpFormValues,
 } from '@/core/schemes/sign-up-form-schema'
 
+import { registerUser } from '@/core/actions/registerUser'
+import { useAuthStore } from '@/core/providers/auth-store-provider'
+import { useDialogStore } from '@/core/providers/dialog-store-provider'
+
 import { TURNSTILE_ERROR } from '@/core/constants/ui/errors'
 import { type TurnstileStatus, Turnstile } from '@/shared/turnstile'
 
@@ -40,6 +46,13 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
 
   const [turnstileError, setTurnstileError] = useState<string | null>(null)
 
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const router = useRouter()
+
+  const closeLogin = useDialogStore((store) => store.closeLogin)
+  const setUser = useAuthStore((store) => store.setUser)
+
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(SignUpFormSchema),
     defaultValues: {
@@ -47,7 +60,8 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
       password: '',
       confirmPassword: '',
       name: '',
-      side: 'Жених',
+      side: 'GROOM',
+      role: 'GUEST',
     },
   })
 
@@ -61,9 +75,7 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
     }
   }, [watchName, form])
 
-  function onSubmit(values: SignUpFormValues) {
-    console.log(values)
-
+  async function onSubmit(values: SignUpFormValues) {
     if (turnstileStatus !== 'success') {
       setTurnstileError(TURNSTILE_ERROR)
       return
@@ -71,7 +83,35 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
       setTurnstileError(null)
     }
 
-    toast('Регистрация в разработке.')
+    setLoading(true)
+    const res = await registerUser(values)
+    setLoading(false)
+
+    const { user, error } = res
+
+    if (error) {
+      toast(error.message)
+      form.resetField('login')
+      form.resetField('password')
+      form.resetField('confirmPassword')
+      return
+    }
+
+    setUser(user!)
+
+    closeLogin()
+
+    toast(`Добро пожаловать, ${user!.name}!`, {
+      cancel: {
+        label: 'Перейти в кабинет гостя',
+        onClick: () => {
+          router.push('/my')
+        },
+      },
+      className: 'flex flex-col width-auto',
+      duration: 60000,
+      closeButton: true,
+    })
   }
 
   return (
@@ -107,8 +147,31 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Жених">Жених (Артём)</SelectItem>
-                  <SelectItem value="Невеста">Невеста (Алина)</SelectItem>
+                  <SelectItem value="GROOM">Жених (Артём)</SelectItem>
+                  <SelectItem value="BRIDE">Невеста (Алина)</SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.side && <Label>{errors.side.message}</Label>}
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Кем вы приходитесь</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Роль" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="GUEST">Гость</SelectItem>
+                  <SelectItem value="CLOSE">Близкий</SelectItem>
+                  <SelectItem value="PARENT">Родственник</SelectItem>
                 </SelectContent>
               </Select>
               {errors.side && <Label>{errors.side.message}</Label>}
@@ -162,7 +225,11 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
         {/* {turnstileError && <Label>{turnstileError}</Label>} */}
 
         <Button type="submit" className="cursor-pointer float-right">
-          Зарегистрироваться
+          {loading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            'Зарегистрироваться'
+          )}
         </Button>
       </form>
     </Form>

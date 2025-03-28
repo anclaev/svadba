@@ -8,6 +8,7 @@ export const SIGN_UP_FORM_VALIDATION_ERRORS = {
   ...SIGN_IN_FORM_VALIDATION_ERRORS,
   NAME_NONEMPTY: 'Имя не может быть пустым.',
   SIDE_REQUIRED: 'Сторона обязательна.',
+  ROLE_REQUIRED: 'Роль обязательна.',
   CONFIRM_PASSWORD_INVALID: 'Пароли не совпадают.',
 } as const
 

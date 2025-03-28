@@ -73,6 +73,11 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Регистрация пользователя' })
   @ApiBody({ description: 'Данные для регистрации', type: SignUpDto })
+  @ApiQuery({
+    name: 'grant_type',
+    description: 'Тип получаемых токенов',
+    type: AuthParamsDto,
+  })
   @ApiOkResponse({
     description: 'Данные о пользователе с токенами доступа',
     type: User,
@@ -84,7 +89,8 @@ export class AuthController {
   @HttpCode(200)
   async signUp(
     @Body() dto: SignUpDto,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
+    @Query() authParams: AuthParamsDto
   ): Promise<Authorized> {
     const result = await this.auth.signUp(dto)
 
@@ -103,9 +109,15 @@ export class AuthController {
 
     const { user, access_token, refresh_token, refresh_token_id } = result
 
-    this.setCookies(access_token, refresh_token, refresh_token_id, res)
-
-    return { user, access_token, refresh_token }
+    switch (authParams.grant_type) {
+      case 'token': {
+        return { user, access_token, refresh_token, refresh_token_id }
+      }
+      default: {
+        this.setCookies(access_token, refresh_token, refresh_token_id, res)
+        return { user }
+      }
+    }
   }
 
   @ApiOperation({ summary: 'Авторизация пользователя через пароль' })

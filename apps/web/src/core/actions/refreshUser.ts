@@ -17,46 +17,51 @@ export async function refreshUser(): Promise<RefreshUserActionResponse> {
     return null
   }
 
-  const res = await fetch(
-    `${process.env.API_URL}${API_ENDPOINTS.AUTH_REFRESH}`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${refreshToken}`,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}${API_ENDPOINTS.AUTH_REFRESH}?grant_type=token`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${refreshToken}`,
+          mode: 'cors',
+        },
+      }
+    )
+
+    if (!res.ok) {
+      cookieStore.delete(COOKIES.REFRESH_TOKEN)
+      cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
+      return { error: { message: 'Ваша сессия завершена.' } }
     }
-  )
 
-  if (!res.ok) {
-    cookieStore.delete(COOKIES.REFRESH_TOKEN)
-    cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
-    return { error: { message: 'Ваша сессия завершена.' } }
+    const data = (await res.json()) as ApiAuthRefreshResponse
+
+    cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: Number(process.env.JWT_ACCESS_TIME),
+    })
+    cookieStore.set(COOKIES.REFRESH_TOKEN, data.refresh_token, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: Number(process.env.JWT_REFRESH_TIME),
+    })
+    cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
+      path: '/',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      maxAge: Number(process.env.JWT_REFRESH_TIME),
+    })
+
+    return data
+  } catch {
+    return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
   }
-
-  const data = (await res.json()) as ApiAuthRefreshResponse
-
-  cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
-    path: '/',
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    maxAge: Number(process.env.JWT_ACCESS_TIME),
-  })
-  cookieStore.set(COOKIES.REFRESH_TOKEN, data.refresh_token, {
-    path: '/',
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    maxAge: Number(process.env.JWT_REFRESH_TIME),
-  })
-  cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
-    path: '/',
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    maxAge: Number(process.env.JWT_REFRESH_TIME),
-  })
-
-  return data
 }

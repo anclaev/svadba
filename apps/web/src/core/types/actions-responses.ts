@@ -18,3 +18,8 @@ export type FetchProfileActionResponse = {
   user?: UserModel
   error?: AppError
 } | null
+
+export type RegisterUserActionResponse = {
+  user?: UserModel
+  error?: AppError
+}

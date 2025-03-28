@@ -43,7 +43,7 @@ export class User extends RootAggregate {
   @ApiProperty({
     description: 'Логин пользователя',
     type: 'string',
-    example: 'John_Doe',
+    example: 'JohnDoe',
   })
   public login: string
 

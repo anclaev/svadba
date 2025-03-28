@@ -73,13 +73,23 @@ export const SignInForm = () => {
       return
     }
 
-    toast(`Добро пожаловать, ${user!.name}!`)
-
     setUser(user!)
 
     closeLogin()
 
-    router.push('/my')
+    toast(`Добро пожаловать, ${user!.name}!`, {
+      cancel: {
+        label: 'Перейти в кабинет гостя',
+        onClick: () => {
+          router.push('/my')
+        },
+      },
+      className: 'flex flex-col width-auto',
+      duration: 60000,
+      closeButton: true,
+    })
+
+    // router.push('/my')
   }
 
   return (

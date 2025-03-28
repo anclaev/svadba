@@ -1,13 +1,21 @@
-import type { GuestRole } from '../models/user.model'
+import type { GuestRole, GuestSide } from '../models/user.model'
 
-const guestDictionary: {
+const guestRoleDictionary: {
   [key in GuestRole]: string
 } = {
   GROOM: 'Жених',
   BRIDE: 'Невеста',
-  PARENT: 'Родитель',
+  PARENT: 'Родственник',
   CLOSE: 'Близкий',
   GUEST: 'Гость',
 }
 
-export const parseGuestRole = (role: GuestRole) => guestDictionary[role]
+const guestSideDictionary: {
+  [key in GuestSide]: string
+} = {
+  BRIDE: 'Невеста',
+  GROOM: 'Жених',
+}
+
+export const parseGuestRole = (role: GuestRole) => guestRoleDictionary[role]
+export const parseGuestSide = (side: GuestSide) => guestSideDictionary[side]

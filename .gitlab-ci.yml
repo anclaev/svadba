@@ -10,7 +10,7 @@ default:
     - docker:28.0.1-dind
   before_script:
     - echo "Run build"
-  #   - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
+    - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
 .get_version: &get_version
   - "apk update && apk add bash"

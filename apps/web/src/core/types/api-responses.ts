@@ -15,3 +15,10 @@ export type ApiAuthRefreshResponse = {
 }
 
 export type ApiAuthProfileResponse = UserModel
+
+export type ApiSignUpResponse = {
+  user: UserModel
+  access_token: string
+  refresh_token: string
+  refresh_token_id: string
+}

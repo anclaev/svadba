@@ -10,8 +10,11 @@ export const SignUpFormSchema = z
     login: z
       .string({ message: SIGN_UP_FORM_VALIDATION_ERRORS.LOGIN_NONEMPTY })
       .nonempty({ message: SIGN_UP_FORM_VALIDATION_ERRORS.LOGIN_NONEMPTY }),
-    side: z.enum(['Жених', 'Невеста'], {
+    side: z.enum(['GROOM', 'BRIDE'], {
       message: SIGN_UP_FORM_VALIDATION_ERRORS.SIDE_REQUIRED,
+    }),
+    role: z.enum(['GUEST', 'CLOSE', 'PARENT'], {
+      message: SIGN_UP_FORM_VALIDATION_ERRORS.ROLE_REQUIRED,
     }),
     password: z
       .string({ message: SIGN_UP_FORM_VALIDATION_ERRORS.PASSWORD_INVALID })

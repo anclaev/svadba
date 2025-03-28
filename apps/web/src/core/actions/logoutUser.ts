@@ -15,26 +15,31 @@ export async function logoutUser(): Promise<boolean> {
     return false
   }
 
-  const res = await fetch(
-    `${process.env.API_URL}${API_ENDPOINTS.AUTH_LOGOUT}?rtid=${rtid}`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}${API_ENDPOINTS.AUTH_LOGOUT}?rtid=${rtid}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          mode: 'cors',
+        },
+      }
+    )
+
+    console.log(res)
+
+    if (!res.ok) {
+      return false
     }
-  )
 
-  console.log(res)
+    cookieStore.delete(COOKIES.ACCESS_TOKEN)
+    cookieStore.delete(COOKIES.REFRESH_TOKEN)
+    cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
 
-  if (!res.ok) {
+    return true
+  } catch {
     return false
   }
-
-  cookieStore.delete(COOKIES.ACCESS_TOKEN)
-  cookieStore.delete(COOKIES.REFRESH_TOKEN)
-  cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
-
-  return true
 }

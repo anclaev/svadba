@@ -20,7 +20,10 @@ export const LoginDialog = () => {
 
   return (
     <Dialog open={isLoginOpen}>
-      <DialogContent className="sm:max-w-[400px]" aria-describedby="Вход">
+      <DialogContent
+        className="sm:max-w-[400px] max-h-[calc(100vh-42px)] overflow-y-auto"
+        aria-describedby="Вход"
+      >
         <DialogHeader>
           <DialogTitle className="text-center font-normal">
             Добро пожаловать!

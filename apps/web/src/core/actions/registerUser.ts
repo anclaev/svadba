@@ -2,21 +2,22 @@
 
 import { cookies } from 'next/headers'
 
-import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
-import { COOKIES } from '@/core/constants/cookies'
+import { API_ENDPOINTS } from '../constants/api-endpoints'
+import { COOKIES } from '../constants/cookies'
 
-import type { AuthorizeUserActionPayload } from '@/core/types/actions-payloads'
-import type { AuthorizeUserActionResponse } from '@/core/types/actions-responses'
-import type { ApiAuthLoginResponse } from '@/core/types/api-responses'
+import type { ApiError } from '../types'
+import type { RegisterUserActionPayload } from '../types/actions-payloads'
+import type { RegisterUserActionResponse } from '../types/actions-responses'
+import type { ApiSignUpResponse } from '../types/api-responses'
 
-export async function authorizeUser(
-  payload: AuthorizeUserActionPayload
-): Promise<AuthorizeUserActionResponse> {
+export async function registerUser(
+  payload: RegisterUserActionPayload
+): Promise<RegisterUserActionResponse> {
   const cookieStore = await cookies()
 
   try {
     const res = await fetch(
-      `${process.env.API_URL}${API_ENDPOINTS.AUTH_LOGIN}?grant_type=token`,
+      `${process.env.API_URL}${API_ENDPOINTS.AUTH_SIGN_UP}?grant_type=token`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -26,10 +27,12 @@ export async function authorizeUser(
     )
 
     if (!res.ok) {
-      return { error: { message: 'Авторизация не пройдена.' } }
+      const { message } = (await res.json()) as ApiError
+
+      return { error: { message } }
     }
 
-    const data = (await res.json()) as ApiAuthLoginResponse
+    const data = (await res.json()) as ApiSignUpResponse
 
     cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
       path: '/',
