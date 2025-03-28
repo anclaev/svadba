@@ -8,7 +8,7 @@ default:
   image: docker:28.0.1
   services:
     - docker:28.0.1-dind
-  # before_script:
+  before_script:
   #   - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
 .get_version: &get_version
