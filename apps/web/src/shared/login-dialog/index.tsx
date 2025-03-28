@@ -8,12 +8,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/shared/ui/dialog'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/ui/tabs'
 
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
-import { SignInForm } from './sign-in-form'
-import { SignUpForm } from './sign-up-form'
+import { AuthForm } from '@/widgets/auth-form'
 
 export const LoginDialog = () => {
   const { isLoginOpen, closeLogin } = useDialogStore((store) => store)
@@ -36,18 +34,7 @@ export const LoginDialog = () => {
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <Tabs defaultValue="sign-in">
-          <TabsList className="grid w-full grid-cols-2 mb-2.5 mt-2 select-none">
-            <TabsTrigger value="sign-in">Вход</TabsTrigger>
-            <TabsTrigger value="sign-up">Регистрация</TabsTrigger>
-          </TabsList>
-          <TabsContent value="sign-in">
-            <SignInForm />
-          </TabsContent>
-          <TabsContent value="sign-up">
-            <SignUpForm />
-          </TabsContent>
-        </Tabs>
+        <AuthForm />
       </DialogContent>
     </Dialog>
   )

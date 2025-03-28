@@ -1,5 +1,7 @@
 import { Request } from 'express'
 
+import { GuestRole } from '#prisma'
+
 import { User } from '#/users/domain/user'
 
 export interface ISingleJwt {
@@ -30,6 +32,7 @@ export interface ITokenBase {
 
 export interface IAccessPayload {
   id: number
+  role: GuestRole
 }
 
 export interface IAccessToken extends IAccessPayload, ITokenBase {}

@@ -11,7 +11,7 @@ import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
 import { parseGuestRole } from '@/core/utils/parsers'
 
-import { ConfirmLogoutDialog } from '@/widgets/confirm-logout-dialog'
+import { ConfirmLogoutDialog } from '@/shared/confirm-logout-dialog'
 
 import { AlertDialog, AlertDialogTrigger } from '@/shared/ui/alert-dialog'
 import { Button, buttonVariants } from '@/shared/ui/button'
@@ -38,7 +38,7 @@ export const Header = () => {
       className={`fixed z-3 left-0 top-0 right-0 flex justify-between items-center drop-shadow-lg 
         pl-5 pr-5 pt-2.5 pb-2.5 select-none transition-all duration-500 ${pageIsScrolled ? 'bg-[#FAF6EF]' : 'bg-transparent'}`}
     >
-      <Link href="/" className="grow-[0.33]">
+      <Link href="/" className="min-w-[33%]">
         <Image
           src="/assets/logo.svg"
           alt="logo"
@@ -47,28 +47,28 @@ export const Header = () => {
           className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
         />
       </Link>
-      <span className="font-trajan text-[#D3A75E] grow-[0.33] text-center">
+      <span className="min-w-[33%] font-trajan text-[#D3A75E] text-center">
         23/08/25
       </span>
 
-      <div className="grow-[0.33] flex items-center justify-end">
+      <div className="min-w-[33%] flex items-center justify-end">
         {loading ? (
-          <div className="flex items-center space-x-2 sm:space-x-3 opacity-75">
+          <div className="flex items-center space-x-2 md:space-x-3 opacity-75">
             <Skeleton className="h-7 w-7 rounded-full" />
-            <div className="hidden sm:block space-y-2">
+            <div className="hidden md:block space-y-2">
               <Skeleton className="h-2 w-[75px]" />
               <Skeleton className="h-1.5 w-[75px]" />
             </div>
             <Skeleton className="h-7 w-7 rounded-sm" />
           </div>
         ) : user ? (
-          <div className="flex items-center space-x-2 sm:space-x-6">
+          <div className="flex items-center space-x-2 md:space-x-6">
             <Link
-              href="/my"
-              className="flex items-center space-x-0 sm:space-x-3"
+              href="/-"
+              className="flex items-center space-x-0 md:space-x-3"
             >
               <User strokeWidth={1} />
-              <div className="hidden sm:flex flex-col">
+              <div className="hidden md:flex flex-col">
                 <span className="text-sm">{user.name}</span>
                 <span className="text-xs">
                   {parseGuestRole(user.guest.role ?? 'GUEST')}

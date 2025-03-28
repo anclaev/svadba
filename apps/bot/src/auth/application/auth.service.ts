@@ -94,6 +94,7 @@ export class AuthService {
       case Tokens.ACCESS: {
         const payload: IAccessPayload = {
           id: user.getId()!,
+          role: user.guest!.role,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -108,6 +109,7 @@ export class AuthService {
           id: user.getId()!,
           tokenId: tokenId ?? randomUUID(),
           version: user.credentialsVersion,
+          role: user.guest!.role,
         }
 
         const token = await this.jwt.signAsync(payload, {
@@ -130,6 +132,7 @@ export class AuthService {
         const payload: IConfirmationPayload = {
           id: user.getId()!,
           version: user.credentialsVersion,
+          role: user.guest!.role,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -142,6 +145,7 @@ export class AuthService {
         const payload: IConfirmationPayload = {
           id: user.getId()!,
           version: user.credentialsVersion,
+          role: user.guest!.role,
         }
 
         return await this.jwt.signAsync(payload, {

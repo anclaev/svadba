@@ -5,8 +5,7 @@ import Image from 'next/image'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 
-import { SignUpForm } from '@/widgets/login-dialog/sign-up-form'
-
+import { AuthForm } from '@/widgets/auth-form'
 import './index.css'
 
 export const Promo = () => {
@@ -35,7 +34,7 @@ export const Promo = () => {
             transition={{ duration: 0.8, ease: 'easeIn' }}
             className="w-full flex flex-col items-center justify-center grow"
           >
-            <SignUpForm className="promo__form" />
+            <AuthForm className="promo__form" defaultValue="sign-up" />
           </motion.div>
           <div className="font-trajan">
             <motion.span

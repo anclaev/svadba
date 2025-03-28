@@ -37,7 +37,15 @@ import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
 import { translit } from '@/core/utils/translit'
 
-export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
+type SignUpFormProps = {
+  className?: string
+  redirectUrl?: string
+}
+
+export const SignUpForm: FC<SignUpFormProps> = ({
+  className = '',
+  redirectUrl,
+}) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const router = useRouter()
@@ -86,15 +94,19 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
 
     closeLogin()
 
+    if (redirectUrl) {
+      router.push(redirectUrl)
+    }
+
     toast(`Добро пожаловать, ${user!.name}!`, {
       cancel: {
         label: 'Перейти в кабинет гостя',
         onClick: () => {
-          router.push('/my')
+          router.push('/-')
         },
       },
       className: 'flex flex-col width-auto',
-      duration: 60000,
+      duration: 15000,
       closeButton: true,
     })
   }
@@ -103,7 +115,7 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`space-y-6 ${className ? className : ''}`}
+        className={`space-y-6 ${className}`}
       >
         <FormField
           control={form.control}

@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
@@ -28,7 +28,11 @@ import trackedAuthorizeUser from '@/core/actions/authorizeUser'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
-export const SignInForm = () => {
+type SignInFormProps = {
+  redirectUrl?: string
+}
+
+export const SignInForm: FC<SignInFormProps> = ({ redirectUrl }) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const router = useRouter()
@@ -67,7 +71,7 @@ export const SignInForm = () => {
       cancel: {
         label: 'Перейти в кабинет гостя',
         onClick: () => {
-          router.push('/my')
+          router.push('/-')
         },
       },
       className: 'flex flex-col width-auto',
@@ -75,7 +79,9 @@ export const SignInForm = () => {
       closeButton: true,
     })
 
-    // router.push('/my')
+    if (redirectUrl) {
+      router.push(redirectUrl)
+    }
   }
 
   return (
