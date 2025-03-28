@@ -8,8 +8,8 @@ export type AuthState = {
 }
 
 export type AuthActions = {
-  signIn: (authenticatedAuth: UserModel) => void
-  signOut: () => void
+  setUser: (authenticatedAuth: UserModel) => void
+  clearUser: () => void
   startLoading: () => void
   stopLoading: () => void
 }
@@ -24,9 +24,9 @@ const defaultInitState: AuthState = {
 export const createAuthStore = (initState: AuthState = defaultInitState) => {
   return createStore<AuthStore>()((set) => ({
     ...initState,
-    signIn: (authenticatedUser) =>
+    setUser: (authenticatedUser) =>
       set((state) => ({ ...state, user: authenticatedUser })),
-    signOut: () => set((state) => ({ ...state, user: null })),
+    clearUser: () => set((state) => ({ ...state, user: null })),
     startLoading: () => set((state) => ({ ...state, loading: true })),
     stopLoading: () => set((state) => ({ ...state, loading: false })),
   }))

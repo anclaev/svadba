@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { ENV_ERRORS } from '../enums/env-errors'
+import { ENV_ERRORS } from '@/core/constants/env'
 
 export const EnvSchema = z.object({
   NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: z

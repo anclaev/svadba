@@ -1,4 +1,4 @@
-import { SectionProps } from '@/shared/section/types'
+import { SectionProps } from '@/shared/section'
 
 export const HOME_SECTIONS: SectionProps[] = [
   {

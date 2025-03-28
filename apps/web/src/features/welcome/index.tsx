@@ -4,9 +4,11 @@ import { motion } from 'framer-motion'
 import { getImageProps } from 'next/image'
 import { useMemo } from 'react'
 
-import { EVENT_DATE } from '@/core/constants/event-date'
-import useTimer from '@/core/hooks/use-timer'
-import getBackgroundImage from '@/core/utils/get-background-image'
+import { EVENT_DATE } from '@/core/constants/ui/event-date'
+
+import { useTimer } from '@/core/hooks/use-timer'
+
+import { getBackgroundImage } from '@/core/utils/get-background-image'
 
 export const Welcome = () => {
   const { days, hours, minutes, seconds } = useTimer(EVENT_DATE.toDate())

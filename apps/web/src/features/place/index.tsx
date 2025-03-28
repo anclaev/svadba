@@ -3,21 +3,21 @@
 import { motion } from 'framer-motion'
 import Image, { getImageProps } from 'next/image'
 import Link from 'next/link'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
 import { PrimaryButton } from '@/shared/primary-button'
 import { Section } from '@/shared/section'
 
-import { PLACE_LINK, PLACE_ROUTE_LINK } from '@/core/constants/links'
-import { PLACE_ADDRESS, PLACE_PHONE_NUMBER } from '@/core/constants/place'
+import { PLACE_ADDRESS, PLACE_PHONE_NUMBER } from '@/core/constants/ui/place'
+import { PLACE_LINK, PLACE_ROUTE_LINK } from '@/core/constants/ui/social-links'
 
-import getBackgroundImage from '@/core/utils/get-background-image'
+import { getBackgroundImage } from '@/core/utils/get-background-image'
 
-import type { PlaceComponent } from './types'
+import type { withSection } from '@/core/types/ui'
 
 import './index.css'
 
-export const Place: PlaceComponent = ({ section }) => {
+export const Place: FC<withSection> = ({ section }) => {
   const placeSrc = useMemo(() => {
     const {
       props: { srcSet },

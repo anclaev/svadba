@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { SIGN_UP_FORM_VALIDATION_ERRORS } from '@/core/enums/validation-errors'
+import { SIGN_UP_FORM_VALIDATION_ERRORS } from '@/core/constants/ui/errors'
 
 export const SignUpFormSchema = z
   .object({

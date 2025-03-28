@@ -3,33 +3,35 @@
 import { ReactNode, useEffect } from 'react'
 import { toast } from 'sonner'
 
-import { isNull } from '../utils/funcs'
+import { isNull } from '@/core/utils'
 
-import { getProfile } from '../actions/getProfile'
+import { useAuthStore } from '@/core/providers/auth-store-provider'
 
-import { useAuthStore } from './auth-store-provider'
+import { fetchUserProfile } from '@/core/actions/fetchUserProfile'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const { signIn, startLoading, stopLoading } = useAuthStore((store) => store)
+  const { setUser, startLoading, stopLoading } = useAuthStore((store) => store)
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const authorize = async () => {
       startLoading()
-      const profile = await getProfile()
+      const profile = await fetchUserProfile()
 
       if (isNull(profile)) {
         return
       }
 
-      if (profile.message) {
-        toast(profile.message)
+      if (profile.error) {
+        toast(profile.error.message)
+        stopLoading()
+        return
       }
 
-      signIn(profile)
+      setUser(profile.user!)
       stopLoading()
     }
 
-    fetchProfile()
+    authorize()
   }, [])
 
   return children

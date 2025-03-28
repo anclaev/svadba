@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import { TELEGRAM_LINK } from '@/core/constants/links'
+import { TELEGRAM_LINK } from '@/core/constants/ui/social-links'
 
 export const Footer = () => (
   <footer className="flex flex-row justify-between items-center pt-2.5 pb-2.5 pl-5 pr-5 bg-[#1e1e1e]">

@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion'
 import { getImageProps } from 'next/image'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
-import getBackgroundImage from '@/core/utils/get-background-image'
+import { getBackgroundImage } from '@/core/utils/get-background-image'
 
-import type { OurBackgroundComponent } from './types'
-
-export const OurBackground: OurBackgroundComponent = ({ withoutTitle }) => {
+export const OurBackground: FC<{ withoutTitle?: boolean }> = ({
+  withoutTitle,
+}) => {
   const ourBackgroundUrl = useMemo(() => {
     const {
       props: { srcSet },

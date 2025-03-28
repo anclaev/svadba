@@ -1,9 +1,11 @@
 'use client'
 import { createContext, useEffect, useState } from 'react'
 
-import { INITIAL_ENV } from '@/core//constants/initial-env'
-import { Env } from '@/core/schemes/env-schema'
 import { getPublicEnv } from '@/core/utils/get-public-env'
+
+import { INITIAL_ENV } from '@/core/constants/env'
+
+import { Env } from '@/core/schemes/env-schema'
 
 export const EnvContext = createContext<Env>(INITIAL_ENV)
 
@@ -16,7 +18,7 @@ export const EnvProvider = ({
 
   useEffect(() => {
     getPublicEnv().then((env) => {
-      setEnv(env)
+      setEnv(env as Env)
     })
   }, [])
   return <EnvContext.Provider value={env}>{children}</EnvContext.Provider>

@@ -2,15 +2,13 @@
 
 import { cookies } from 'next/headers'
 
-import { API_ENDPOINTS } from '../constants/api-endpoints'
-import { COOKIES } from '../constants/cookies'
+import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
+import { COOKIES } from '@/core/constants/cookies'
 
-import type { AuthLoginDataDto } from '../dtos/auth-login-data.dto'
-import type { HttpError } from '../types'
+import type { RefreshUserActionResponse } from '@/core/types/actions-responses'
+import type { ApiAuthRefreshResponse } from '@/core/types/api-responses'
 
-export async function refreshAuth(): Promise<
-  AuthLoginDataDto | HttpError | null
-> {
+export async function refreshUser(): Promise<RefreshUserActionResponse> {
   const cookieStore = await cookies()
 
   const refreshToken = cookieStore.get(COOKIES.REFRESH_TOKEN)?.value
@@ -32,10 +30,10 @@ export async function refreshAuth(): Promise<
 
   if (!res.ok) {
     cookieStore.delete(COOKIES.REFRESH_TOKEN)
-    return { message: 'Ваша сессия завершена.' }
+    return { error: { message: 'Ваша сессия завершена.' } }
   }
 
-  const data = (await res.json()) as AuthLoginDataDto
+  const data = (await res.json()) as ApiAuthRefreshResponse
 
   cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
     path: '/',

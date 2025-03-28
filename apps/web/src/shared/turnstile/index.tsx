@@ -1,13 +1,16 @@
 import { Turnstile as NextTurnstile } from 'next-turnstile'
-import { useCallback } from 'react'
+import { FC, useCallback } from 'react'
 
 import { useEnv } from '@/core/hooks/use-env'
 
-import type { TurnsitleComponent } from './types'
-
 import './index.css'
 
-export const Turnstile: TurnsitleComponent = ({ setStatus, hidden }) => {
+export type TurnstileStatus = 'success' | 'error' | 'expired' | 'required'
+
+export const Turnstile: FC<{
+  setStatus: (status: TurnstileStatus) => void
+  hidden?: boolean
+}> = ({ setStatus, hidden }) => {
   const env = useEnv()
 
   const setErrorCallback = useCallback(() => {

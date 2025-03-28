@@ -23,17 +23,13 @@ import {
   SignInFormValues,
 } from '@/core/schemes/sign-in-form-schema'
 
-import { login } from '@/core/actions/login'
+import { authorizeUser } from '@/core/actions/authorizeUser'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
-import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
-import { Turnstile } from '@/shared/turnstile'
-
-import { UserModel } from '@/core/models/user.model'
-
-import type { TurnstileStatus } from '@/shared/turnstile/types'
+import { TURNSTILE_ERROR } from '@/core/constants/ui/errors'
+import { type TurnstileStatus, Turnstile } from '@/shared/turnstile'
 
 export const SignInForm = () => {
   const [turnstileStatus, setTurnstileStatus] =
@@ -45,7 +41,7 @@ export const SignInForm = () => {
   const router = useRouter()
 
   const closeLogin = useDialogStore((store) => store.closeLogin)
-  const signIn = useAuthStore((store) => store.signIn)
+  const setUser = useAuthStore((store) => store.setUser)
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInFormSchema),
@@ -66,18 +62,23 @@ export const SignInForm = () => {
     }
 
     setLoading(true)
-    const res = await login(values)
+    const res = await authorizeUser(values)
     setLoading(false)
 
-    if (res.message) {
-      toast(res.message)
+    const { user, error } = res
+
+    if (error) {
+      toast(error.message)
       form.resetField('password')
       return
     }
 
-    toast(`Добро пожаловать, ${res.name}!`)
-    signIn(res as UserModel)
+    toast(`Добро пожаловать, ${user!.name}!`)
+
+    setUser(user!)
+
     closeLogin()
+
     router.push('/my')
   }
 

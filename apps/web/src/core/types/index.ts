@@ -1,7 +1,3 @@
-import { SectionProps } from '@/shared/section/types'
-
-export type withSection = { section: SectionProps }
-
-export type HttpError = {
+export type AppError = {
   message: string
 }

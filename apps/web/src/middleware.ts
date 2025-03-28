@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-import { COOKIES } from './core/constants/cookies'
+import { COOKIES } from '@/core/constants/cookies'
 
 const AUTH_ROUTES: string[] = ['/auth']
 const PROTECTED_ROUTES: string[] = ['/my']

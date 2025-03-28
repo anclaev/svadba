@@ -29,11 +29,10 @@ import {
   SignUpFormValues,
 } from '@/core/schemes/sign-up-form-schema'
 
-import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
-import { translit } from '@/core/utils/translit'
-import { Turnstile } from '@/shared/turnstile'
+import { TURNSTILE_ERROR } from '@/core/constants/ui/errors'
+import { type TurnstileStatus, Turnstile } from '@/shared/turnstile'
 
-import type { TurnstileStatus } from '@/shared/turnstile/types'
+import { translit } from '@/core/utils/translit'
 
 export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
   const [turnstileStatus, setTurnstileStatus] =
