@@ -1,5 +1,3 @@
-'use server'
-
 import { EnvSchema } from '@/core/schemes/env-schema'
 // import type { PublicEnv } from '@/core/types/public-env'
 
