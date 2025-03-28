@@ -28,14 +28,7 @@ import trackedAuthorizeUser from '@/core/actions/authorizeUser'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
-import { TURNSTILE_ERROR } from '@/core/constants/ui/errors'
-import { type TurnstileStatus, Turnstile } from '@/shared/turnstile'
-
 export const SignInForm = () => {
-  const [turnstileStatus, setTurnstileStatus] =
-    useState<TurnstileStatus>('required')
-
-  const [turnstileError, setTurnstileError] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
 
   const router = useRouter()
@@ -54,13 +47,6 @@ export const SignInForm = () => {
   const { errors } = form.formState
 
   async function onSubmit(values: SignInFormValues) {
-    if (turnstileStatus !== 'success') {
-      setTurnstileError(TURNSTILE_ERROR)
-      return
-    } else {
-      setTurnstileError(null)
-    }
-
     setLoading(true)
     const res = await trackedAuthorizeUser(values)
     setLoading(false)
@@ -121,10 +107,6 @@ export const SignInForm = () => {
             </FormItem>
           )}
         />
-
-        <Turnstile setStatus={setTurnstileStatus} hidden={true} />
-        {/* {turnstileError && <Label>{turnstileError}</Label>} */}
-
         <Button type="submit" className="cursor-pointer float-right">
           {loading ? <Loader2 className="animate-spin" /> : 'Войти'}
         </Button>

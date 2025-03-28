@@ -35,17 +35,9 @@ import { registerUser } from '@/core/actions/registerUser'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
-import { TURNSTILE_ERROR } from '@/core/constants/ui/errors'
-import { type TurnstileStatus, Turnstile } from '@/shared/turnstile'
-
 import { translit } from '@/core/utils/translit'
 
 export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
-  const [turnstileStatus, setTurnstileStatus] =
-    useState<TurnstileStatus>('required')
-
-  const [turnstileError, setTurnstileError] = useState<string | null>(null)
-
   const [loading, setLoading] = useState<boolean>(false)
 
   const router = useRouter()
@@ -76,13 +68,6 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
   }, [watchName, form])
 
   async function onSubmit(values: SignUpFormValues) {
-    if (turnstileStatus !== 'success') {
-      setTurnstileError(TURNSTILE_ERROR)
-      return
-    } else {
-      setTurnstileError(null)
-    }
-
     setLoading(true)
     const res = await registerUser(values)
     setLoading(false)
@@ -220,9 +205,6 @@ export const SignUpForm: FC<{ className?: string }> = ({ className }) => {
             </FormItem>
           )}
         />
-
-        <Turnstile setStatus={setTurnstileStatus} hidden={true} />
-        {/* {turnstileError && <Label>{turnstileError}</Label>} */}
 
         <Button type="submit" className="cursor-pointer float-right">
           {loading ? (

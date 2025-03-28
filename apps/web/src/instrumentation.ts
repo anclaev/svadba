@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs'
 
-import { validateEnvs } from '@/core/utils/validate-envs'
+import { validateEnvs } from '@/core/utils/env'
 
 export async function register() {
   validateEnvs()

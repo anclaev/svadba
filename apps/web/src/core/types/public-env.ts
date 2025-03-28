@@ -1,3 +1,3 @@
 export type PublicEnv = {
-  NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY: string
+  NEXT_PUBLIC_NODE_ENV: string
 }
