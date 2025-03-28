@@ -1,7 +1,10 @@
 import { User } from '#/users/domain/user'
 
-export type Authorized = Omit<LoginResult, 'refresh_token_id'>
-
+export type Authorized = {
+  user: User
+  access_token?: string
+  refresh_token?: string
+}
 export type LoginResult = {
   user: User
   access_token: string

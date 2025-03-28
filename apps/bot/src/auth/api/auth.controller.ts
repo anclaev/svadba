@@ -6,6 +6,7 @@ import {
   HttpCode,
   InternalServerErrorException,
   Post,
+  Query,
   Req,
   Res,
   UseGuards,
@@ -33,6 +34,7 @@ import { AuthenticatedUser } from '../application/decorators/user.decorator'
 import { LocalAuthGuard } from '../application/guards/local-auth.guard'
 import { RefreshGuard } from '../application/guards/refresh.guard'
 
+import { AuthParamsDto } from './dtos/auth-props.dto'
 import { LoginDto } from './dtos/login.dto'
 import { SignUpDto } from './dtos/sign-up.dto'
 
@@ -116,14 +118,21 @@ export class AuthController {
   @HttpCode(200)
   async login(
     @AuthenticatedUser() authenticatedUser: User,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
+    @Query() authParams: AuthParamsDto
   ): Promise<Authorized> {
     const { user, access_token, refresh_token, refresh_token_id } =
       await this.auth.login(authenticatedUser)
 
-    this.setCookies(access_token, refresh_token, refresh_token_id, res)
-
-    return { user, access_token, refresh_token }
+    switch (authParams.grant_type) {
+      case 'token': {
+        return { user, access_token, refresh_token }
+      }
+      default: {
+        this.setCookies(access_token, refresh_token, refresh_token_id, res)
+        return { user }
+      }
+    }
   }
 
   @ApiOperation({ summary: 'Обновление токена доступа' })
@@ -139,7 +148,8 @@ export class AuthController {
   @UseGuards(RefreshGuard)
   async refreshToken(
     @AuthenticatedUser() authenticatedUser: User,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res: Response,
+    @Query() authParams: AuthParamsDto
   ): Promise<Authorized> {
     const refresh_token_id = randomUUID()
 
@@ -154,9 +164,15 @@ export class AuthController {
       refresh_token_id
     )
 
-    this.setCookies(access_token, refresh_token, refresh_token_id, res)
-
-    return { user: authenticatedUser, access_token, refresh_token }
+    switch (authParams.grant_type) {
+      case 'token': {
+        return { user: authenticatedUser, access_token, refresh_token }
+      }
+      default: {
+        this.setCookies(access_token, refresh_token, refresh_token_id, res)
+        return { user: authenticatedUser }
+      }
+    }
   }
 
   @ApiOperation({ summary: 'Выход пользователя' })
