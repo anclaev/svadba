@@ -30,6 +30,7 @@ export async function refreshUser(): Promise<RefreshUserActionResponse> {
 
   if (!res.ok) {
     cookieStore.delete(COOKIES.REFRESH_TOKEN)
+    cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
     return { error: { message: 'Ваша сессия завершена.' } }
   }
 
@@ -43,6 +44,13 @@ export async function refreshUser(): Promise<RefreshUserActionResponse> {
     maxAge: Number(process.env.JWT_ACCESS_TIME),
   })
   cookieStore.set(COOKIES.REFRESH_TOKEN, data.refresh_token, {
+    path: '/',
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    maxAge: Number(process.env.JWT_REFRESH_TIME),
+  })
+  cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
     path: '/',
     httpOnly: true,
     secure: true,

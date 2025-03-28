@@ -41,5 +41,13 @@ export async function authorizeUser(
     maxAge: Number(process.env.JWT_REFRESH_TIME),
   })
 
+  cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
+    path: '/',
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    maxAge: Number(process.env.JWT_REFRESH_TIME),
+  })
+
   return { user: data.user }
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { User } from 'lucide-react'
+import { LogOut, User } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -11,7 +11,10 @@ import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
 import { parseGuestRole } from '@/core/utils/parsers'
 
-import { Button } from '@/shared/ui/button'
+import { ConfirmLogoutDialog } from '@/widgets/confirm-logout-dialog'
+
+import { AlertDialog, AlertDialogTrigger } from '@/shared/ui/alert-dialog'
+import { Button, buttonVariants } from '@/shared/ui/button'
 import { Skeleton } from '@/shared/ui/skeleton'
 
 export const Header = () => {
@@ -56,17 +59,33 @@ export const Header = () => {
               <Skeleton className="h-2 w-[75px]" />
               <Skeleton className="h-1.5 w-[75px]" />
             </div>
+            <Skeleton className="h-7 w-7 rounded-sm" />
           </div>
         ) : user ? (
-          <Link href="/my" className="flex items-center space-x-0 sm:space-x-3">
-            <User strokeWidth={1} />
-            <div className="hidden sm:flex flex-col">
-              <span className="text-sm">{user.name}</span>
-              <span className="text-xs">
-                {parseGuestRole(user.guest.role ?? 'GUEST')}
-              </span>
-            </div>
-          </Link>
+          <div className="flex items-center space-x-2 sm:space-x-6">
+            <Link
+              href="/my"
+              className="flex items-center space-x-0 sm:space-x-3"
+            >
+              <User strokeWidth={1} />
+              <div className="hidden sm:flex flex-col">
+                <span className="text-sm">{user.name}</span>
+                <span className="text-xs">
+                  {parseGuestRole(user.guest.role ?? 'GUEST')}
+                </span>
+              </div>
+            </Link>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <div
+                  className={`${buttonVariants({ variant: 'outline' })} cursor-pointer w-[30px] h-[30px] bg-transparent`}
+                >
+                  <LogOut strokeWidth={2} />
+                </div>
+              </AlertDialogTrigger>
+              <ConfirmLogoutDialog />
+            </AlertDialog>
+          </div>
         ) : (
           <Button
             variant="ghost"

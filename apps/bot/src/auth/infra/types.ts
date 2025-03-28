@@ -4,7 +4,9 @@ export type Authorized = {
   user: User
   access_token?: string
   refresh_token?: string
+  refresh_token_id?: string
 }
+
 export type LoginResult = {
   user: User
   access_token: string

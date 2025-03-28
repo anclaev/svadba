@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const profile = await fetchUserProfile()
 
       if (isNull(profile)) {
+        stopLoading()
         return
       }
 

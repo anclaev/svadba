@@ -35,8 +35,9 @@ import { AuthenticatedUser } from '../application/decorators/user.decorator'
 import { LocalAuthGuard } from '../application/guards/local-auth.guard'
 import { RefreshGuard } from '../application/guards/refresh.guard'
 
-import { AuthParamsDto } from './dtos/auth-props.dto'
+import { AuthParamsDto } from './dtos/auth-params.dto'
 import { LoginDto } from './dtos/login.dto'
+import { LogoutParamsDto } from './dtos/logout-params.dto'
 import { SignUpDto } from './dtos/sign-up.dto'
 
 import {
@@ -132,7 +133,7 @@ export class AuthController {
 
     switch (authParams.grant_type) {
       case 'token': {
-        return { user, access_token, refresh_token }
+        return { user, access_token, refresh_token, refresh_token_id }
       }
       default: {
         this.setCookies(access_token, refresh_token, refresh_token_id, res)
@@ -177,7 +178,12 @@ export class AuthController {
 
     switch (authParams.grant_type) {
       case 'token': {
-        return { user: authenticatedUser, access_token, refresh_token }
+        return {
+          user: authenticatedUser,
+          access_token,
+          refresh_token,
+          refresh_token_id,
+        }
       }
       default: {
         this.setCookies(access_token, refresh_token, refresh_token_id, res)
@@ -187,20 +193,40 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Выход пользователя' })
+  @ApiQuery({
+    name: 'rtid',
+    description: 'Идентификатор refresh-токена.',
+    type: LogoutParamsDto,
+  })
   @ApiOkResponse({ description: 'Выход пользователя выполнен' })
   @ApiUnauthorizedResponse({ description: 'Пользователь не авторизован' })
   @ApiCookieAuth()
   @Auth()
   @Post('logout')
   @HttpCode(200)
-  async logout(@Req() req: Request, @Res() res: Response) {
-    const { refresh_token_id }: AuthCookieData =
-      req.signedCookies['auth-cookie']
+  async logout(
+    @Req() req: Request,
+    @Res() res: Response,
+    @Query() logoutParams: LogoutParamsDto
+  ) {
+    let rtid: string
+
+    if (logoutParams.rtid) {
+      rtid = logoutParams.rtid
+    } else {
+      const authCookie: AuthCookieData = req.signedCookies['auth-cookie']
+
+      if (!authCookie) {
+        return
+      }
+
+      rtid = authCookie.refresh_token_id
+    }
 
     const user = req.user! as User
     const userId = user.getId() as number
 
-    await this.auth.removeRefreshToken(userId, refresh_token_id)
+    await this.auth.removeRefreshToken(userId, rtid)
 
     res.cookie(
       Cookies.AUTH_COOKIE,
