@@ -21,6 +21,7 @@ async function bootstrap() {
   const isDev = process.env.NODE_ENV === 'development'
   const httpsOptions: HttpsOptions = {}
 
+  // SSL для разработки
   if (isDev) {
     httpsOptions.cert = fs.readFileSync('./src/certs/localhost.crt')
     httpsOptions.key = fs.readFileSync('./src/certs/localhost.key')
@@ -33,10 +34,8 @@ async function bootstrap() {
     httpsOptions: isDev ? httpsOptions : undefined,
   })
 
-  patchNestJsSwagger()
-
+  // Глобальная сериализация
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
-  app.setGlobalPrefix('api')
 
   const config = app.get(ConfigService)
   const host = config.env('HOST')
@@ -44,30 +43,40 @@ async function bootstrap() {
   const origin = config.env('ORIGIN')
   const version = config.env('APP_VERSION')
 
+  // Поддержка cookie
   app.use(cookieParser(config.env('COOKIE_SECRET')))
+
+  // Заголовки безопасности
   app.use(helmet())
+
+  // Базовое сжатие ответов
   app.use(compression())
+
+  // Перехватчик bearer-токенов
   app.use(bearerToken())
 
+  // Включение хуков жизненного цикла
   app.enableShutdownHooks()
 
+  // Поддержка CORS
   app.enableCors({
     credentials: true,
     origin,
   })
 
-  // Swagger
+  // Настройка Swagger
+  patchNestJsSwagger()
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Svadba API')
-    .setDescription('API для проекта Svadba')
+    .setTitle('Svadba Bot')
+    .setDescription('Серверная часть проекта Svadba')
     .setVersion(version)
     .build()
 
   const swaggerDocFactory = () =>
     SwaggerModule.createDocument(app, swaggerConfig)
 
-  SwaggerModule.setup('/api/docs', app, swaggerDocFactory, {
+  SwaggerModule.setup('/api', app, swaggerDocFactory, {
     customSiteTitle: 'Svadba Bot',
     customfavIcon: '/favicon.ico',
     customCssUrl: '/swagger.css',

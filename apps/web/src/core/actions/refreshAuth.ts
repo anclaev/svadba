@@ -2,31 +2,40 @@
 
 import { cookies } from 'next/headers'
 
-import { UserModel } from '../models/user.model'
-
 import { API_ENDPOINTS } from '../constants/api-endpoints'
 import { COOKIES } from '../constants/cookies'
 
 import type { AuthLoginDataDto } from '../dtos/auth-login-data.dto'
-import type { SignInFormValues } from '../schemes/sign-in-form-schema'
 import type { HttpError } from '../types'
 
-export async function login(
-  values: SignInFormValues
-): Promise<UserModel | HttpError> {
+export async function refreshAuth(): Promise<
+  AuthLoginDataDto | HttpError | null
+> {
   const cookieStore = await cookies()
 
-  const res = await fetch(`${process.env.API_URL}${API_ENDPOINTS.AUTH_LOGIN}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(values),
-  })
+  const refreshToken = cookieStore.get(COOKIES.REFRESH_TOKEN)?.value
 
-  const data = (await res.json()) as AuthLoginDataDto
+  if (!refreshToken) {
+    return null
+  }
+
+  const res = await fetch(
+    `${process.env.API_URL}${API_ENDPOINTS.AUTH_REFRESH}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    }
+  )
 
   if (!res.ok) {
-    return { message: 'Авторизация не пройдена.' }
+    cookieStore.delete(COOKIES.REFRESH_TOKEN)
+    return { message: 'Ваша сессия завершена.' }
   }
+
+  const data = (await res.json()) as AuthLoginDataDto
 
   cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
     path: '/',
@@ -43,5 +52,5 @@ export async function login(
     maxAge: Number(process.env.JWT_REFRESH_TIME),
   })
 
-  return data.user
+  return data
 }

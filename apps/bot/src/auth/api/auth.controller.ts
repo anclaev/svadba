@@ -17,6 +17,7 @@ import {
   ApiCookieAuth,
   ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -64,7 +65,7 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'Пользователь не авторизован' })
   @ApiOkResponse({ description: 'Данные о пользователе', type: User })
   @Auth()
-  @Get()
+  @Get('profile')
   getAuthenticatedUser(@AuthenticatedUser() authenticatedUser: User): User {
     return authenticatedUser
   }
@@ -108,6 +109,11 @@ export class AuthController {
 
   @ApiOperation({ summary: 'Авторизация пользователя через пароль' })
   @ApiBody({ description: 'Данные для авторизации', type: LoginDto })
+  @ApiQuery({
+    name: 'grant_type',
+    description: 'Тип получаемых токенов',
+    type: AuthParamsDto,
+  })
   @ApiUnauthorizedResponse({ description: 'Неверные учетные данные' })
   @ApiOkResponse({
     description: 'Данные о пользователе с токенами доступа',
@@ -136,6 +142,11 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Обновление токена доступа' })
+  @ApiQuery({
+    name: 'grant_type',
+    description: 'Тип получаемых токенов',
+    type: AuthParamsDto,
+  })
   @ApiOkResponse({
     description: 'Данные о пользователе с токенами доступа',
     example: 'ok',

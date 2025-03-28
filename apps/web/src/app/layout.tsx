@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 
+import { AuthProvider } from '@/core/providers/auth-provider'
+import { AuthStoreProvider } from '@/core/providers/auth-store-provider'
+import { DialogStoreProvider } from '@/core/providers/dialog-store-provider'
 import { EnvProvider } from '@/core/providers/env-provider'
+
+import { LoginDialog } from '@/widgets/login-dialog'
 
 import { Footer } from '@/shared/footer'
 import { Header } from '@/shared/header'
@@ -22,10 +27,17 @@ export default function RootLayout({
     <html lang="ru">
       <body className={`antialiased selection:bg-wheat-500`}>
         <EnvProvider>
-          <Header />
-          {children}
-          <Footer />
-          <Toaster />
+          <DialogStoreProvider>
+            <AuthStoreProvider>
+              <AuthProvider>
+                <LoginDialog />
+                <Header />
+                {children}
+                <Footer />
+                <Toaster />
+              </AuthProvider>
+            </AuthStoreProvider>
+          </DialogStoreProvider>
         </EnvProvider>
       </body>
     </html>

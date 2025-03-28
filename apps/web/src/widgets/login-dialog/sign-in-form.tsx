@@ -1,6 +1,8 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -23,8 +25,13 @@ import {
 
 import { login } from '@/core/actions/login'
 
+import { useAuthStore } from '@/core/providers/auth-store-provider'
+import { useDialogStore } from '@/core/providers/dialog-store-provider'
+
 import { TURNSTILE_ERROR } from '@/core/constants/turnstile-error'
 import { Turnstile } from '@/shared/turnstile'
+
+import { UserModel } from '@/core/models/user.model'
 
 import type { TurnstileStatus } from '@/shared/turnstile/types'
 
@@ -33,6 +40,12 @@ export const SignInForm = () => {
     useState<TurnstileStatus>('required')
 
   const [turnstileError, setTurnstileError] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const router = useRouter()
+
+  const closeLogin = useDialogStore((store) => store.closeLogin)
+  const signIn = useAuthStore((store) => store.signIn)
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(SignInFormSchema),
@@ -45,8 +58,6 @@ export const SignInForm = () => {
   const { errors } = form.formState
 
   async function onSubmit(values: SignInFormValues) {
-    console.log(values)
-
     if (turnstileStatus !== 'success') {
       setTurnstileError(TURNSTILE_ERROR)
       return
@@ -54,14 +65,20 @@ export const SignInForm = () => {
       setTurnstileError(null)
     }
 
-    const loginData = new FormData()
+    setLoading(true)
+    const res = await login(values)
+    setLoading(false)
 
-    loginData.append('login', values.login)
-    loginData.append('login', values.password)
+    if (res.message) {
+      toast(res.message)
+      form.resetField('password')
+      return
+    }
 
-    await login(loginData)
-
-    toast('Личный кабинет в разработке.')
+    toast(`Добро пожаловать, ${res.name}!`)
+    signIn(res as UserModel)
+    closeLogin()
+    router.push('/my')
   }
 
   return (
@@ -98,7 +115,7 @@ export const SignInForm = () => {
         {/* {turnstileError && <Label>{turnstileError}</Label>} */}
 
         <Button type="submit" className="cursor-pointer float-right">
-          Войти
+          {loading ? <Loader2 className="animate-spin" /> : 'Войти'}
         </Button>
       </form>
     </Form>

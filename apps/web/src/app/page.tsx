@@ -5,6 +5,7 @@ import { Section } from '@/shared/section'
 import { Timing } from '@/features/timing'
 
 import { HOME_SECTIONS } from '@/core/constants/home-sections'
+
 import { DressCode } from '@/features/dress-code'
 import { Place } from '@/features/place'
 import { Promo } from '@/features/promo'

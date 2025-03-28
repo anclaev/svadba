@@ -1,25 +1,26 @@
 'use client'
 
+import { User } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { Button } from '@/shared/ui/button'
-import { Dialog, DialogTrigger } from '@/shared/ui/dialog'
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip'
-
-import { LoginDialog } from '@/widgets/login-dialog'
-
 import { useScroll } from '@/core/hooks/use-scroll'
+import { useAuthStore } from '@/core/providers/auth-store-provider'
+import { useDialogStore } from '@/core/providers/dialog-store-provider'
+
+import { parseGuestRole } from '@/core/utils/parsers'
+
+import { Button } from '@/shared/ui/button'
+import { Skeleton } from '@/shared/ui/skeleton'
 
 export const Header = () => {
   const [pageIsScrolled, setPageIsScrolled] = useState<boolean>(false)
   const scrollPosition = useScroll()
+
+  const { user, loading } = useAuthStore((store) => store)
+
+  const openLogin = useDialogStore((store) => store.openLogin)
 
   useEffect(() => {
     if (scrollPosition >= 50) {
@@ -34,41 +35,55 @@ export const Header = () => {
       className={`fixed z-3 left-0 top-0 right-0 flex justify-between items-center drop-shadow-lg 
         pl-5 pr-5 pt-2.5 pb-2.5 select-none transition-all duration-500 ${pageIsScrolled ? 'bg-[#FAF6EF]' : 'bg-transparent'}`}
     >
-      <Image
-        src="/assets/logo.svg"
-        alt="logo"
-        width={40}
-        height={40}
-        className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
-      />
-      <span className="font-trajan text-[#D3A75E]">23/08/25</span>
-      <TooltipProvider>
-        <Tooltip delayDuration={2000}>
-          <Dialog>
-            <DialogTrigger asChild>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="cursor-pointer w-[30px] h-[30px]"
-                >
-                  <Image
-                    src="/assets/icons/login.svg"
-                    alt="login"
-                    width={30}
-                    height={30}
-                    className="w-[20px] h-[20px] md:w-[30px] md:h-[30px]"
-                  />
-                </Button>
-              </TooltipTrigger>
-            </DialogTrigger>
-            <LoginDialog />
-          </Dialog>
-          <TooltipContent>
-            <p>Вход</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Link href="/" className="grow-[0.33]">
+        <Image
+          src="/assets/logo.svg"
+          alt="logo"
+          width={40}
+          height={40}
+          className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
+        />
+      </Link>
+      <span className="font-trajan text-[#D3A75E] grow-[0.33] text-center">
+        23/08/25
+      </span>
+
+      <div className="grow-[0.33] flex items-center justify-end">
+        {loading ? (
+          <div className="flex items-center space-x-0 sm:space-x-3 opacity-75">
+            <Skeleton className="h-7 w-7 rounded-full" />
+            <div className="hidden sm:block space-y-2">
+              <Skeleton className="h-2 w-[75px]" />
+              <Skeleton className="h-1.5 w-[75px]" />
+            </div>
+          </div>
+        ) : user ? (
+          <Link href="/my" className="flex items-center space-x-0 sm:space-x-3">
+            <User strokeWidth={1} />
+            <div className="hidden sm:flex flex-col">
+              <span className="text-sm">{user.name}</span>
+              <span className="text-xs">
+                {parseGuestRole(user.guest.role ?? 'GUEST')}
+              </span>
+            </div>
+          </Link>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="cursor-pointer w-[30px] h-[30px]"
+            onClick={openLogin}
+          >
+            <Image
+              src="/assets/icons/login.svg"
+              alt="login"
+              width={25}
+              height={25}
+              className="w-[20px] h-[20px] md:w-[25px] md:h-[25px]"
+            />
+          </Button>
+        )}
+      </div>
     </header>
   )
 }
