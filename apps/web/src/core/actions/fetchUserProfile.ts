@@ -1,5 +1,6 @@
 'use server'
 
+import * as Sentry from '@sentry/nextjs'
 import { cookies } from 'next/headers'
 
 import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
@@ -51,7 +52,8 @@ export async function fetchUserProfile(): Promise<FetchProfileActionResponse> {
     const data = (await res.json()) as ApiAuthProfileResponse
 
     return { user: data }
-  } catch {
+  } catch (err) {
+    Sentry.captureException(err)
     return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
   }
 }

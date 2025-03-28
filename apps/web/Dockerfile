@@ -1,4 +1,5 @@
 ARG VERSION=null
+ARG SENTRY_AUTH_TOKEN=""
 
 FROM node:18-alpine AS base
 WORKDIR /app
@@ -18,6 +19,8 @@ RUN turbo prune web --docker
 FROM base AS installer
 RUN corepack enable 
  
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+
 COPY --from=builder /app/out/json/ .
 RUN yarn install --frozen-lockfile
  

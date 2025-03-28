@@ -30,6 +30,7 @@ default:
 
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
+  CI: true
 
 stages:
   - install
@@ -90,7 +91,7 @@ Build web (staging):
   rules:
     - if: $CI_COMMIT_BRANCH == "develop"
   script:
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
   tags:
     - staging

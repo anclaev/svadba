@@ -23,7 +23,7 @@ import {
   SignInFormValues,
 } from '@/core/schemes/sign-in-form-schema'
 
-import { authorizeUser } from '@/core/actions/authorizeUser'
+import trackedAuthorizeUser from '@/core/actions/authorizeUser'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
@@ -62,7 +62,7 @@ export const SignInForm = () => {
     }
 
     setLoading(true)
-    const res = await authorizeUser(values)
+    const res = await trackedAuthorizeUser(values)
     setLoading(false)
 
     const { user, error } = res
