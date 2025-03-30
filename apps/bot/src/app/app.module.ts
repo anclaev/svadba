@@ -5,9 +5,10 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 import { AuthModule } from '#/auth/auth.module'
 import { ConfigModule } from '#/config/config.module'
 import { CoreModule } from '#/core/core.module'
+import { SvadbaModule } from '#/svadba/svadba.module'
 import { TelegramModule } from '#/telegram/telegram.module'
 import { UploadModule } from '#/upload/upload.module'
-import { UsersModule } from '#/users/users.module'
+import { UserModule } from '#/user/user.module'
 
 @Module({
   imports: [
@@ -15,8 +16,9 @@ import { UsersModule } from '#/users/users.module'
     CoreModule,
     TelegramModule,
     UploadModule,
-    UsersModule,
+    UserModule,
     AuthModule,
+    SvadbaModule,
   ],
   providers: [
     {

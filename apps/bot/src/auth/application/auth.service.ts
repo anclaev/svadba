@@ -1,4 +1,3 @@
-import { GuestRole, Side } from '#prisma'
 import { Injectable } from '@nestjs/common'
 import { JwtService, JwtSignOptions, JwtVerifyOptions } from '@nestjs/jwt'
 import * as argon2 from 'argon2'
@@ -10,11 +9,10 @@ import { isNull } from '#/common/utils'
 import { ConfigService } from '#/config/config.service'
 import { RedisService } from '#/core/redis.service'
 
-import { User } from '#/users/domain/user'
-import { UserRepository } from '#/users/domain/user.repository'
-import { UserError } from '#/users/infra/errors'
-
 import { SignUpDto } from '../api/dtos/sign-up.dto'
+
+import { Guest, User } from '#/user/domain'
+import { UserError, UserRepository } from '#/user/infra'
 
 import {
   IAccessPayload,
@@ -39,7 +37,7 @@ export class AuthService {
   async validateUser(login: string, password: string): Promise<User | null> {
     const user = await this.userRepo.findByLogin(login)
 
-    if (user && (await user.verifyPassword(password))) {
+    if (user && (await argon2.verify(user.password, password))) {
       return user
     }
     return null
@@ -47,18 +45,25 @@ export class AuthService {
 
   async signUp(data: SignUpDto): Promise<LoginResult | UserError> {
     const newUser = new User({
+      telegramId: null,
+      credentials: [],
+      isTelegramVerified: false,
+      role: 'PUBLIC',
+      status: 'CREATED',
       login: data.login,
       name: data.name,
       password: await argon2.hash(data.password),
-      side: data.side as Side,
-      answers: data.anwsers,
-      guestRole: data.role as GuestRole,
+      guest: new Guest({
+        side: data.side,
+        answers: data.anwsers,
+        role: data.role,
+      }),
     })
 
     const registeredUser = await this.userRepo.create(newUser)
 
     if (!registeredUser) {
-      return UserError.USER_ALREADY_EXISTS
+      return new UserError('USER_ALREADY_EXISTS')
     }
 
     registeredUser.commit()
@@ -93,8 +98,8 @@ export class AuthService {
     switch (tokenType) {
       case Tokens.ACCESS: {
         const payload: IAccessPayload = {
-          id: user.getId()!,
-          role: user.guest!.role,
+          id: user.id!,
+          role: user.guest.role,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -106,10 +111,10 @@ export class AuthService {
 
       case Tokens.REFRESH: {
         const payload: IRefreshPayload = {
-          id: user.getId()!,
+          id: user.id!,
           tokenId: tokenId ?? randomUUID(),
           version: user.credentialsVersion,
-          role: user.guest!.role,
+          role: user.guest.role,
         }
 
         const token = await this.jwt.signAsync(payload, {
@@ -121,7 +126,7 @@ export class AuthService {
         const hashedToken = await argon2.hash(token)
 
         await this.redis.set<string>(
-          `${RedisKey.REFRESH_TOKEN}:${user.getId()}:${tokenId}`,
+          `${RedisKey.REFRESH_TOKEN}:${user.id}:${tokenId}`,
           hashedToken,
           this.config.env('JWT_REFRESH_TIME') * 1000
         )
@@ -130,9 +135,9 @@ export class AuthService {
       }
       case Tokens.CONFIRMATION: {
         const payload: IConfirmationPayload = {
-          id: user.getId()!,
+          id: user.id!,
           version: user.credentialsVersion,
-          role: user.guest!.role,
+          role: user.guest.role,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -143,9 +148,9 @@ export class AuthService {
       }
       case Tokens.RESET: {
         const payload: IConfirmationPayload = {
-          id: user.getId()!,
+          id: user.id!,
           version: user.credentialsVersion,
-          role: user.guest!.role,
+          role: user.guest.role,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -176,7 +181,7 @@ export class AuthService {
     if (isNull(user)) return null
 
     const savedRefreshToken = await this.redis.get<string>(
-      `${RedisKey.REFRESH_TOKEN}:${user.getId()}:${tokenId}`
+      `${RedisKey.REFRESH_TOKEN}:${user.id!}:${tokenId}`
     )
 
     if (isNull(savedRefreshToken)) return null
@@ -188,7 +193,7 @@ export class AuthService {
     return user
   }
 
-  async removeRefreshToken(userId: number, tokenId: string): Promise<boolean> {
+  async removeRefreshToken(userId: string, tokenId: string): Promise<boolean> {
     return await this.redis.del(
       `${RedisKey.REFRESH_TOKEN}:${userId}:${tokenId}`
     )

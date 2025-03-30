@@ -5325,6 +5325,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  checksum: 10c0/9a1404bf287164481cb9b97f6bb638f78f955be57c40c6513b7655160beb29df6f84c915aaf4089a1559c216557dc4d2f79b48d978742d3ae10b937420ddac60
+  languageName: node
+  linkType: hard
+
 "@types/validator@npm:^13.11.8":
   version: 13.12.2
   resolution: "@types/validator@npm:13.12.2"
@@ -6530,12 +6537,14 @@ __metadata:
     "@types/passport-jwt": "npm:^4.0.1"
     "@types/passport-local": "npm:^1.0.38"
     "@types/supertest": "npm:^6.0.2"
+    "@types/uuid": "npm:^10.0.0"
     argon2: "npm:^0.41.1"
     cache-manager: "npm:^6.4.1"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     compression: "npm:^1.8.0"
     cookie-parser: "npm:^1.4.7"
+    ddd-base: "npm:^0.9.1"
     eslint: "npm:^9.18.0"
     eslint-config-prettier: "npm:^10.0.1"
     eslint-plugin-prettier: "npm:^5.2.2"
@@ -6566,6 +6575,7 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     typescript: "npm:^5.7.3"
     typescript-eslint: "npm:^8.20.0"
+    uuid: "npm:^11.1.0"
     winston: "npm:^3.17.0"
     zod: "npm:^3.24.2"
   languageName: unknown
@@ -7951,6 +7961,16 @@ __metadata:
   version: 1.11.13
   resolution: "dayjs@npm:1.11.13"
   checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
+"ddd-base@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "ddd-base@npm:0.9.1"
+  dependencies:
+    map-like: "npm:^2.0.0"
+    shallow-equal-object: "npm:^1.1.1"
+  checksum: 10c0/cdd5ac58056767508a26540974530332f97e12e14fa6ea3cc59c8d0790c188ae3951ad13cd1797e578abc2907bce956fa0292f3199d78f230851db06c4c1976d
   languageName: node
   linkType: hard
 
@@ -12621,6 +12641,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"map-like@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "map-like@npm:2.0.0"
+  checksum: 10c0/8cc951907e239d2534acc111a41a36c6da8566174cacad65813426f0b77e141a2844d6652d6ddef1e581ba3f333141192b87dfdd3ec4461c62c0e09ca90e1fcd
+  languageName: node
+  linkType: hard
+
 "map-obj@npm:^1.0.0":
   version: 1.0.1
   resolution: "map-obj@npm:1.0.1"
@@ -15517,6 +15544,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shallow-equal-object@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "shallow-equal-object@npm:1.1.1"
+  checksum: 10c0/cfc7192722fa9f1dbf0916e97be5f11d913e6c4124c953b3813bf88e53424e16373de0043c90b5545ba3bb324a5bf543208905ef3c02fb4f06d114cacb27ed55
+  languageName: node
+  linkType: hard
+
 "sharp@npm:^0.33.5":
   version: 0.33.5
   resolution: "sharp@npm:0.33.5"
@@ -17328,6 +17362,15 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10c0/02ba649de1b7ca8854bfe20a82f1dfbdda3fb57a22ab4a8972a63a34553cf7aa51bc9081cf7e001b035b88186d23689d69e71b510e610a09a4c66f68aa95b672
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^11.1.0":
+  version: 11.1.0
+  resolution: "uuid@npm:11.1.0"
+  bin:
+    uuid: dist/esm/bin/uuid
+  checksum: 10c0/34aa51b9874ae398c2b799c88a127701408cd581ee89ec3baa53509dd8728cbb25826f2a038f9465f8b7be446f0fbf11558862965b18d21c993684297628d4d3
   languageName: node
   linkType: hard
 

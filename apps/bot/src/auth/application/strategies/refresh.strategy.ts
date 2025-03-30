@@ -5,13 +5,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 
 import { ConfigService } from '#/config/config.service'
 
-import { AuthService } from '../auth.service'
+import { User } from '#/user/domain'
 
 import { isNull } from '#/common/utils'
 
+import { AuthService } from '../auth.service'
+
 import type { IRefreshPayload } from '#/auth/infra/interfaces'
 import { Cookies, type RefreshCookieData } from '#/auth/infra/types'
-import type { User } from '#/users/domain/user'
 
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {

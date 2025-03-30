@@ -2,7 +2,7 @@ import { Request } from 'express'
 
 import { GuestRole } from '#prisma'
 
-import { User } from '#/users/domain/user'
+import { User } from '#/user/domain/User'
 
 export interface ISingleJwt {
   secret: string
@@ -31,7 +31,7 @@ export interface ITokenBase {
 }
 
 export interface IAccessPayload {
-  id: number
+  id: string
   role: GuestRole
 }
 

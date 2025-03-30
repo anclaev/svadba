@@ -8,8 +8,8 @@ import { isNull } from '#/common/utils'
 
 import { ConfigService } from '#/config/config.service'
 
-import { GetUserQuery } from '#/users/application/queries/get-user.query'
-import type { User } from '#/users/domain/user'
+import { GetUserByIdQuery } from '#/user/app/queries'
+import { User } from '#/user/domain'
 
 import type { IAccessPayload } from '#/auth/infra/interfaces'
 import { type AuthCookieData, Cookies } from '#/auth/infra/types'
@@ -51,7 +51,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('Авторизация не пройдена.')
     }
 
-    const user = await this.query.execute(new GetUserQuery(data.id))
+    const user = await this.query.execute(new GetUserByIdQuery(data.id))
 
     if (isNull(user)) {
       throw new UnauthorizedException('Авторизация не пройдена.')

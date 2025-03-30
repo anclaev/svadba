@@ -1,4 +1,4 @@
-import { User } from '#/users/domain/user'
+import { User } from '#/user/domain/User'
 
 export type Authorized = {
   user: User

@@ -3,7 +3,7 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 
-import { UsersModule } from '#/users/users.module'
+import { UserModule } from '#/user/user.module'
 
 import { AuthController } from './api/auth.controller'
 
@@ -13,7 +13,7 @@ import { LocalStrategy } from './application/strategies/local.strategy'
 import { RefreshStrategy } from './application/strategies/refresh.strategy'
 
 @Module({
-  imports: [CqrsModule, PassportModule, JwtModule, UsersModule],
+  imports: [CqrsModule, PassportModule, JwtModule, UserModule],
   providers: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],
   controllers: [AuthController],
 })

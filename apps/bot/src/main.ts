@@ -30,6 +30,7 @@ async function bootstrap() {
   const app = await NestFactory.create<
     INestApplication<NestExpressApplication>
   >(AppModule, {
+    snapshot: true,
     logger,
     httpsOptions: isDev ? httpsOptions : undefined,
   })

@@ -1,10 +1,10 @@
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
   Get,
   HttpCode,
-  InternalServerErrorException,
   Post,
   Query,
   Req,
@@ -27,7 +27,7 @@ import { Request, Response } from 'express'
 
 import { ConfigService } from '#/config/config.service'
 
-import { User } from '#/users/domain/user'
+import { User } from '#/user/domain'
 
 import { AuthService } from '../application/auth.service'
 import { Auth } from '../application/decorators/auth.decorator'
@@ -40,6 +40,7 @@ import { LoginDto } from './dtos/login.dto'
 import { LogoutParamsDto } from './dtos/logout-params.dto'
 import { SignUpDto } from './dtos/sign-up.dto'
 
+import { USER_ERRORS, UserError } from '#/user/infra'
 import {
   AuthCookieData,
   Authorized,
@@ -94,15 +95,15 @@ export class AuthController {
   ): Promise<Authorized> {
     const result = await this.auth.signUp(dto)
 
-    if (typeof result === 'string') {
-      switch (result) {
-        case 'USER_ALREADY_EXISTS': {
+    if (result instanceof UserError) {
+      switch (result.message) {
+        case USER_ERRORS.USER_ALREADY_EXISTS: {
           throw new ConflictException(
-            'Гость с данным логином уже зарегистрирован.'
+            'Пользователь с данным логином уже зарегистрирован..'
           )
         }
         default: {
-          throw new InternalServerErrorException()
+          throw new BadRequestException(res)
         }
       }
     }
@@ -236,8 +237,7 @@ export class AuthController {
     }
 
     const user = req.user! as User
-    const userId = user.getId() as number
-
+    const userId = user.id!
     await this.auth.removeRefreshToken(userId, rtid)
 
     res.cookie(
