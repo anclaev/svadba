@@ -79,19 +79,34 @@ export const SignInForm: FC<SignInFormProps> = ({ redirectUrl }) => {
           closeButton: true,
         }
       )
-    } else {
-      toast(`Добро пожаловать, ${user!.name}!`, {
-        cancel: {
-          label: 'Перейти в кабинет гостя',
-          onClick: () => {
-            router.push('/-')
-          },
-        },
-        className: 'flex flex-col width-auto',
-        duration: 60000,
-        closeButton: true,
-      })
     }
+
+    if (user!.status === 'BLOCKED') {
+      toast(
+        <div>
+          <p>Добро пожаловать, {user!.name}!</p>
+          <p>Ваш аккаунт заблокирован.</p>
+        </div>,
+        {
+          className: 'flex flex-col width-auto',
+          duration: 60000,
+          closeButton: true,
+        }
+      )
+      return
+    }
+
+    toast(`Добро пожаловать, ${user!.name}!`, {
+      cancel: {
+        label: 'Перейти в кабинет гостя',
+        onClick: () => {
+          router.push('/-')
+        },
+      },
+      className: 'flex flex-col width-auto',
+      duration: 60000,
+      closeButton: true,
+    })
 
     if (redirectUrl) {
       router.push(redirectUrl)
