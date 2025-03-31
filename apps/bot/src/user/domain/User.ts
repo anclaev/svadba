@@ -114,7 +114,6 @@ export class User extends AggregateRoot implements IUserProps {
         return 0
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return sortedCredentials[this.credentials.length - 1].props.version
     }
     return 0

@@ -1,0 +1,76 @@
+{
+  "quests": [
+    {
+      "index": 1,
+      "title": "Пролог",
+      "type": "prolog",
+      "description": "Жил русский богатырь и встретилась однажды ему на пути татарская принцесса, решили они в заветный день связать свои судьбы, да разлучило их расстояние обстоятельствами непреодолимыми. Но ходит в народе поверье, что сможет воссоединить сердца союз между народами да помощь люда честного.",
+      "achievement": "просто-здравствуй",
+      "side": false
+    },
+    {
+      "index": 2,
+      "title": "Я ждала тебя, так ждала",
+      "type": "allegrova",
+      "description": null,
+      "achievement": "ты-был-мечтою-моей-хрустальною",
+      "side": false
+    },
+    {
+      "index": 3,
+      "title": "Ой, что-то мы засиделись, братцы",
+      "type": "artem",
+      "description": null,
+      "achievement": "не-пора-ли-нам-разгуляться",
+      "side": false
+    },
+    {
+      "index": 4,
+      "title": "Белая платье",
+      "type": "alina",
+      "description": null,
+      "achievement": "белая-фата",
+      "side": false
+    },
+    {
+      "index": 4,
+      "title": "Срывай с меня бант",
+      "type": "podarok",
+      "description": null,
+      "achievement": "я-твой-подарок",
+      "side": false
+    },
+    {
+      "index": 5,
+      "title": "Музыка нас связала",
+      "type": "music",
+      "description": null,
+      "achievement": "тайною-нашей-стала",
+      "side": true
+    },
+    {
+      "index": 6,
+      "title": "Чтоб вы все были здоровы",
+      "type": "pojelanie",
+      "description": null,
+      "achievement": "чтобы-сияло-солнце-ярче",
+      "side": true
+    },
+    {
+      "index": 7,
+      "title": "Ясный мой свет",
+      "type": "znanie",
+      "description": null,
+      "achievement": "ты-напиши-мне",
+      "side": true
+    },
+    {
+      "index": 8,
+      "title": "Когда мы едины",
+      "type": "sovet",
+      "description": null,
+      "achievement": "мы-непобедимы",
+      "side": true
+    }
+  ]
+}

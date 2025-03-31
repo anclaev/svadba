@@ -32,22 +32,36 @@ enum GuestRole {
   BRIDE // Невеста
 }
 
+enum QuestStatus {
+  STARTED
+  COMPLETED
+}
+
+enum TransactionStatus {
+  CREATED
+  WAITING
+  ACCEPTED
+  CANCELLED
+}
+
 model User {
-  id                 String           @id @default(uuid()) @db.Uuid()
-  telegramId         Int?             @unique @map("telegram_id")
-  status             UserStatus       @default(CREATED)
-  role               UserRole         @default(PUBLIC)
-  login              String           @unique
+  id                 String               @id @default(uuid()) @db.Uuid()
+  telegramId         Int?                 @unique @map("telegram_id")
+  status             UserStatus           @default(CREATED)
+  role               UserRole             @default(PUBLIC)
+  login              String               @unique
   password           String
   name               String
-  isTelegramVerified Boolean          @default(false) @map("telegram_verified")
-  createdAt          DateTime?        @default(now()) @map("created_at")
+  isTelegramVerified Boolean              @default(false) @map("telegram_verified")
+  createdAt          DateTime?            @default(now()) @map("created_at")
   guest              Guest?
-  credentials        Json[]           @default([])
+  credentials        Json[]               @default([])
   uploads            Upload[]
-  externalLinks      ExternalLink[]
-  dresscodeColors    DresscodeColor[]
-  timingEvents       TimingEvent[]
+  achievements       Achievement[]
+  quests             Quest[]
+  transactions       TransactionHistory[]
+  dresscodeColors    DresscodeColor[]     @ignore
+  timingEvents       TimingEvent[]        @ignore
 }
 
 model Guest {
@@ -60,17 +74,54 @@ model Guest {
   userId    String     @unique @map("user_id") @db.Uuid()
 }
 
+model Quest {
+  id      String      @id @default(uuid()) @db.Uuid()
+  type    String
+  status  QuestStatus @default(STARTED)
+  actor   User        @relation(fields: [actorId], references: [id])
+  actorId String      @map("actor_id") @db.Uuid()
+}
+
+model TransactionHistory {
+  id             String            @id @default(uuid()) @db.Uuid()
+  status         TransactionStatus @default(CREATED)
+  purpose        String
+  amount         Int
+  currentBalance Int               @map("current_balance")
+  version        Int
+
+  account   User   @relation(fields: [accountId], references: [id])
+  accountId String @map("issuer_id") @db.Uuid()
+
+  achievement   Achievement? @relation(fields: [achievementId], references: [id])
+  achievementId String?      @map("achievement_id") @db.Uuid()
+}
+
+model Achievement {
+  id     String @id @default(uuid()) @db.Uuid()
+  alias  String @unique
+  title  String
+  amount Int
+
+  image   Upload @relation(fields: [imageId], references: [id])
+  imageId String @map("image_id") @db.Uuid()
+
+  users        User[]
+  transactions TransactionHistory[]
+}
+
 model Upload {
-  id        String        @id @default(uuid()) @db.Uuid()
-  url       String
-  name      String
-  filename  String
-  ext       String
-  mimetype  String?
-  createdAt DateTime      @default(now()) @map("created_at")
-  events    TimingEvent[] @ignore
-  owner     User          @relation(fields: [ownerId], references: [id])
-  ownerId   String        @map("owner_id") @db.Uuid()
+  id           String        @id @default(uuid()) @db.Uuid()
+  url          String
+  name         String
+  filename     String
+  ext          String
+  mimetype     String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  events       TimingEvent[] @ignore
+  achievements Achievement[] @ignore
+  owner        User          @relation(fields: [ownerId], references: [id])
+  ownerId      String        @map("owner_id") @db.Uuid()
 }
 
 model TimingEvent {
@@ -94,14 +145,4 @@ model DresscodeColor {
   createdAt   DateTime @default(now()) @map("created_at")
   owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     String   @map("owner_id") @db.Uuid()
-}
-
-model ExternalLink {
-  id        String   @id @default(uuid()) @db.Uuid()
-  url       String
-  name      String
-  alias     String
-  createdAt DateTime @default(now()) @map("created_at")
-  owner     User     @relation(fields: [ownerId], references: [id])
-  ownerId   String   @map("owner_id") @db.Uuid()
 }

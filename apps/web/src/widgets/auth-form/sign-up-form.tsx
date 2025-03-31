@@ -98,17 +98,17 @@ export const SignUpForm: FC<SignUpFormProps> = ({
       router.push(redirectUrl)
     }
 
-    toast(`Добро пожаловать, ${user!.name}!`, {
-      cancel: {
-        label: 'Перейти в кабинет гостя',
-        onClick: () => {
-          router.push('/-')
-        },
-      },
-      className: 'flex flex-col width-auto',
-      duration: 15000,
-      closeButton: true,
-    })
+    toast(
+      <div>
+        <p>Добро пожаловать, {user!.name}!</p>
+        <p>Ожидайте подтверждения вашего аккаунта</p>
+      </div>,
+      {
+        className: 'flex flex-col width-auto',
+        duration: 15000,
+        closeButton: true,
+      }
+    )
   }
 
   return (

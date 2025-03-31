@@ -1,4 +1,4 @@
-import { GuestRole } from '../models/user.model'
+import { GuestRole, UserStatus } from '../models/user.model'
 
 export type AppError = {
   message: string
@@ -10,13 +10,17 @@ export type ApiError = {
   errors: { message: string }[]
 }
 
-export interface TokenPayload {
+export interface AccessTokenPayload {
   id: number
-  tokenId: string
-  version: number
   role: GuestRole
+  status: UserStatus
   iat: number
   exp: number
   iss: string
   sub: string
+}
+
+export interface TokenPayload extends AccessTokenPayload {
+  tokenId: string
+  version: number
 }

@@ -11,13 +11,16 @@ export interface GuestModel {
   createdAt: string
 }
 
-export interface UserModel {
+export interface AuthorizedUser {
   id: string
-  telegramId?: string
+  telegramId: string | null
   status: UserStatus
   role: UserRole
   login: string
   name: string
+}
+
+export interface UserModel extends AuthorizedUser {
   isTelegramVerified: boolean
   createdAt: string
   guest: GuestModel

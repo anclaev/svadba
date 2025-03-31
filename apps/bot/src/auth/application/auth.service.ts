@@ -44,6 +44,11 @@ export class AuthService {
   }
 
   async signUp(data: SignUpDto): Promise<LoginResult | UserError> {
+    const isExistsUser = await this.userRepo.exists(data.login.trim())
+    if (isExistsUser) {
+      return new UserError('USER_ALREADY_EXISTS')
+    }
+
     const newUser = new User({
       telegramId: null,
       credentials: [],
@@ -61,10 +66,6 @@ export class AuthService {
     })
 
     const registeredUser = await this.userRepo.create(newUser)
-
-    if (!registeredUser) {
-      return new UserError('USER_ALREADY_EXISTS')
-    }
 
     registeredUser.commit()
 
@@ -100,6 +101,7 @@ export class AuthService {
         const payload: IAccessPayload = {
           id: user.id!,
           role: user.guest.role,
+          status: user.status,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -115,6 +117,7 @@ export class AuthService {
           tokenId: tokenId ?? randomUUID(),
           version: user.credentialsVersion,
           role: user.guest.role,
+          status: user.status,
         }
 
         const token = await this.jwt.signAsync(payload, {
@@ -138,6 +141,7 @@ export class AuthService {
           id: user.id!,
           version: user.credentialsVersion,
           role: user.guest.role,
+          status: user.status,
         }
 
         return await this.jwt.signAsync(payload, {
@@ -151,6 +155,7 @@ export class AuthService {
           id: user.id!,
           version: user.credentialsVersion,
           role: user.guest.role,
+          status: user.status,
         }
 
         return await this.jwt.signAsync(payload, {

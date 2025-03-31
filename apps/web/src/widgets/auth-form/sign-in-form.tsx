@@ -67,17 +67,31 @@ export const SignInForm: FC<SignInFormProps> = ({ redirectUrl }) => {
 
     closeLogin()
 
-    toast(`Добро пожаловать, ${user!.name}!`, {
-      cancel: {
-        label: 'Перейти в кабинет гостя',
-        onClick: () => {
-          router.push('/-')
+    if (user!.status === 'CREATED') {
+      toast(
+        <div>
+          <p>Добро пожаловать, {user!.name}!</p>
+          <p>Ваш аккаунт ожидает подтверждения</p>
+        </div>,
+        {
+          className: 'flex flex-col width-auto',
+          duration: 60000,
+          closeButton: true,
+        }
+      )
+    } else {
+      toast(`Добро пожаловать, ${user!.name}!`, {
+        cancel: {
+          label: 'Перейти в кабинет гостя',
+          onClick: () => {
+            router.push('/-')
+          },
         },
-      },
-      className: 'flex flex-col width-auto',
-      duration: 60000,
-      closeButton: true,
-    })
+        className: 'flex flex-col width-auto',
+        duration: 60000,
+        closeButton: true,
+      })
+    }
 
     if (redirectUrl) {
       router.push(redirectUrl)

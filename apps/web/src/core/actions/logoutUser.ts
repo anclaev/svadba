@@ -28,8 +28,6 @@ export async function logoutUser(): Promise<boolean> {
       }
     )
 
-    console.log(res)
-
     if (!res.ok) {
       return false
     }

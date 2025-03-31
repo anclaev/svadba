@@ -99,7 +99,7 @@ export class AuthController {
       switch (result.message) {
         case USER_ERRORS.USER_ALREADY_EXISTS: {
           throw new ConflictException(
-            'Пользователь с данным логином уже зарегистрирован..'
+            'Пользователь с данным логином уже зарегистрирован.'
           )
         }
         default: {
