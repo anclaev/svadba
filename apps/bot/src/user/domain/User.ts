@@ -101,7 +101,9 @@ export class User extends AggregateRoot implements IUserProps {
   static mapFromRaw(props: IUserRaw): User {
     return new User({
       ...props,
-      credentials: props.credentials.map((item) => Credentials.fromRaw(item)),
+      credentials: props.credentials
+        ? props.credentials.map((item) => Credentials.fromRaw(item))
+        : [],
       guest: Guest.fromRaw(props.guest),
     })
   }

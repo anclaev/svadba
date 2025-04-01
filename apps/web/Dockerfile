@@ -26,6 +26,7 @@ RUN yarn install --frozen-lockfile
  
 COPY --from=builder /app/out/full/ .
 RUN yarn turbo run build
+RUN mkdir -p ./apps/web/.next/cache 
  
 # ----------------- Run the production image -----------------
 LABEL version=$VERSION
@@ -37,9 +38,8 @@ USER nextjs
  
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/cache ./apps/web/.next/cache
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
- 
-RUN mkdir -p ./apps/web/.next/cache && chown nextjs:nodejs ./apps/web/.next/cache
 
 ENV NEXT_TELEMETRY_DISABLED=1
 

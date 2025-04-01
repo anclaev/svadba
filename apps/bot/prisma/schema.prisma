@@ -62,7 +62,7 @@ model User {
   transactions       TransactionHistory[]
   dresscodeColors    DresscodeColor[]     @ignore
   timingEvents       TimingEvent[]        @ignore
-  SocialLink         SocialLink[]
+  links              SocialLink[]
 }
 
 model Guest {
@@ -154,10 +154,11 @@ model DresscodeColor {
 
 model SocialLink {
   id        String   @id @default(uuid()) @db.Uuid()
+  alias     String   @unique
   title     String
   href      String
   icon      String?
   creator   User     @relation(fields: [creatorId], references: [id])
-  creatorId String   @map("created_by_id") @db.Uuid()
+  creatorId String   @map("creator_id") @db.Uuid()
   createdAt DateTime @default(now()) @map("created_at")
 }

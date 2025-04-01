@@ -1,9 +1,10 @@
-import { User } from '#/user/domain/User'
+import { JsonObject } from '@prisma/client/runtime/library'
 
 import { GuestMapper } from './guest.mapper'
 
+import { User } from '#/user/domain/User'
+
 import type { ICredentialsProps, IGuestRaw } from '#/user/domain/interfaces'
-import { JsonObject } from '@prisma/client/runtime/library'
 import type { UserModel } from '../interfaces'
 
 export class UserMapper {

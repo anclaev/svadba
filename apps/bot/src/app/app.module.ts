@@ -5,6 +5,7 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 import { AuthModule } from '#/auth/auth.module'
 import { ConfigModule } from '#/config/config.module'
 import { CoreModule } from '#/core/core.module'
+import { SocialLinkModule } from '#/social-link/social-link.module'
 import { SvadbaModule } from '#/svadba/svadba.module'
 import { TelegramModule } from '#/telegram/telegram.module'
 import { UploadModule } from '#/upload/upload.module'
@@ -18,6 +19,7 @@ import { UserModule } from '#/user/user.module'
     UploadModule,
     UserModule,
     AuthModule,
+    SocialLinkModule,
     SvadbaModule,
   ],
   providers: [

@@ -3,7 +3,7 @@ import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { RootAggregate } from '#/common/root-aggregate'
 import { extractFileProps } from '#/common/utils'
 
-import { User } from '#/old_users/domain/user'
+import { User } from '#/user/domain'
 
 import type { CreateUploadProps } from '../infra/types'
 

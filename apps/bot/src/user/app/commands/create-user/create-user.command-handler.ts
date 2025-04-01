@@ -35,8 +35,6 @@ export class CreateUserCommandHandler
       }),
     })
 
-    const savedUser = await this.repo.create(user)
-
-    return savedUser
+    return await this.repo.create(user)
   }
 }
