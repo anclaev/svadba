@@ -10,6 +10,8 @@ import { Header } from '@/shared/header'
 import { LoginDialog } from '@/shared/login-dialog'
 import { Toaster } from '@/shared/ui/sonner'
 
+import { QueryProvider } from './providers'
+
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -29,11 +31,13 @@ export default function RootLayout({
           <DialogStoreProvider>
             <AuthStoreProvider>
               <AuthProvider>
-                <LoginDialog />
-                <Header />
-                {children}
-                <Footer />
-                <Toaster />
+                <QueryProvider>
+                  <LoginDialog />
+                  <Header />
+                  {children}
+                  <Footer />
+                  <Toaster />
+                </QueryProvider>
               </AuthProvider>
             </AuthStoreProvider>
           </DialogStoreProvider>

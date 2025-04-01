@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
-import { FC, PropsWithChildren, Suspense } from 'react'
-
-import Loading from './loading'
+import { FC, PropsWithChildren } from 'react'
 
 import { Sidebar } from '@/shared/sidebar'
 
@@ -24,9 +22,7 @@ export default function MyLayout({
   return (
     <Container>
       <Sidebar className="fixed md:sticky top-auto bottom-[30px] md:bottom-auto md:top-[76px]" />
-      <main className="w-full px-0 md:px-4">
-        <Suspense fallback={<Loading />}>{children}</Suspense>
-      </main>
+      {children}
     </Container>
   )
 }

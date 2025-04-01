@@ -33,7 +33,6 @@ import { AuthenticatedUser } from '#/auth/application/decorators/user.decorator'
 
 import { TTL_MS } from '#/common/constants'
 import type { PaginateOutput } from '#/common/pagination'
-import { AliasQueryParamsDto } from '#/common/query-params/alias.query-params'
 import { IdQueryParamsDto } from '#/common/query-params/id.query-params'
 
 import { SOCIAL_LINK_ERRORS, SocialLinkError } from '../infra'
@@ -114,7 +113,7 @@ export class SocialLinkController {
   @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
   @ApiBadRequestResponse({ description: 'Некорректный создатель ссылки' })
   @ApiCookieAuth()
-  @Auth()
+  @Auth(['ADMIN'])
   @Post()
   async createSocialLink(
     @Body() dto: CreateSocialLinkDto,
@@ -182,13 +181,13 @@ export class SocialLinkController {
   }
 
   @ApiOperation({
-    summary: 'Удаление ссылки по алиасу',
+    summary: 'Удаление ссылки по идентификатору',
   })
-  @ApiQuery({ type: () => AliasQueryParamsDto })
+  @ApiQuery({ type: () => IdQueryParamsDto })
   @ApiOkResponse({ description: 'Ссылка успешно удалена', type: Boolean })
   @ApiNotFoundResponse({ description: 'Ссылка не найдена' })
   @ApiCookieAuth()
-  @Auth()
+  @Auth(['ADMIN'])
   @Delete(':id')
   async deleteSocialLink(@Param() { id }: IdQueryParamsDto): Promise<boolean> {
     const res = await this.commandBus.execute(new DeleteSocialLinkCommand(id))

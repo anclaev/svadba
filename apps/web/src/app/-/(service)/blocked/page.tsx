@@ -8,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function Blocked() {
-  return <AccountIsBlocked />
+  return (
+    <main className="w-full px-0 md:px-4">
+      <AccountIsBlocked />
+    </main>
+  )
 }

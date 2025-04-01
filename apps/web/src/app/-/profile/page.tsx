@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 }
 
 export default function Profile() {
-  return <span>Профиль</span>
+  return <main className="w-full px-0 md:px-4">Hi.</main>
 }

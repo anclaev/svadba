@@ -1,5 +1,8 @@
 import { UserModel } from '@/core/models/user.model'
 
+import { Paginated } from '../models/pagination-meta.model'
+import { SocialLinkItemModel } from '../models/social-link.model'
+
 import type { AppError } from '.'
 
 export type AuthorizeUserActionResponse = {
@@ -23,3 +26,10 @@ export type RegisterUserActionResponse = {
   user?: UserModel
   error?: AppError
 }
+
+export type FetchSocialLinksActionResponse =
+  | (Partial<Paginated<SocialLinkItemModel>> & {
+      error?: AppError
+      loading?: boolean
+    })
+  | null

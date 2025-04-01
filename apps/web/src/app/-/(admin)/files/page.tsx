@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 }
 
 export default function Files() {
-  return <span>Files</span>
+  return <main className="w-full px-0 md:px-4">Hi.</main>
 }

@@ -8,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function Unverified() {
-  return <AccountIsUnverified />
+  return (
+    <main className="w-full px-0 md:px-4">
+      <AccountIsUnverified />
+    </main>
+  )
 }

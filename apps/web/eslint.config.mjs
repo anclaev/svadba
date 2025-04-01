@@ -1,4 +1,5 @@
 import { FlatCompat } from '@eslint/eslintrc'
+import pluginQuery from '@tanstack/eslint-plugin-query'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -16,6 +17,7 @@ const eslintConfig = [
       '@typescript-eslint/no-unused-vars': 'warn',
     },
   }),
+  ...pluginQuery.configs['flat/recommended'],
 ]
 
 export default eslintConfig
