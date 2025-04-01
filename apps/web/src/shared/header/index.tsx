@@ -12,6 +12,7 @@ import { useDialogStore } from '@/core/providers/dialog-store-provider'
 import { parseGuestRole } from '@/core/utils/parsers'
 
 import { ConfirmLogoutDialog } from '@/shared/confirm-logout-dialog'
+import { Logo } from '@/shared/logo'
 
 import { AlertDialog, AlertDialogTrigger } from '@/shared/ui/alert-dialog'
 import { Button, buttonVariants } from '@/shared/ui/button'
@@ -38,15 +39,8 @@ export const Header = () => {
       className={`fixed z-3 left-0 top-0 right-0 flex justify-between items-center drop-shadow-lg 
         pl-5 pr-5 pt-2.5 pb-2.5 select-none transition-all duration-500 ${pageIsScrolled ? 'bg-[#FAF6EF]' : 'bg-transparent'}`}
     >
-      <Link href="/" className="min-w-[33%]">
-        <Image
-          src="/assets/logo.svg"
-          alt="logo"
-          width={40}
-          height={40}
-          className="w-[30px] h-[30px] md:w-[40px] md:h-[40px]"
-        />
-      </Link>
+      <Logo className="min-w-[33%]" />
+
       <span className="min-w-[33%] font-trajan text-[#D3A75E] text-center">
         23/08/25
       </span>
