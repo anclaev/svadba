@@ -1,8 +1,11 @@
 import Image, { ImageProps } from 'next/image'
 import { CSSProperties, FC, PropsWithChildren } from 'react'
 
+import { withSection } from '@/core/types/ui'
+
 export type SectionProps = {
   alias: string
+  component: FC<withSection>
   title?: string
   image?: ImageProps
   className?: string
