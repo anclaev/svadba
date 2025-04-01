@@ -39,6 +39,8 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
  
+RUN mkdir -p ./apps/web/.next/cache && chown nextjs:nodejs ./apps/web/.next/cache
+
 ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 3000

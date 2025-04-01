@@ -62,6 +62,7 @@ model User {
   transactions       TransactionHistory[]
   dresscodeColors    DresscodeColor[]     @ignore
   timingEvents       TimingEvent[]        @ignore
+  SocialLink         SocialLink[]
 }
 
 model Guest {
@@ -75,11 +76,12 @@ model Guest {
 }
 
 model Quest {
-  id      String      @id @default(uuid()) @db.Uuid()
-  type    String
-  status  QuestStatus @default(STARTED)
-  actor   User        @relation(fields: [actorId], references: [id])
-  actorId String      @map("actor_id") @db.Uuid()
+  id        String      @id @default(uuid()) @db.Uuid()
+  type      String
+  status    QuestStatus @default(STARTED)
+  createdAt DateTime    @default(now()) @map("created_at")
+  actor     User        @relation(fields: [actorId], references: [id])
+  actorId   String      @map("actor_id") @db.Uuid()
 }
 
 model TransactionHistory {
@@ -89,6 +91,7 @@ model TransactionHistory {
   amount         Int
   currentBalance Int               @map("current_balance")
   version        Int
+  createdAt      DateTime          @default(now()) @map("created_at")
 
   account   User   @relation(fields: [accountId], references: [id])
   accountId String @map("issuer_id") @db.Uuid()
@@ -98,16 +101,17 @@ model TransactionHistory {
 }
 
 model Achievement {
-  id     String @id @default(uuid()) @db.Uuid()
-  alias  String @unique
-  title  String
-  amount Int
+  id        String   @id @default(uuid()) @db.Uuid()
+  alias     String   @unique
+  title     String
+  amount    Int
+  createdAt DateTime @default(now()) @map("created_at")
 
   image   Upload @relation(fields: [imageId], references: [id])
   imageId String @map("image_id") @db.Uuid()
 
   users        User[]
-  transactions TransactionHistory[]
+  transactions TransactionHistory[] @ignore
 }
 
 model Upload {
@@ -120,8 +124,9 @@ model Upload {
   createdAt    DateTime      @default(now()) @map("created_at")
   events       TimingEvent[] @ignore
   achievements Achievement[] @ignore
-  owner        User          @relation(fields: [ownerId], references: [id])
-  ownerId      String        @map("owner_id") @db.Uuid()
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id") @db.Uuid()
 }
 
 model TimingEvent {
@@ -145,4 +150,14 @@ model DresscodeColor {
   createdAt   DateTime @default(now()) @map("created_at")
   owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     String   @map("owner_id") @db.Uuid()
+}
+
+model SocialLink {
+  id        String   @id @default(uuid()) @db.Uuid()
+  title     String
+  href      String
+  icon      String?
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId String   @map("created_by_id") @db.Uuid()
+  createdAt DateTime @default(now()) @map("created_at")
 }
