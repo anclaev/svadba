@@ -17,11 +17,13 @@ export const AccountIsBlocked: FC = () => (
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, ease: 'easeIn' }}
+        viewport={{ once: true }}
       />
       <div className="space-y-3">
         <motion.span
           className="text-base md:text-xl block"
           initial={{ opacity: 0, scale: 0 }}
+          viewport={{ once: true }}
           whileInView={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 1, ease: 'easeIn' }}
         >
@@ -34,6 +36,7 @@ export const AccountIsBlocked: FC = () => (
         rel="noopenner noreferrer"
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 3, ease: 'easeIn' }}
       >
         <Button className="cursor-pointer" variant={'outline'}>

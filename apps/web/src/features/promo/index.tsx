@@ -32,6 +32,7 @@ export const Promo = () => {
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.8, ease: 'easeIn' }}
+            viewport={{ once: true }}
             className="w-full flex flex-col items-center justify-center grow"
           >
             <AuthForm className="promo__form" defaultValue="sign-up" />
@@ -41,6 +42,7 @@ export const Promo = () => {
               initial={{ opacity: 0, y: -50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: 'easeIn' }}
+              viewport={{ once: true }}
               className="block mb-7 lg:mb-10"
             >
               Мы ждём вас на нашей свадьбе!
@@ -49,6 +51,7 @@ export const Promo = () => {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeIn', delay: 0.8 }}
+              viewport={{ once: true }}
               className="block text-3xl lg:text-4xl mb-2 lg:mb-3"
             >
               С любовью,
@@ -57,6 +60,7 @@ export const Promo = () => {
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeIn', delay: 1.6 }}
+              viewport={{ once: true }}
               className="block text-4xl lg:text-5xl"
             >
               Алина и Артём!

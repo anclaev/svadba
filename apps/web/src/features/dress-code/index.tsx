@@ -35,6 +35,7 @@ export const DressCode: FC<withSection> = ({ section }) => {
             initial={{ opacity: 0, scale: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeIn' }}
+            viewport={{ once: true }}
             key={index}
             className={`
               w-[100px] h-[100px]

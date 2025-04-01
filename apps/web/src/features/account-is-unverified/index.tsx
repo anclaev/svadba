@@ -16,6 +16,7 @@ export const AccountIsUnverified: FC = () => (
         strokeWidth={1}
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, ease: 'easeIn' }}
       />
       <div className="space-y-3">
@@ -23,6 +24,7 @@ export const AccountIsUnverified: FC = () => (
           className="text-base md:text-xl block"
           initial={{ opacity: 0, scale: 0 }}
           whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 1, ease: 'easeIn' }}
         >
           Ваш аккаунт не подтверждён
@@ -31,6 +33,7 @@ export const AccountIsUnverified: FC = () => (
           className="text-sm md:text-base block"
           initial={{ opacity: 0, scale: 0 }}
           whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 2, ease: 'easeIn' }}
         >
           Нам требуется время, чтобы проверить, что вы — это вы
@@ -42,6 +45,7 @@ export const AccountIsUnverified: FC = () => (
         rel="noopenner noreferrer"
         initial={{ opacity: 0, scale: 0 }}
         whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 3, ease: 'easeIn' }}
       >
         <Button className="cursor-pointer" variant={'outline'}>

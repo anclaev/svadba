@@ -43,6 +43,7 @@ export const Place: FC<withSection> = ({ section }) => {
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeIn' }}
+          viewport={{ once: true }}
           className="bg-wheat-100 pt-7 pl-7 pb-7 pr-7 rounded-[20px] shadow-xl text-center flex flex-col"
         >
           <span className="font-trajan text-xl sm:text-2xl font-bold">

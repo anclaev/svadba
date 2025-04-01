@@ -98,6 +98,7 @@ export const Timing: FC<withSection> = ({ section }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: 'easeIn', delay: 1 * index }}
+            viewport={{ once: true }}
             key={index}
             className="flex items-center timing-item"
           >
