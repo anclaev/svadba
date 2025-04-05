@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+'use client'
 
-import { PaginationItem, PaginationLink } from '@/shared/ui/pagination'
+import { useCallback, useState } from 'react'
 
 export type PaginationOptions = {
   page: number
@@ -24,36 +24,17 @@ export function usePagination({
   const [pagesCount, setPagesCount] = useState<number>(count)
 
   const handlePreviousPage = useCallback(() => {
-    if (page > 1) {
-      setCurrentPage(page - 1)
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
     }
-  }, [page])
+  }, [currentPage])
 
   const handleNextPage = useCallback(() => {
-    if (page < pagesCount) {
-      setCurrentPage(page + 1)
+    console.log(currentPage)
+    if (currentPage < pagesCount) {
+      setCurrentPage(currentPage + 1)
     }
-  }, [pagesCount, page])
-
-  const paginationItems = useMemo(() => {
-    const items = []
-
-    for (let i = 1; i <= pagesCount; i++) {
-      items.push(
-        <PaginationItem key={i}>
-          <PaginationLink
-            href="#"
-            isActive={page === i}
-            onClick={() => setCurrentPage(i)}
-          >
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-      )
-    }
-
-    return items
-  }, [pagesCount, page])
+  }, [pagesCount, currentPage])
 
   return {
     pagesCount,
@@ -62,7 +43,6 @@ export function usePagination({
     setPageSize,
     currentPage,
     setCurrentPage,
-    paginationItems,
     handlePreviousPage,
     handleNextPage,
   }

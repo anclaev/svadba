@@ -2,13 +2,14 @@
 
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Badge } from '@/shared/ui/badge'
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
+  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/shared/ui/pagination'
@@ -31,11 +32,16 @@ export const SocialLinks = () => {
   const {
     currentPage,
     pageSize,
-    paginationItems,
+    pagesCount,
+    setCurrentPage,
     setPagesCount,
     handleNextPage,
     handlePreviousPage,
-  } = usePagination()
+  } = usePagination({
+    page: 1,
+    size: 10,
+    count: 1,
+  })
 
   const [totalItems, setTotalItems] = useState<number>(1)
 
@@ -48,14 +54,33 @@ export const SocialLinks = () => {
 
   const [links, setLinks] = useState<SocialLinkItemModel[]>([])
 
+  const paginationItems = useMemo(() => {
+    const items = []
+
+    for (let i = 1; i <= pagesCount; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink
+            href="#"
+            isActive={currentPage === i}
+            onClick={() => setCurrentPage(i)}
+          >
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    }
+
+    return items
+  }, [pagesCount, currentPage, setCurrentPage])
+
   useEffect(() => {
     if (data && data.data) {
       setLinks(data.data)
       setTotalItems(data.meta!.total)
       setPagesCount(data.meta!.lastPage)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data, setPagesCount])
 
   return (
     <section>
