@@ -11,7 +11,7 @@ import { useDialogStore } from '@/core/providers/dialog-store-provider'
 
 import { parseGuestRole } from '@/core/utils/parsers'
 
-import { ConfirmLogoutDialog } from '@/shared/confirm-logout-dialog'
+import { ConfirmLogoutDialog } from '@/features/(auth)/confirm-logout-dialog'
 import { Logo } from '@/shared/logo'
 
 import { AlertDialog, AlertDialogTrigger } from '@/shared/ui/alert-dialog'

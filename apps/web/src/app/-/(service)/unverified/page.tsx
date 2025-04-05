@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { AccountIsUnverified } from '@/features/account-is-unverified'
+import { AccountIsUnverified } from '@/features/(auth)/account-is-unverified'
 
 export const metadata: Metadata = {
   title: 'The Svadba',

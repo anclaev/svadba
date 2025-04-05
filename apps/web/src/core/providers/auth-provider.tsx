@@ -7,7 +7,7 @@ import { isNull } from '@/core/utils'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 
-import { fetchUserProfile } from '@/core/actions/fetchUserProfile'
+import { getProfile } from '@/core/actions/getProfile'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { setUser, startLoading, stopLoading } = useAuthStore((store) => store)
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const authorize = async () => {
       startLoading()
-      const profile = await fetchUserProfile()
+      const profile = await getProfile()
 
       if (isNull(profile)) {
         stopLoading()

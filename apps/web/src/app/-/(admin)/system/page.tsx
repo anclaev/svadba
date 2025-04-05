@@ -3,7 +3,7 @@ import { Metadata } from 'next'
 
 import { getQueryClient } from '@/core/utils/get-query-client'
 
-import { SocialLinks } from '@/features/social-links'
+import { SocialLinksList } from '@/features/(social-links)/social-links-list'
 
 export const metadata: Metadata = {
   title: 'Система',
@@ -18,7 +18,7 @@ export default async function System() {
   return (
     <main className="w-full px-0 md:px-4">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <SocialLinks />
+        <SocialLinksList />
       </HydrationBoundary>
     </main>
   )

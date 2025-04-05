@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import { AccountIsBlocked } from '@/features/account-is-blocked'
+import { AccountIsBlocked } from '@/features/(auth)/account-is-blocked'
 
 export const metadata: Metadata = {
   title: 'The Svadba',

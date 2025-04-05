@@ -6,10 +6,11 @@ import { cookies } from 'next/headers'
 import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
 import { COOKIES } from '@/core/constants/cookies'
 
-import type { RefreshUserActionResponse } from '@/core/types/actions-responses'
-import type { ApiAuthRefreshResponse } from '@/core/types/api-responses'
+import { formatError } from '../utils'
 
-export async function refreshUser(): Promise<RefreshUserActionResponse> {
+import type { ApiError, RefreshUser } from '../types'
+
+export async function refreshUser(): Promise<RefreshUser.ActionResponse> {
   const cookieStore = await cookies()
 
   const refreshToken = cookieStore.get(COOKIES.REFRESH_TOKEN)?.value
@@ -31,39 +32,51 @@ export async function refreshUser(): Promise<RefreshUserActionResponse> {
       }
     )
 
+    const data = (await res.json()) as RefreshUser.ApiResponse | ApiError
+
     if (!res.ok) {
       cookieStore.delete(COOKIES.REFRESH_TOKEN)
       cookieStore.delete(COOKIES.REFRESH_TOKEN_ID)
-      return { error: { message: 'Ваша сессия завершена.' } }
+      return formatError('Ваша сессия завершена.')
     }
 
-    const data = (await res.json()) as ApiAuthRefreshResponse
+    cookieStore.set(
+      COOKIES.ACCESS_TOKEN,
+      (data as RefreshUser.ApiResponse).access_token!,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_ACCESS_TIME),
+      }
+    )
+    cookieStore.set(
+      COOKIES.REFRESH_TOKEN,
+      (data as RefreshUser.ApiResponse).refresh_token!,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_REFRESH_TIME),
+      }
+    )
+    cookieStore.set(
+      COOKIES.REFRESH_TOKEN_ID,
+      (data as RefreshUser.ApiResponse).refresh_token_id!,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_REFRESH_TIME),
+      }
+    )
 
-    cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_ACCESS_TIME),
-    })
-    cookieStore.set(COOKIES.REFRESH_TOKEN, data.refresh_token, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_REFRESH_TIME),
-    })
-    cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_REFRESH_TIME),
-    })
-
-    return data
+    return data as RefreshUser.ApiResponse
   } catch (err) {
     Sentry.captureException(err)
-    return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
+    return formatError('Что-то пошло не так. Попробуйте позже.')
   }
 }

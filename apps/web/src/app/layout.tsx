@@ -5,9 +5,9 @@ import { AuthStoreProvider } from '@/core/providers/auth-store-provider'
 import { DialogStoreProvider } from '@/core/providers/dialog-store-provider'
 import { EnvProvider } from '@/core/providers/env-provider'
 
+import { LoginDialog } from '@/features/(auth)/login-dialog'
 import { Footer } from '@/shared/footer'
 import { Header } from '@/shared/header'
-import { LoginDialog } from '@/shared/login-dialog'
 import { Toaster } from '@/shared/ui/sonner'
 
 import { QueryProvider } from './providers'

@@ -6,13 +6,13 @@ import { cookies } from 'next/headers'
 import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
 import { COOKIES } from '@/core/constants/cookies'
 
-import type { AuthorizeUserActionPayload } from '@/core/types/actions-payloads'
-import type { AuthorizeUserActionResponse } from '@/core/types/actions-responses'
-import type { ApiAuthLoginResponse } from '@/core/types/api-responses'
+import { formatError } from '../utils'
+
+import type { ApiError, AuthorizeUser } from '@/core/types'
 
 export async function authorizeUser(
-  payload: AuthorizeUserActionPayload
-): Promise<AuthorizeUserActionResponse> {
+  payload: AuthorizeUser.ActionPayload
+): Promise<AuthorizeUser.ActionResponse> {
   const cookieStore = await cookies()
 
   try {
@@ -26,44 +26,56 @@ export async function authorizeUser(
       }
     )
 
+    const data = (await res.json()) as AuthorizeUser.ApiResponse | ApiError
+
     if (!res.ok) {
-      return { error: { message: 'Авторизация не пройдена.' } }
+      return formatError((data as ApiError).message!)
     }
 
-    const data = (await res.json()) as ApiAuthLoginResponse
+    cookieStore.set(
+      COOKIES.ACCESS_TOKEN,
+      (data as AuthorizeUser.ApiResponse).access_token,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_ACCESS_TIME),
+      }
+    )
+    cookieStore.set(
+      COOKIES.REFRESH_TOKEN,
+      (data as AuthorizeUser.ApiResponse).refresh_token,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_REFRESH_TIME),
+      }
+    )
 
-    cookieStore.set(COOKIES.ACCESS_TOKEN, data.access_token, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_ACCESS_TIME),
-    })
-    cookieStore.set(COOKIES.REFRESH_TOKEN, data.refresh_token, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_REFRESH_TIME),
-    })
+    cookieStore.set(
+      COOKIES.REFRESH_TOKEN_ID,
+      (data as AuthorizeUser.ApiResponse).refresh_token_id,
+      {
+        path: '/',
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: Number(process.env.JWT_REFRESH_TIME),
+      }
+    )
 
-    cookieStore.set(COOKIES.REFRESH_TOKEN_ID, data.refresh_token_id, {
-      path: '/',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: Number(process.env.JWT_REFRESH_TIME),
-    })
-
-    return { user: data.user }
+    return { user: (data as AuthorizeUser.ApiResponse).user }
   } catch (err) {
     Sentry.captureException(err)
-    return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
+    return formatError('Что-то пошло не так. Попробуйте позже.')
   }
 }
 
 export default async function trackedAuthorizeUser(
-  payload: AuthorizeUserActionPayload
+  payload: AuthorizeUser.ActionPayload
 ) {
   return await Sentry.withServerActionInstrumentation(
     'authorizeUser',

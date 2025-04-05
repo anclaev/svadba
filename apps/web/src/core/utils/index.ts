@@ -14,3 +14,5 @@ export const isNull = (value: unknown): value is null => value === null
 export const parseJwt = <T>(token: string): T => {
   return jwtDecode<T>(token)
 }
+
+export const formatError = (message: string) => ({ error: { message } })

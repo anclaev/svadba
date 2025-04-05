@@ -31,7 +31,7 @@ export const LoginDialog = () => {
             onClick={closeLogin}
           >
             <XIcon />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">Закрыть</span>
           </DialogClose>
         </DialogHeader>
         <AuthForm />

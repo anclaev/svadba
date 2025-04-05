@@ -1,8 +1,6 @@
-import { ApiSchema } from '@nestjs/swagger'
-import { createZodDto } from 'nestjs-zod'
 import { z } from 'zod'
 
-const CreateSocialLinkSchema = z.object({
+export const CreateSocialLinkFormSchema = z.object({
   alias: z
     .string({ message: 'Алиас должен быть строкой.' })
     .nonempty({ message: 'Алиас не может быть пустым.' }),
@@ -17,16 +15,8 @@ const CreateSocialLinkSchema = z.object({
     .string({ message: 'Иконка должна быть строкой.' })
     .url({ message: 'Иконка должна быть ссылкой.' })
     .optional(),
-  creatorId: z
-    .string({
-      message: 'Идентификатор создателя должен быть строкой.',
-    })
-    .uuid({ message: 'Идентификатор должен быть uuid.' })
-    .optional(),
 })
 
-@ApiSchema({
-  name: 'CreateSocialLinkDto',
-  description: 'Данные для создания ссылки',
-})
-export class CreateSocialLinkDto extends createZodDto(CreateSocialLinkSchema) {}
+export type CreateSocialLinkFormValues = z.infer<
+  typeof CreateSocialLinkFormSchema
+>

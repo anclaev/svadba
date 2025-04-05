@@ -6,14 +6,13 @@ import { cookies } from 'next/headers'
 import { API_ENDPOINTS } from '@/core/constants/api-endpoints'
 import { COOKIES } from '@/core/constants/cookies'
 
-import { isNull } from '@/core/utils'
+import { formatError, isNull } from '@/core/utils'
 
 import { refreshUser } from '@/core/actions/refreshUser'
 
-import type { FetchProfileActionResponse } from '@/core/types/actions-responses'
-import type { ApiAuthProfileResponse } from '@/core/types/api-responses'
+import type { ApiError, GetProfile } from '../types'
 
-export async function fetchUserProfile(): Promise<FetchProfileActionResponse> {
+export async function getProfile(): Promise<GetProfile.ActionResponse> {
   const cookieStore = await cookies()
 
   const accessToken = cookieStore.get(COOKIES.ACCESS_TOKEN)?.value
@@ -40,20 +39,20 @@ export async function fetchUserProfile(): Promise<FetchProfileActionResponse> {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
-          mode: 'cors',
         },
+        mode: 'cors',
       }
     )
 
+    const data = (await res.json()) as GetProfile.ApiResponse | ApiError
+
     if (!res.ok) {
-      return { error: { message: 'Что-то пошло не так.' } }
+      return formatError((data as ApiError).message!)
     }
 
-    const data = (await res.json()) as ApiAuthProfileResponse
-
-    return { user: data }
+    return { user: data as GetProfile.ApiResponse }
   } catch (err) {
     Sentry.captureException(err)
-    return { error: { message: 'Что-то пошло не так. Попробуйте позже.' } }
+    return formatError('Что-то пошло не так. Попробуйте позже.')
   }
 }
