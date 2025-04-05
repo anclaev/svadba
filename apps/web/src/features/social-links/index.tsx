@@ -2,14 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Badge } from '@/shared/ui/badge'
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
-  PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from '@/shared/ui/pagination'
@@ -24,19 +23,26 @@ import {
 
 import { SocialLinkSkeleton } from './SocialLinkSkeleton'
 
+import { usePagination } from '@/core/hooks/use-pagination'
 import { SocialLinkItemModel } from '@/core/models/social-link.model'
 import { fetchSocialLinksQuery } from '@/core/queries/fetchSocialLinks.query'
 
 export const SocialLinks = () => {
-  const [page, setPage] = useState<number>(1)
-  const [size, setSize] = useState<number>(10)
-  const [pages, setPages] = useState<number>(1)
-  const [total, setTotal] = useState<number>(1)
+  const {
+    currentPage,
+    pageSize,
+    paginationItems,
+    setPagesCount,
+    handleNextPage,
+    handlePreviousPage,
+  } = usePagination()
+
+  const [totalItems, setTotalItems] = useState<number>(1)
 
   const { data, isPending } = useQuery(
     fetchSocialLinksQuery({
-      page,
-      size,
+      page: currentPage,
+      size: pageSize,
     })
   )
 
@@ -45,47 +51,16 @@ export const SocialLinks = () => {
   useEffect(() => {
     if (data && data.data) {
       setLinks(data.data)
-      setTotal(data.meta!.total)
-      setPages(data.meta!.lastPage)
+      setTotalItems(data.meta!.total)
+      setPagesCount(data.meta!.lastPage)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
-
-  const paginationItems = useMemo(() => {
-    const items = []
-
-    for (let i = 1; i <= pages; i++) {
-      items.push(
-        <PaginationItem key={i}>
-          <PaginationLink
-            href="#"
-            isActive={page === i}
-            onClick={() => setPage(i)}
-          >
-            {i}
-          </PaginationLink>
-        </PaginationItem>
-      )
-    }
-
-    return items
-  }, [pages, page])
-
-  const nextPageHandler = useCallback(() => {
-    if (page < pages) {
-      setPage(page + 1)
-    }
-  }, [pages, page])
-
-  const lastPageHandler = useCallback(() => {
-    if (page > 1) {
-      setPage(page - 1)
-    }
-  }, [page])
 
   return (
     <section>
       <h2 className="py-3 font-medium text-lg">
-        Социальные ссылки <Badge variant="default">{total}</Badge>
+        Социальные ссылки <Badge variant="default">{totalItems}</Badge>
       </h2>
       <Table>
         <TableHeader>
@@ -128,11 +103,15 @@ export const SocialLinks = () => {
       <Pagination className="pt-5">
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious href="#" title="" onClick={lastPageHandler} />
+            <PaginationPrevious
+              href="#"
+              title=""
+              onClick={handlePreviousPage}
+            />
           </PaginationItem>
           {paginationItems}
           <PaginationItem>
-            <PaginationNext href="#" onClick={nextPageHandler} />
+            <PaginationNext href="#" onClick={handleNextPage} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
