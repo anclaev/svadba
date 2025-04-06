@@ -10,6 +10,6 @@ import { UserRepository } from './infra'
   imports: [CqrsModule],
   controllers: [UserController],
   providers: [UserRepository, ...UserCommandHandlers, ...UserQueryHandlers],
-  exports: [UserRepository],
+  exports: [UserRepository, ...UserCommandHandlers, ...UserQueryHandlers],
 })
 export class UserModule {}

@@ -1,5 +1,4 @@
 export const APP_NAME = 'Svadba Bot'
-export const BOT_NAME = 'Elle'
 
 export const TTL_MS = {
   INFINITE: 0,

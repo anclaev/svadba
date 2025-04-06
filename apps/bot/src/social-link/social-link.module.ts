@@ -14,5 +14,10 @@ import { SocialLinkRepository } from './infra'
     ...SocialLinkCommandHandlers,
     ...SocialLinkQueryHandlers,
   ],
+  exports: [
+    SocialLinkRepository,
+    ...SocialLinkCommandHandlers,
+    ...SocialLinkQueryHandlers,
+  ],
 })
 export class SocialLinkModule {}

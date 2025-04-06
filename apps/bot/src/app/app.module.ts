@@ -3,11 +3,11 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 
 import { AuthModule } from '#/auth/auth.module'
+import { BotModule } from '#/bot/bot.module'
 import { ConfigModule } from '#/config/config.module'
 import { CoreModule } from '#/core/core.module'
 import { SocialLinkModule } from '#/social-link/social-link.module'
 import { SvadbaModule } from '#/svadba/svadba.module'
-import { TelegramModule } from '#/telegram/telegram.module'
 import { UploadModule } from '#/upload/upload.module'
 import { UserModule } from '#/user/user.module'
 
@@ -15,7 +15,7 @@ import { UserModule } from '#/user/user.module'
   imports: [
     ConfigModule,
     CoreModule,
-    TelegramModule,
+    BotModule,
     UploadModule,
     UserModule,
     AuthModule,
