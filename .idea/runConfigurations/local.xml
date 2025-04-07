@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="local" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="composeProjectName" value="svadba-local" />
+        <option name="envFilePath" value="" />
+        <option name="services">
+          <list>
+            <option value="api" />
+            <option value="bot" />
+            <option value="db" />
+            <option value="minio" />
+            <option value="redis" />
+            <option value="web" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="docker/docker-compose.local.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,10 +1,7 @@
-import { Markup } from 'telegraf'
+import { Markup } from 'telegraf';
 
-import { SocialLink } from '#/social-link/domain/SocialLink'
-import { User } from '#/user/domain/User'
-
-export const BOT_NAME = 'Elle'
-export const BOT_ADMIN_IDS = ['6035210835']
+export const BOT_NAME = 'Elle';
+export const BOT_ADMIN_IDS = ['6035210835'];
 
 export const SCENES = {
   ADMIN: 'ADMIN',
@@ -13,7 +10,7 @@ export const SCENES = {
   ADMIN_LINKS: 'ADMIN_LINKS',
   ADMIN_LINKS_LIST: 'ADMIN_LINKS_LIST',
   ADMIN_LINKS_CREATE: 'ADMIN_LINKS_CREATE',
-} as const
+} as const;
 
 export const COMMANDS = {
   YES: 'YES',
@@ -27,7 +24,7 @@ export const COMMANDS = {
   LINKS_CREATE: 'LINKS_CREATE',
   GUESTS: 'GUESTS',
   GUESTS_LIST: 'GUESTS_LIST',
-} as const
+} as const;
 
 export const BUTTONS = {
   YES: Markup.button.callback('👌 Да', COMMANDS.YES),
@@ -40,7 +37,7 @@ export const BUTTONS = {
   LINKS_LIST: Markup.button.callback('🔗 Список ссылок', COMMANDS.LINKS_LIST),
   LINKS_CREATE: Markup.button.callback(
     '➕ Добавить ссылку',
-    COMMANDS.LINKS_CREATE
+    COMMANDS.LINKS_CREATE,
   ),
   GUESTS: Markup.button.callback('👥 Гости', COMMANDS.GUESTS),
   // CREATE_GUEST: Markup.button.callback(
@@ -49,55 +46,55 @@ export const BUTTONS = {
   // ),
   GUESTS_LISTS: Markup.button.callback(
     '👥 Список гостей',
-    COMMANDS.GUESTS_LIST
+    COMMANDS.GUESTS_LIST,
   ),
-} as const
+} as const;
 
 export const SESSION_TYPES = {
   CREATE_LINK_TITLE: 'CREATE_LINK_TITLE',
   CREATE_LINK_ALIAS: 'CREATE_LINK_ALIAS',
   CREATE_LINK_HREF: 'CREATE_LINK_HREF',
   CREATE_LINK_CONFIRM: 'CREATE_LINK_CONFIRM',
-} as const
-export type SESSION_TYPES = (typeof SESSION_TYPES)[keyof typeof SESSION_TYPES]
+} as const;
+export type SESSION_TYPES = (typeof SESSION_TYPES)[keyof typeof SESSION_TYPES];
 
-export const guestsTemplate = (guests: User[]): string =>
-  guests.length > 0
-    ? guests
-        .map((g) => {
-          const msg = []
-          msg.push(`ID: ID: ${g.id}`)
-          msg.push(`Имя: ${g.name}`)
-          msg.push(`Роль:${g.role}`)
-          msg.push(`Статус: ${g.status}`)
-          msg.push(`Сторона: ${g.guest.side}`)
-          msg.push(`Тип: ${g.guest.role}`)
-          return msg.join('\n')
-        })
-        .join('\n\n')
-    : 'Гости не зарегистрированы'
+// export const guestsTemplate = (guests: User[]): string =>
+//   guests.length > 0
+//     ? guests
+//         .map((g) => {
+//           const msg = [];
+//           msg.push(`ID: ID: ${g.id}`);
+//           msg.push(`Имя: ${g.name}`);
+//           msg.push(`Роль:${g.role}`);
+//           msg.push(`Статус: ${g.status}`);
+//           msg.push(`Сторона: ${g.guest.side}`);
+//           msg.push(`Тип: ${g.guest.role}`);
+//           return msg.join('\n');
+//         })
+//         .join('\n\n')
+//     : 'Гости не зарегистрированы';
 
-export const socialLinksTemplate = (
-  links: SocialLink[],
-  total: number
-): string =>
-  links.length > 0
-    ? links
-        .map((l) => {
-          const msg = []
-          msg.push(`ID: ID: ${l.id}`)
-          msg.push(`Алиас: ${l.alias}`)
-          msg.push(`Название:${l.title}`)
-          msg.push(`Ссылка: ${l.href}`)
-          msg.push(`Иконка: ${l.icon}`)
-          return msg.join('\n')
-        })
-        .join('\n\n') + `\n\nВсего ссылок: ${total}`
-    : 'Ссылки не найдены'
+// export const socialLinksTemplate = (
+//   links: SocialLink[],
+//   total: number,
+// ): string =>
+//   links.length > 0
+//     ? links
+//         .map((l) => {
+//           const msg = [];
+//           msg.push(`ID: ID: ${l.id}`);
+//           msg.push(`Алиас: ${l.alias}`);
+//           msg.push(`Название:${l.title}`);
+//           msg.push(`Ссылка: ${l.href}`);
+//           msg.push(`Иконка: ${l.icon}`);
+//           return msg.join('\n');
+//         })
+//         .join('\n\n') + `\n\nВсего ссылок: ${total}`
+//     : 'Ссылки не найдены';
 
 export const TEXT = {
   SELECT: 'Выберите одну из страниц.',
   UNAUTHORIZED: 'Вы не администратор!',
-  GUESTS: guestsTemplate,
-  LINKS: socialLinksTemplate,
-} as const
+  // GUESTS: guestsTemplate,
+  // LINKS: socialLinksTemplate,
+} as const;

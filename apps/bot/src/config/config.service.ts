@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common'
-import { ConfigService as RootConfigService } from '@nestjs/config'
+import { Injectable } from '@nestjs/common';
+import { ConfigService as RootConfigService } from '@nestjs/config';
 
-import { Config } from './config.schema'
+import { Config } from './config.schema';
 
 /**
  * Сервис конфигурации приложения
@@ -9,10 +9,10 @@ import { Config } from './config.schema'
 @Injectable()
 export class ConfigService extends RootConfigService<Config, true> {
   constructor() {
-    super()
+    super();
   }
 
   env<T extends keyof Config>(key: T) {
-    return this.get(key, { infer: true })
+    return this.get(key, { infer: true });
   }
 }

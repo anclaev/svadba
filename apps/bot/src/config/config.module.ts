@@ -1,8 +1,11 @@
-import { Global, Module } from '@nestjs/common'
-import { ConfigModule as RootConfigModule } from '@nestjs/config'
+import { Global, Module } from '@nestjs/common';
+import { ConfigModule as RootConfigModule } from '@nestjs/config';
+import { validate } from '@repo/shared';
 
-import { ConfigService } from './config.service'
-import { validate } from './config.validator'
+import { logger } from '#/common/logger';
+
+import { configSchema } from './config.schema';
+import { ConfigService } from './config.service';
 
 /**
  * Модуль конфигурации приложения
@@ -11,7 +14,7 @@ import { validate } from './config.validator'
 @Module({
   imports: [
     RootConfigModule.forRoot({
-      validate,
+      validate: (env) => validate(env, logger, configSchema),
       cache: true,
       isGlobal: true,
     }),

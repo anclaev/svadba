@@ -1,0 +1,25 @@
+{
+  "name": "@repo/shared",
+  "private": true,
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc --build"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "latest"
+  },
+  "packageManager": "yarn@4.1.1",
+  "dependencies": {
+    "@nestjs/common": "^11.0.13",
+    "@nestjs/swagger": "^11.1.1",
+    "nest-winston": "^1.10.2",
+    "nestjs-zod": "^4.3.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2"
+  }
+}

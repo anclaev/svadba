@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="infra" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="composeProjectName" value="svadba-infra" />
+        <option name="envFilePath" value="" />
+        <option name="services">
+          <list>
+            <option value="minio" />
+            <option value="redis" />
+            <option value="redis-ui" />
+            <option value="db" />
+          </list>
+        </option>
+        <option name="sourceFilePath" value="docker/docker-compose.local.yml" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>

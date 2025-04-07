@@ -97,6 +97,20 @@ Build web (staging):
     - staging
   environment: staging
 
+Build api (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  script:
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
+
 Build bot (staging):
   extends: .docker
   stage: build
@@ -129,6 +143,22 @@ Build web:
     - production
   environment: production
 
+Build api:
+  extends: .docker
+  stage: build
+  needs:
+    - Unit tests
+    - E2E tests
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - *get_version
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
+    - docker push $CI_IMAGE_TAG_API --all-tags
+  tags:
+    - production
+  environment: production
+
 Build bot:
   extends: .docker
   stage: build
@@ -151,6 +181,7 @@ Deploy (staging):
   image: alpine:latest
   stage: deploy
   needs:
+    - Build api (staging)
     - Build web (staging)
     - Build bot (staging)
   rules:
@@ -170,6 +201,7 @@ Deploy:
   image: alpine:latest
   stage: deploy
   needs:
+    - Build api
     - Build web
     - Build bot
   rules:
