@@ -3,16 +3,16 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-} from '@nestjs/common'
-import { Observable } from 'rxjs'
-import { tap } from 'rxjs/operators'
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class BotInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const start = Date.now()
+    const start = Date.now();
     return next
       .handle()
-      .pipe(tap(() => console.log(`Response time: ${Date.now() - start}ms`)))
+      .pipe(tap(() => console.log(`Response time: ${Date.now() - start}ms`)));
   }
 }

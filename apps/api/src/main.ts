@@ -19,6 +19,8 @@ import { AppModule } from '#/app/app.module'
 
 import { ConfigService } from '#/config/config.service'
 
+import './instrument'
+
 async function bootstrap() {
   const logger = loggerFactory({ appName: APP_NAME })
 
@@ -85,7 +87,7 @@ async function bootstrap() {
   patchNestJsSwagger()
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Svadba Bot')
+    .setTitle('Svadba API')
     .setDescription('Серверная часть проекта Svadba')
     .setVersion(version)
     .build()
@@ -94,7 +96,7 @@ async function bootstrap() {
     SwaggerModule.createDocument(app, swaggerConfig)
 
   SwaggerModule.setup('/api', app, swaggerDocFactory, {
-    customSiteTitle: 'Svadba Bot',
+    customSiteTitle: 'Svadba API',
     customfavIcon: '/favicon.ico',
     customCssUrl: '/swagger.css',
   })

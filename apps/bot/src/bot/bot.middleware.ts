@@ -1,3 +1,3 @@
-import { session } from 'telegraf'
+import { session } from 'telegraf';
 
-export const botMiddleware = session()
+export const botMiddleware = session();

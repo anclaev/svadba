@@ -14,7 +14,7 @@ message SocialLink {
     string alias = 2;
     string title = 3;
     string href = 4;
-    User creator = 5;
+    optional User creator = 5;
     string creator_id = 6;
     string created_at = 7;
     optional string icon = 8;

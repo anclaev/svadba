@@ -11,7 +11,7 @@ export namespace social_link {
     alias: string
     title: string
     href: string
-    creator: user.User
+    creator?: user.User
     creator_id: string
     created_at: string
     icon?: string

@@ -1,4 +1,5 @@
 import { JsonObject } from '@prisma/client/runtime/library'
+import { user } from '@repo/shared'
 
 import { GuestMapper } from './guest.mapper'
 
@@ -43,5 +44,21 @@ export class UserMapper {
       guest: table.guest as unknown as IGuestRaw,
       createdAt: table.createdAt,
     })
+  }
+
+  static toProto(domain: User): user.User {
+    console.log(domain)
+    return {
+      id: domain.id as string,
+      role: domain.role as string,
+      login: domain.login as string,
+      name: domain.name as string,
+      is_telegram_verified: domain.isTelegramVerified,
+      guest_status: domain.status as string,
+      guest_side: domain.guest.side as string,
+      guest_role: domain.guest.role as string,
+      created_at: domain.createdAt!.toString(),
+      telegram_id: String(domain.telegramId) || undefined,
+    }
   }
 }
