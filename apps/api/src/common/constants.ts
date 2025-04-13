@@ -8,3 +8,7 @@ export const TTL_MS = {
   DAY: 86400000,
   WEEK: 604800000,
 } as const
+
+export const REDIS_KEY = {
+  REFRESH_TOKEN: 'refresh-token',
+} as const

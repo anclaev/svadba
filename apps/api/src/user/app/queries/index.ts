@@ -1,5 +1,7 @@
-import { GetUserByIdQueryHandler } from './get-user-by-id'
+import { UserByIdHandler } from './user-by-id'
+import { UserByLoginHandler } from './user-by-login'
 
-export * from './get-user-by-id'
+export * from './user-by-id'
+export * from './user-by-login'
 
-export const UserQueryHandlers = [GetUserByIdQueryHandler]
+export const userQueryHandlers = [UserByIdHandler, UserByLoginHandler]

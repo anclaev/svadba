@@ -1,14 +1,13 @@
 import { Command } from '@nestjs/cqrs'
 
-import { SocialLink } from '#/social-link/domain/SocialLink'
-import { SocialLinkError } from '#/social-link/infra'
+import { SocialLink, SocialLinkError } from '#/social-link/domain'
 
-import { CreateSocialLinkDto } from './create-social-link.dto'
+import { CreateSocialLinkInput } from './create-social-link.input'
 
 export class CreateSocialLinkCommand extends Command<
   SocialLink | SocialLinkError
 > {
-  constructor(public dto: CreateSocialLinkDto) {
+  constructor(public dto: CreateSocialLinkInput) {
     super()
   }
 }

@@ -1,7 +1,10 @@
-import { GetSocialLinkByIdQueryHandler } from './get-social-link-by-id'
-import { GetSocialLinksQueryHandler } from './get-social-links'
+import { SocialLinkByIdQueryHandler } from './social-link-by-id'
+import { SocialLinksHandler } from './social-links'
 
-export const SocialLinkQueryHandlers = [
-  GetSocialLinksQueryHandler,
-  GetSocialLinkByIdQueryHandler,
+export * from './social-link-by-id'
+export * from './social-links'
+
+export const socialLinkQueryHandlers = [
+  SocialLinksHandler,
+  SocialLinkByIdQueryHandler,
 ]

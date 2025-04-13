@@ -1,11 +1,13 @@
 import { Command } from '@nestjs/cqrs'
 
-import { SocialLinkError } from '#/social-link/infra'
+import { SocialLinkError } from '#/social-link/domain'
+
+import { DeleteSocialLinkInput } from './delete-social-link.input'
 
 export class DeleteSocialLinkCommand extends Command<
   boolean | SocialLinkError
 > {
-  constructor(public socialLinkId: string) {
+  constructor(public dto: DeleteSocialLinkInput) {
     super()
   }
 }

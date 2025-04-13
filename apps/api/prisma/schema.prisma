@@ -60,8 +60,8 @@ model User {
   achievements       Achievement[]
   quests             Quest[]
   transactions       TransactionHistory[]
-  dresscodeColors    DresscodeColor[]     @ignore
-  timingEvents       TimingEvent[]        @ignore
+  dresscodeColors    DresscodeColor[]
+  timingEvents       TimingEvent[]
   links              SocialLink[]
 }
 
@@ -122,7 +122,7 @@ model Upload {
   ext          String
   mimetype     String?
   createdAt    DateTime      @default(now()) @map("created_at")
-  events       TimingEvent[] @ignore
+  events       TimingEvent[]
   achievements Achievement[] @ignore
 
   owner   User   @relation(fields: [ownerId], references: [id])

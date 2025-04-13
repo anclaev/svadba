@@ -16,7 +16,7 @@ const SignUpSchema = z.object({
   role: z.enum(['GUEST', 'PARENT', 'CLOSE'], {
     message: 'Некорректная роль гостя.',
   }),
-  anwsers: z.any().default({}),
+  answers: z.any().default({}),
 })
 
 @ApiSchema({

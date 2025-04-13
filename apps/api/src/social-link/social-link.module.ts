@@ -4,11 +4,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices'
 import { social_link } from '@repo/shared'
 import { join } from 'path'
 
-import { SocialLinkGrpcController } from './api/social-link-grpc.controller'
-import { SocialLinkController } from './api/social-link.controller'
-import { SocialLinkCommandHandlers } from './app/commands'
-import { SocialLinkQueryHandlers } from './app/queries'
-import { SocialLinkRepository } from './infra'
+import { SocialLinkController, SocialLinkGRPCController } from './api'
+import { socialLinkCommandHandlers, socialLinkQueryHandlers } from './app'
+import { SocialLinkRepository } from './domain'
+import { SocialLinkPrismaRepository } from './infra'
+
+export const socialLinkRepositoryProvider = {
+  provide: SocialLinkRepository,
+  useClass: SocialLinkPrismaRepository,
+}
 
 @Module({
   imports: [
@@ -27,16 +31,12 @@ import { SocialLinkRepository } from './infra'
       },
     ]),
   ],
-  controllers: [SocialLinkController, SocialLinkGrpcController],
+  controllers: [SocialLinkController, SocialLinkGRPCController],
   providers: [
-    SocialLinkRepository,
-    ...SocialLinkCommandHandlers,
-    ...SocialLinkQueryHandlers,
+    socialLinkRepositoryProvider,
+    ...socialLinkCommandHandlers,
+    ...socialLinkQueryHandlers,
   ],
-  exports: [
-    SocialLinkRepository,
-    ...SocialLinkCommandHandlers,
-    ...SocialLinkQueryHandlers,
-  ],
+  exports: [...socialLinkCommandHandlers, ...socialLinkQueryHandlers],
 })
 export class SocialLinkModule {}

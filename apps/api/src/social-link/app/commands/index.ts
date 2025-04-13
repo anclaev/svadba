@@ -1,9 +1,13 @@
-import { CreateSocialLinkCommandHandler } from './create-social-link'
-import { DeleteSocialLinkCommandHandler } from './delete-social-link'
-import { UpdateSocialLinkCommandHandler } from './update-social-link'
+import { CreateSocialLinkHandler } from './create-social-link'
+import { DeleteSocialLinkHandler } from './delete-social-link'
+import { UpdateSocialLinkHandler } from './update-social-link'
 
-export const SocialLinkCommandHandlers = [
-  CreateSocialLinkCommandHandler,
-  UpdateSocialLinkCommandHandler,
-  DeleteSocialLinkCommandHandler,
+export * from './create-social-link'
+export * from './delete-social-link'
+export * from './update-social-link'
+
+export const socialLinkCommandHandlers = [
+  CreateSocialLinkHandler,
+  DeleteSocialLinkHandler,
+  UpdateSocialLinkHandler,
 ]

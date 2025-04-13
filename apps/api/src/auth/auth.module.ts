@@ -5,12 +5,14 @@ import { PassportModule } from '@nestjs/passport'
 
 import { UserModule } from '#/user/user.module'
 
-import { AuthController } from './api/auth.controller'
+import { AuthController } from '#/auth/api'
 
-import { AuthService } from './application/auth.service'
-import { JwtStrategy } from './application/strategies/jwt.strategy'
-import { LocalStrategy } from './application/strategies/local.strategy'
-import { RefreshStrategy } from './application/strategies/refresh.strategy'
+import {
+  AuthService,
+  JwtStrategy,
+  LocalStrategy,
+  RefreshStrategy,
+} from '#/auth/app'
 
 @Module({
   imports: [CqrsModule, PassportModule, JwtModule, UserModule],

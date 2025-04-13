@@ -1,12 +1,10 @@
 import { Command } from '@nestjs/cqrs'
 
-import { User } from '#/user/domain/User'
-import { UserError } from '#/user/infra'
-
-import type { CreateUserDto } from './create-user.dto'
+import { CreateUserInput } from '../../../app'
+import { User, UserError } from '../../../domain'
 
 export class CreateUserCommand extends Command<User | UserError> {
-  constructor(public dto: CreateUserDto) {
+  constructor(public readonly dto: CreateUserInput) {
     super()
   }
 }
