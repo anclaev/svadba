@@ -148,7 +148,7 @@ Build web:
   stage: build
   needs:
     - Unit tests
-    - E2E tests
+    - e2e tests (web)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
@@ -164,7 +164,7 @@ Build api:
   stage: build
   needs:
     - Unit tests
-    - E2E tests
+    - e2e tests (bot)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
@@ -180,7 +180,7 @@ Build bot:
   stage: build
   needs:
     - Unit tests
-    - E2E tests
+    - e2e tests (bot)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
