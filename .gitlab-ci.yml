@@ -71,6 +71,7 @@ Unit tests:
 
 e2e tests:
   stage: tests
+  image: mcr.microsoft.com/playwright:v1.51.0-noble
   needs:
     - Install deps
   script:
