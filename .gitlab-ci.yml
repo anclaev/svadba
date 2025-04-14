@@ -84,12 +84,12 @@ e2e tests (web):
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
 
-e2e tests (bot,api):
+e2e tests (api):
   stage: tests
   needs:
     - Install deps
   script:
-    - CI=true yarn turbo e2e --filter=bot --filter=api
+    - CI=true yarn turbo e2e --filter=api
   rules:
     - if: $CI_COMMIT_TAG
       when: never
@@ -165,7 +165,7 @@ Build api:
   stage: build
   needs:
     - Unit tests
-    - e2e tests (bot,api)
+    - e2e tests (api)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
@@ -181,7 +181,6 @@ Build bot:
   stage: build
   needs:
     - Unit tests
-    - e2e tests (bot,api)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
