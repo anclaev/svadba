@@ -16,7 +16,7 @@
     "build:bot-nestjs": "turbo run build --filter=bot-nestjs",
     "build:api": "turbo run build --filter=api",
     "lint": "turbo run lint",
-    "format": "turbo format",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,css,md}\"",
     "check-types": "turbo run check-types",
     "prepare": "husky",
     "release": "standard-version",
