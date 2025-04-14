@@ -31,9 +31,11 @@ export class SocialLinkGRPCController
 
         return of(res)
       }),
-      map((res) => ({
-        items: res.data.map((link) => SocialLinkPrismaMapper.toProto(link)),
-      }))
+      map((res) => {
+        return {
+          items: res.data.map((link) => SocialLinkPrismaMapper.toProto(link)),
+        }
+      })
     )
   }
 }

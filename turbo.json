@@ -4,7 +4,7 @@
   "globalEnv": ["DATABASE_URL", "TELEGRAM_BOT_TOKEN", "NODE_ENV"],
   "tasks": {
     "build": {
-      "dependsOn": ["^db:generate", "^build"],
+      "dependsOn": ["db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
@@ -23,7 +23,7 @@
       "persistent": true
     },
     "db:generate": {
-      "cache": false
+      "inputs": ["generated/**"]
     },
     "db:migrate": {
       "cache": false,
@@ -40,7 +40,8 @@
       "persistent": true
     },
     "e2e": {
-      "dependsOn": ["^build"],
+      "cache": false,
+      "dependsOn": ["db:generate", "^build"],
       "passThroughEnv": ["PLAYWRIGHT_*"]
     }
   }
