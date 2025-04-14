@@ -1,0 +1,24 @@
+import "google/protobuf/empty.proto";
+
+syntax = "proto3";
+
+package bot;
+
+message HealthResponse {
+  string status = 1;
+}
+
+message SendMessageResponse {
+  string status = 1;
+}
+
+message SendMessageRequest {
+  string message = 1;
+  string telegram_id = 2;
+  string app_token = 3;
+}
+
+service BotService {
+  rpc Health(google.protobuf.Empty) returns (HealthResponse); 
+  rpc SendMessage(SendMessageRequest) returns (SendMessageRequest);
+}

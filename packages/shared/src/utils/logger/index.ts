@@ -4,27 +4,14 @@ import {
   WinstonModule,
   WinstonModuleOptions,
 } from 'nest-winston'
-import { format, LoggerOptions, transports } from 'winston'
+import { format, transports } from 'winston'
 import { ConsoleTransportInstance } from 'winston/lib/winston/transports'
 
-/**
- * Параметры логгера
- */
-type LocalLoggerOptions = {
-  /**
-   * Имя приложения
-   */
-  appName: string
-  /**
-   * Завершение при ошибке
-   */
-  exitOnError?: boolean
-}
+import { LocalLoggerOptions } from './types'
 
 /**
  * Фабрика параметров логгера
  * @param {LocalLoggerOptions} options - входные параметры
- * @returns {LoggerOptions} Параметры логгера Winston
  */
 export const loggerOptionsFactory = ({
   appName,
