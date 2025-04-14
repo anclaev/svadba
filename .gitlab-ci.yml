@@ -54,6 +54,7 @@ Install deps:
       when: never
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+
 Unit tests:
   stage: tests
   needs:
@@ -70,6 +71,7 @@ Unit tests:
 
 e2e tests (web):
   stage: tests
+  image: mcr.microsoft.com/playwright:v1.51.0-noble
   needs:
     - Install deps
   script:
@@ -82,13 +84,12 @@ e2e tests (web):
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
 
-e2e tests (bot):
+e2e tests (bot,api):
   stage: tests
-  image: mcr.microsoft.com/playwright:v1.51.0-noble
   needs:
     - Install deps
   script:
-    - CI=true yarn turbo e2e --filter=bot
+    - CI=true yarn turbo e2e --filter=bot,api
   rules:
     - if: $CI_COMMIT_TAG
       when: never
@@ -164,7 +165,7 @@ Build api:
   stage: build
   needs:
     - Unit tests
-    - e2e tests (bot)
+    - e2e tests (bot,api)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
@@ -180,7 +181,7 @@ Build bot:
   stage: build
   needs:
     - Unit tests
-    - e2e tests (bot)
+    - e2e tests (bot,api)
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   script:
