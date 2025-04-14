@@ -31,11 +31,12 @@ FROM base AS runner
 LABEL version=$VERSION
 RUN corepack enable
 
-RUN addgroup --system --gid 1001 nestjs
-RUN adduser --system --uid 1001 nestjs
-USER nestjs
+RUN addgroup --system --gid 1001 bot
+RUN adduser --system --uid 1001 bot
+USER bot
 
-COPY --from=installer --chown=nestjs:nestjs /app .
+COPY --from=installer --chown=bot:bot /app .
+COPY apps/bot/src/proto/*.proto apps/bot/dist/proto
 
 EXPOSE 3002
 

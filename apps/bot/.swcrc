@@ -1,0 +1,23 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "jsc": {
+    "target": "esnext",
+    "baseUrl": "./src",
+    "parser": {
+      "syntax": "typescript"
+    },
+    "transform": {
+      "legacyDecorator": true,
+      "decoratorMetadata": true
+    },
+    "paths": {
+      "#/*": ["./*"]
+    }
+  },
+  "module": {
+    "type": "commonjs",
+    "strictMode": true
+  },
+  "sourceMaps": true,
+  "minify": true
+}

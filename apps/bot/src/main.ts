@@ -1,33 +1,42 @@
-import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
-import { INestApplication } from '@nestjs/common';
-import { loggerFactory } from '@repo/shared';
+import fastify, { FastifyReply, FastifyRequest } from 'fastify'
 
-import { APP_NAME } from '#/common/constants';
+import { ConfigService } from '#/core/config'
+import { LoggerService } from '#/core/logger'
 
-import { ConfigService } from '#/config/config.service';
+import { bootstrapBot } from '#/bot/bootstrap'
 
-import { AppModule } from './app.module';
+import { grpcServerPlugin } from './grpc'
 
-async function bootstrap() {
-  const logger = loggerFactory({ appName: APP_NAME });
+const app = fastify()
 
-  const app = await NestFactory.create<
-    INestApplication<NestExpressApplication>
-  >(AppModule, {
-    snapshot: true,
-    logger,
-  });
+const bootstrap = async () => {
+  const logger = LoggerService.getInstance()
+  const config = ConfigService.getInstance()
 
-  const config = app.get(ConfigService);
-  const host = config.env('HOST');
-  const port = config.env('PORT');
+  const port = config.get('PORT')
+  const grpcPort = config.get('GRPC_PORT')
 
-  // Включение хуков жизненного цикла
-  app.enableShutdownHooks();
+  bootstrapBot()
 
-  await app.listen(port).finally(() => {
-    logger.log(`Сервис успешно запущен! (https://${host}:${port})`, APP_NAME);
-  });
+  app.register(grpcServerPlugin)
+
+  app.get('/', async (_: FastifyRequest, __: FastifyReply) => {
+    return { hello: 'world' }
+  })
+
+  await app
+    .listen({
+      port,
+    })
+    .then(() => {
+      logger.info(`HTTP-сервер успешно запущен! Порт: \x1b[36m${port}\x1b[0m.`)
+    })
+    .catch((err) => {
+      logger.error('Ошибка запуска сервиса:')
+      console.log(err)
+    })
+
+  app.grpcServer.start(grpcPort)
 }
-bootstrap();
+
+bootstrap()
