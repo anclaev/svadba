@@ -2,7 +2,7 @@ import { JestConfigWithTsJest } from 'ts-jest'
 
 const config: JestConfigWithTsJest = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: '.',
+  rootDir: '..',
   testEnvironment: 'node',
   preset: 'ts-jest',
   testRegex: '.e2e-spec.ts$',

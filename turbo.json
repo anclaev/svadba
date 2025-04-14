@@ -41,7 +41,7 @@
     },
     "e2e": {
       "cache": false,
-      "dependsOn": ["db:generate", "^build", "^e2e"],
+      "dependsOn": ["db:generate", "build", "^e2e"],
       "passThroughEnv": ["PLAYWRIGHT_*"]
     }
   }

@@ -47,7 +47,7 @@ describe('SocialLink Controller (e2e)', () => {
 
     await app.init()
 
-    prisma.user.findUnique.mockImplementation((args): any => {
+    prisma.user.findUnique.mockImplementation((args: any): any => {
       return Promise.resolve(
         mockUsers.find((user) => {
           if (args.where.login) {
@@ -90,7 +90,7 @@ describe('SocialLink Controller (e2e)', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    prisma.socialLink.findUnique.mockImplementation((args): any => {
+    prisma.socialLink.findUnique.mockImplementation((args: any): any => {
       return Promise.resolve(
         mockSocialLinks.find((socialLink) => {
           if (args.where.alias) {
@@ -132,7 +132,7 @@ describe('SocialLink Controller (e2e)', () => {
 
     prisma.socialLink.count.mockResolvedValue(mockSocialLinks.length)
 
-    prisma.socialLink.update.mockImplementation((args): any => {
+    prisma.socialLink.update.mockImplementation((args: any): any => {
       const socialLink = mockSocialLinks.find((u) => u.id === args.where.id)
       if (!socialLink) return Promise.resolve(null)
 
@@ -141,7 +141,7 @@ describe('SocialLink Controller (e2e)', () => {
       return Promise.resolve(updatedSocialLink)
     })
 
-    prisma.socialLink.delete.mockImplementation((args): any => {
+    prisma.socialLink.delete.mockImplementation((args: any): any => {
       const socialLinkIndex = mockSocialLinks.findIndex(
         (u) => u.id === args.where.id
       )
@@ -152,7 +152,7 @@ describe('SocialLink Controller (e2e)', () => {
       return Promise.resolve(deletedSocialLink)
     })
 
-    prisma.socialLink.create.mockImplementation((args): any => {
+    prisma.socialLink.create.mockImplementation((args: any): any => {
       const newSocialLink: SocialLink = {
         id: uuid(),
         alias: args.data.alias,

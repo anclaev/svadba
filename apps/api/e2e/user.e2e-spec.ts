@@ -43,7 +43,7 @@ describe('User Controller (e2e)', () => {
 
     await app.init()
 
-    prisma.user.findUnique.mockImplementation((args): any => {
+    prisma.user.findUnique.mockImplementation((args: any): any => {
       return Promise.resolve(
         mockUsers.find((user) => {
           if (args.where.login) {
@@ -61,7 +61,7 @@ describe('User Controller (e2e)', () => {
 
     prisma.user.findMany.mockResolvedValue(mockUsers)
 
-    prisma.user.update.mockImplementation((args): any => {
+    prisma.user.update.mockImplementation((args: any): any => {
       const user = mockUsers.find((u) => u.id === args.where.id)
       if (!user) return Promise.reject(new Error('User not found'))
 
@@ -70,7 +70,7 @@ describe('User Controller (e2e)', () => {
       return Promise.resolve(updatedUser)
     })
 
-    prisma.user.delete.mockImplementation((args): any => {
+    prisma.user.delete.mockImplementation((args: any): any => {
       const userIndex = mockUsers.findIndex((u) => u.id === args.where.id)
       if (userIndex === -1) return Promise.reject(new Error('User not found'))
 
@@ -106,7 +106,7 @@ describe('User Controller (e2e)', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    prisma.user.create.mockImplementation((args): any => {
+    prisma.user.create.mockImplementation((args: any): any => {
       const newUser: User = {
         id: uuid(),
         password: args.data.password,

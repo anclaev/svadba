@@ -43,7 +43,7 @@ describe('Auth Controller (e2e)', () => {
 
     publicUser = mockUsers.find((u) => u.role === UserRole.PUBLIC)!
 
-    prisma.user.findUnique.mockImplementation((args): any => {
+    prisma.user.findUnique.mockImplementation((args: any): any => {
       return Promise.resolve(
         mockUsers.find((user) => {
           if (args.where.login) {
@@ -59,7 +59,7 @@ describe('Auth Controller (e2e)', () => {
       )
     })
 
-    prisma.user.create.mockImplementation((args): any => {
+    prisma.user.create.mockImplementation((args: any): any => {
       const newUser: User = {
         id: uuid(),
         password: args.data.password,
