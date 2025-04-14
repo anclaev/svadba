@@ -20,5 +20,5 @@ message SendMessageRequest {
 
 service BotService {
   rpc Health(google.protobuf.Empty) returns (HealthResponse); 
-  rpc SendMessage(SendMessageRequest) returns (SendMessageRequest);
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
 }

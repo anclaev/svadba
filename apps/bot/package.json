@@ -13,7 +13,9 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "e2e": "jest --config jest.config-e2e.ts --passWithNoTests",
     "dev": "nodemon --watch 'src' --ext '*' --exec 'node -r @swc-node/register' src/main.ts",
+    "dev:debug": "GRPC_VERBOSITY=DEBUG GRPC_TRACE=all yarn dev",
     "build": "yarn gen-proto && rimraf dist && swc ./src -d dist --strip-leading-paths",
     "start": "node dist/main.js"
   },
@@ -22,8 +24,6 @@
     "@grpc/proto-loader": "^0.7.13",
     "@grpc/reflection": "^1.0.4",
     "dotenv": "^16.5.0",
-    "fastify": "^5.3.0",
-    "fastify-plugin": "^5.0.1",
     "grammy": "^1.35.1",
     "winston": "^3.17.0",
     "zod": "^3.24.2"
@@ -36,7 +36,6 @@
     "@swc/core": "^1.11.21",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.1",
-    "@types/supertest": "^6.0.3",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
@@ -44,7 +43,6 @@
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
-    "supertest": "^7.1.0",
     "ts-jest": "^29.3.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1"

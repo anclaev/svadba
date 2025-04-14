@@ -9,22 +9,17 @@ export const configSchema = z.object({
       message: 'Окружение не установлено.',
     })
     .default('local'),
-  PORT: z.coerce
-    .number({ message: 'Порт сервиса не установлен.' })
-    .min(1000)
-    .max(10000)
-    .default(3002),
   GRPC_PORT: z.coerce
-    .number({ message: 'Порт сервиса не установлен.' })
+    .number({ message: 'Порт grpc-сервера не установлен.' })
     .min(1000)
     .max(10000)
     .default(3032),
-  API_GRPC_HOST: z
+  API_HOST: z
     .string({ message: 'Хост API не установлен.' })
     .nonempty({ message: 'Хост API не может быть пустым.' })
     .default('localhost'),
   API_GRPC_PORT: z.coerce
-    .number({ message: 'Порт сервиса не установлен.' })
+    .number({ message: 'Порт grpc-сервиса не установлен.' })
     .min(1000)
     .max(10000)
     .default(3005),
