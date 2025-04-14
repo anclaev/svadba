@@ -24,22 +24,14 @@ export class UserPrismaRepository extends UserRepository {
   }
 
   async create(entity: User): Promise<User | UserError> {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { guestId: _, ...model } = UserPrismaMapper.toModel(entity)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { userId: __, ...guest } = model.guest
+    const model = UserPrismaMapper.toModel(entity)
 
     try {
       const createdUser = await this.prisma.user.create({
         data: {
           ...model,
+          guest: undefined,
           credentials: model.credentials as InputJsonValue[],
-          guest: {
-            create: {
-              ...guest,
-              answers: model.guest.answers as InputJsonValue[],
-            },
-          },
         },
         include: { guest: true },
       })
@@ -156,18 +148,6 @@ export class UserPrismaRepository extends UserRepository {
                   equals: queryParams.isTelegramVerified,
                 }
               : undefined,
-            guest: {
-              side: queryParams.guestSide
-                ? {
-                    equals: queryParams.guestSide,
-                  }
-                : undefined,
-              role: queryParams.guestRole
-                ? {
-                    equals: queryParams.guestRole,
-                  }
-                : undefined,
-            },
           },
         }),
         await this.prisma.user.count(),

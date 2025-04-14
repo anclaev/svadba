@@ -8,11 +8,6 @@ generator client {
   output   = "../generated/client"
 }
 
-enum Side {
-  GROOM // Жених
-  BRIDE // Невеста
-}
-
 enum UserStatus {
   CREATED // Создан
   ACCEPTED // Подтверждён
@@ -28,6 +23,11 @@ enum GuestRole {
   GUEST // Гость
   PARENT // Родитель
   CLOSE // Близкий
+  GROOM // Жених
+  BRIDE // Невеста
+}
+
+enum GuestSide {
   GROOM // Жених
   BRIDE // Невеста
 }
@@ -67,7 +67,7 @@ model User {
 
 model Guest {
   id        String     @id @default(uuid()) @db.Uuid()
-  side      Side
+  side      GuestSide
   role      GuestRole? @default(GUEST)
   answers   Json?
   createdAt DateTime?  @default(now()) @map("created_at")

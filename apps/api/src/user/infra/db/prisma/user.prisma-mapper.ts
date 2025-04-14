@@ -4,14 +4,14 @@ import { user } from '@repo/shared'
 
 import { IUserPrismaModel } from '#/common/models'
 
+import { IGuestModel } from '#/svadba/domain'
+import { GuestPrismaMapper } from '#/svadba/infra'
+
 import {
   Credentials,
   ICredentialsProps,
-  IGuestModel,
   User as UserEntity,
 } from '#/user/domain'
-
-import { GuestPrismaMapper } from '#/user/infra'
 
 export class UserPrismaMapper {
   static toModel(entity: UserEntity): IUserPrismaModel {
@@ -19,7 +19,7 @@ export class UserPrismaMapper {
 
     return {
       ...entity,
-      guest: GuestPrismaMapper.toModel(guest),
+      guest: guest ? GuestPrismaMapper.toModel(guest) : undefined,
       credentials: entity.credentials.map(
         (item: Credentials) => item.props as unknown as JsonObject
       ),
@@ -29,7 +29,7 @@ export class UserPrismaMapper {
     return UserEntity.fromModel({
       ...model,
       credentials: model.credentials as unknown as ICredentialsProps[],
-      guest: model.guest as unknown as IGuestModel,
+      guest: model.guest ? (model.guest as unknown as IGuestModel) : undefined,
       createdAt: new Date(model.createdAt!),
     })
   }
@@ -39,9 +39,6 @@ export class UserPrismaMapper {
       role: entity.role as string,
       login: entity.login,
       name: String(entity.name),
-      guest_role: entity.guest.role as string,
-      guest_side: entity.guest.side as string,
-      guest_status: entity.status as string,
       is_telegram_verified: entity.isTelegramVerified,
       telegram_id: String(entity.telegramId),
       created_at: entity.createdAt!.toString(),

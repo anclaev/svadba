@@ -20,18 +20,9 @@ const CreateUserSchema = z.object({
       message: 'Некорректный статус пользователя.',
     })
     .optional(),
-  side: z.enum(['GROOM', 'BRIDE'], {
-    message: 'Некорректная сторона гостя.',
-  }),
   role: z
     .enum(['PUBLIC', 'ADMIN'], { message: 'Некорректная роль пользователя.' })
     .optional(),
-  guestRole: z
-    .enum(['GUEST', 'PARENT', 'CLOSE', 'GROOM', 'BRIDE'], {
-      message: 'Некорректная роль гостя.',
-    })
-    .optional(),
-  guestAnswers: z.any().optional(),
   isTelegramVerified: z
     .boolean({ message: 'Некорректный статус верификации Telegram.' })
     .optional(),

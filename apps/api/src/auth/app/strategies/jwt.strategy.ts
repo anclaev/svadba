@@ -22,6 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
           const data = req.signedCookies[Cookies.AUTH_COOKIE] as AuthCookieData
+
           if (!data) {
             return null
           }

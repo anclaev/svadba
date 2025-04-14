@@ -9,9 +9,6 @@ message User {
     string login = 4;
     string name = 5;
     bool is_telegram_verified = 6;
-    string guest_role = 7;
-    string guest_status = 8;
-    string guest_side = 9;
     string created_at = 10;
     optional string telegram_id = 11;
 }

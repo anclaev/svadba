@@ -1,7 +1,7 @@
 import { Guest as GuestModel } from '#prisma'
 import { JsonObject } from '@prisma/client/runtime/library'
 
-import { Guest as GuestEntity } from '#/user/domain'
+import { Guest as GuestEntity } from '#/svadba/domain'
 
 export class GuestPrismaMapper {
   static toModel(entity: GuestEntity): GuestModel {

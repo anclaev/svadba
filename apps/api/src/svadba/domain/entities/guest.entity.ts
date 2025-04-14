@@ -1,10 +1,10 @@
-import { GuestRole, Side } from '#prisma'
+import { GuestRole, GuestSide } from '#prisma'
 import { AggregateRoot } from '@nestjs/cqrs'
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
-import { JsonObject } from '@prisma/client/runtime/library'
+import { InputJsonValue } from '@prisma/client/runtime/library'
 import { Exclude } from 'class-transformer'
 
-import { IGuestModel, IGuestProps } from '#/user/domain'
+import { IGuestModel, IGuestProps } from '#/svadba/domain'
 
 @ApiSchema({
   name: 'Гость',
@@ -26,7 +26,7 @@ export class Guest extends AggregateRoot implements IGuestProps {
     type: 'string',
     example: 'GROOM',
   })
-  side: Side
+  side: GuestSide
 
   @ApiProperty({
     description: 'Роль гостя',
@@ -41,7 +41,7 @@ export class Guest extends AggregateRoot implements IGuestProps {
     example: {},
     additionalProperties: true,
   })
-  answers: JsonObject = {}
+  answers: InputJsonValue = {}
 
   @ApiProperty({
     description: 'Дата создания гостя',

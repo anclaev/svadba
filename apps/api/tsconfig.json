@@ -11,7 +11,7 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,
@@ -20,8 +20,8 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "#/*": ["src/*"],
-      "#prisma": ["generated/client/index"]
+      "#/*": ["./src/*"],
+      "#prisma": ["./generated/client/index"]
     }
   }
 }

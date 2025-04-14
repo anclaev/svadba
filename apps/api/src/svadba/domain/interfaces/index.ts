@@ -1,10 +1,33 @@
+import { GuestRole, GuestSide } from '#prisma'
+import { InputJsonValue } from '@prisma/client/runtime/library'
+
 import { IUploadModel, Upload } from '#/upload/domain'
 import { IUserModel, User } from '#/user/domain'
 
 export * from './dresscode-color'
 export * from './dresscode-color-query-params.interface'
+export * from './guest'
+export * from './guest-query-params.interface'
 export * from './timing-event'
 export * from './timing-event-query-params.interface'
+
+export interface IGuestModel {
+  id: string
+  userId?: string
+  side: GuestSide
+  role: GuestRole
+  answers: InputJsonValue
+  createdAt?: Date
+}
+
+export interface IGuestProps {
+  id: string
+  userId?: string
+  side: GuestSide
+  role: GuestRole
+  answers: InputJsonValue
+  createdAt?: Date
+}
 
 export interface IDresscodeColorModel {
   id: string

@@ -87,6 +87,12 @@ export const configSchema = z.object({
   REDIS_PASSWORD: z
     .string({ message: 'Некорректный хост Redis.' })
     .nonempty({ message: 'Хост Redis не может быть пустым.' }),
+  REQ_LIMIT: z.coerce
+    .number({ message: 'Некорректный лимит запросов.' })
+    .default(10),
+  REQ_TTL: z.coerce
+    .number({ message: 'Некорректный TTL запросов.' })
+    .default(60),
 })
 
 /**

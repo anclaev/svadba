@@ -21,7 +21,6 @@ import {
   LoginResult,
   Tokens,
 } from '#/auth/app'
-import { GuestRole, Side } from '#prisma'
 
 @Injectable()
 export class AuthService {
@@ -62,9 +61,6 @@ export class AuthService {
         login: data.login,
         name: data.name,
         password: data.password,
-        side: data.side as Side,
-        guestRole: data.role as GuestRole,
-        guestAnswers: data.answers,
       })
     )
 
@@ -101,7 +97,7 @@ export class AuthService {
       case Tokens.ACCESS: {
         const payload: IAccessPayload = {
           id: user.id,
-          role: user.guest.role,
+          role: user.guest ? user.guest.role : user.role,
           status: user.status,
         }
 
@@ -117,7 +113,7 @@ export class AuthService {
           id: user.id,
           tokenId: tokenId ?? uuid(),
           version: user.credentialsVersion,
-          role: user.guest.role,
+          role: user.guest ? user.guest.role : user.role,
           status: user.status,
         }
 
@@ -141,7 +137,7 @@ export class AuthService {
         const payload: IConfirmationPayload = {
           id: user.id,
           version: user.credentialsVersion,
-          role: user.guest.role,
+          role: user.guest ? user.guest.role : user.role,
           status: user.status,
         }
 
@@ -155,7 +151,7 @@ export class AuthService {
         const payload: IConfirmationPayload = {
           id: user.id,
           version: user.credentialsVersion,
-          role: user.guest.role,
+          role: user.guest ? user.guest.role : user.role,
           status: user.status,
         }
 

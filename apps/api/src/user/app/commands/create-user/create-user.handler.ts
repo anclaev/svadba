@@ -1,10 +1,9 @@
-import { GuestRole, UserRole, UserStatus } from '#prisma'
+import { UserRole, UserStatus } from '#prisma'
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs'
-import { JsonObject } from '@prisma/client/runtime/library'
 import * as argon2 from 'argon2'
 import { v4 } from 'uuid'
 
-import { Guest, User, UserError, UserRepository } from '#/user/domain'
+import { User, UserError, UserRepository } from '#/user/domain'
 
 import { CreateUserCommand } from './create-user.command'
 
@@ -29,14 +28,6 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       isTelegramVerified: false,
       credentials: [],
       password: await argon2.hash(dto.password),
-      guestId: id,
-      guest: Guest.create({
-        id,
-        userId: id,
-        side: dto.side,
-        role: dto.guestRole || GuestRole.GUEST,
-        answers: dto.guestAnswers as JsonObject,
-      }),
     })
 
     const createdUser = await this.repository.create(user)

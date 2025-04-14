@@ -6264,13 +6264,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "@types/supertest@npm:6.0.2"
+"@types/supertest@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "@types/supertest@npm:6.0.3"
   dependencies:
     "@types/methods": "npm:^1.1.4"
     "@types/superagent": "npm:^8.1.0"
-  checksum: 10c0/44a28f9b35b65800f4c7bcc23748e71c925098aa74ea504d14c98385c36d00de2a4f5aca15d7dc4514bc80533e0af21f985a4ab9f5f317c7266e9e75836aef39
+  checksum: 10c0/a2080f870154b09db123864a484fb633bc9e2a0f7294a194388df4c7effe5af9de36d5a5ebf819f72b404fa47b5e813c47d5a3a51354251fd2fa8589bfb64f2c
   languageName: node
   linkType: hard
 
@@ -7259,7 +7259,7 @@ __metadata:
     "@types/node": "npm:^22.10.7"
     "@types/passport-jwt": "npm:^4.0.1"
     "@types/passport-local": "npm:^1.0.38"
-    "@types/supertest": "npm:^6.0.2"
+    "@types/supertest": "npm:^6.0.3"
     "@types/uuid": "npm:^10.0.0"
     argon2: "npm:^0.41.1"
     cache-manager: "npm:^6.4.1"
@@ -7267,8 +7267,8 @@ __metadata:
     class-validator: "npm:^0.14.1"
     compression: "npm:^1.8.0"
     cookie-parser: "npm:^1.4.7"
+    dayjs: "npm:^1.11.13"
     ddd-base: "npm:^0.9.1"
-    eslint: "npm:^9.18.0"
     eslint-config-prettier: "npm:^10.0.1"
     eslint-plugin-prettier: "npm:^5.2.2"
     express-bearer-token: "npm:^3.0.0"
@@ -7277,6 +7277,7 @@ __metadata:
     ioredis: "npm:^5.6.0"
     jest: "npm:^29.7.0"
     jest-junit: "npm:^16.0.0"
+    jest-mock-extended: "npm:^4.0.0-beta1"
     minio: "npm:^8.0.5"
     nest-winston: "npm:^1.10.2"
     nestjs-prisma: "npm:^0.25.0"
@@ -7289,7 +7290,7 @@ __metadata:
     reflect-metadata: "npm:^0.2.2"
     rxjs: "npm:^7.8.1"
     source-map-support: "npm:^0.5.21"
-    supertest: "npm:^7.0.0"
+    supertest: "npm:^7.1.0"
     ts-jest: "npm:^29.2.5"
     ts-loader: "npm:^9.5.2"
     ts-node: "npm:^10.9.2"
@@ -10219,7 +10220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^9, eslint@npm:^9.18.0":
+"eslint@npm:^9":
   version: 9.22.0
   resolution: "eslint@npm:9.22.0"
   dependencies:
@@ -12822,6 +12823,19 @@ __metadata:
     slash: "npm:^3.0.0"
     stack-utils: "npm:^2.0.3"
   checksum: 10c0/850ae35477f59f3e6f27efac5215f706296e2104af39232bb14e5403e067992afb5c015e87a9243ec4d9df38525ef1ca663af9f2f4766aa116f127247008bd22
+  languageName: node
+  linkType: hard
+
+"jest-mock-extended@npm:^4.0.0-beta1":
+  version: 4.0.0-beta1
+  resolution: "jest-mock-extended@npm:4.0.0-beta1"
+  dependencies:
+    ts-essentials: "npm:^10.0.2"
+  peerDependencies:
+    "@jest/globals": ^28.0.0 || ^29.0.0
+    jest: ^24.0.0 || ^25.0.0 || ^26.0.0 || ^27.0.0 || ^28.0.0 || ^29.0.0
+    typescript: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 10c0/8a0638f0c6db54407a1b8a4342356af55f95a8d2f821c879d13f289f945ddf7315c744a070309e8ebbaa414a6fcb4ca1eb553dbfc26ecc4d3dac712289603f7c
   languageName: node
   linkType: hard
 
@@ -17715,13 +17729,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supertest@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "supertest@npm:7.0.0"
+"supertest@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "supertest@npm:7.1.0"
   dependencies:
     methods: "npm:^1.1.2"
     superagent: "npm:^9.0.1"
-  checksum: 10c0/f0b10a1d292e6156fab16efdbb90d8cb1df54367667ae4108a6da67b81058d35182720dd9a3b4b2f538b14729dc8633741e6242724f1a0ccfde5197341ea96ec
+  checksum: 10c0/7a711630b5895c86978980fc88db0b6e54a655424d47e83bb126ff13d3879130271c37bca5e1f404c9ce8cbcaa922ab0897f3955598c3d5bb0dc6914161221bc
   languageName: node
   linkType: hard
 
@@ -18104,6 +18118,18 @@ __metadata:
   peerDependencies:
     typescript: ">=4.8.4"
   checksum: 10c0/23fd56a958b332cac00150a652e4c84730df30571bd2faa1ba6d7b511356d1a61656621492bb6c7f15dd6e18847a1408357a0e406671d358115369a17f5bfedd
+  languageName: node
+  linkType: hard
+
+"ts-essentials@npm:^10.0.2":
+  version: 10.0.4
+  resolution: "ts-essentials@npm:10.0.4"
+  peerDependencies:
+    typescript: ">=4.5.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/99a5dd3ae6ed885e0f6cdb9556c07ba5c9e00d447a58a3308440739d624bcd92d370f8bb060ae7a2992023b4a03acdf669ac8f1e0427b3fbc792a2857f85ab0d
   languageName: node
   linkType: hard
 

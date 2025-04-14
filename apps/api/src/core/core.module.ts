@@ -36,7 +36,12 @@ import { RedisService } from './redis.service'
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        throttlers: [{ limit: 10, ttl: seconds(60) }],
+        throttlers: [
+          {
+            limit: config.env('REQ_LIMIT'),
+            ttl: seconds(config.env('REQ_TTL')),
+          },
+        ],
         storage: new ThrottlerStorageRedisService(
           new Redis({
             host: config.env('REDIS_HOST'),

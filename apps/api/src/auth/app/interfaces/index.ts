@@ -1,4 +1,4 @@
-import { GuestRole, UserStatus } from '#prisma'
+import { GuestRole, UserRole, UserStatus } from '#prisma'
 import { Request } from 'express'
 
 import { User } from '#/user/domain'
@@ -31,7 +31,7 @@ export interface ITokenBase {
 
 export interface IAccessPayload {
   id: string
-  role: GuestRole
+  role: UserRole | GuestRole
   status: UserStatus
 }
 

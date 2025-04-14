@@ -3,7 +3,8 @@ import { AggregateRoot } from '@nestjs/cqrs'
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
 import { Exclude } from 'class-transformer'
 
-import { Credentials, Guest } from '#/user/domain'
+import { Guest } from '#/svadba/domain'
+import { Credentials } from '#/user/domain'
 
 import { IUserModel, IUserProps } from '../interfaces'
 
@@ -68,10 +69,10 @@ export class User extends AggregateRoot implements IUserProps {
     description: 'Информация о госте',
     type: () => Guest,
   })
-  guest: Guest
+  guest?: Guest
 
   @Exclude()
-  guestId: string
+  guestId: string | null
 
   @ApiProperty({
     description: 'Дата создания пользователя',
@@ -96,7 +97,7 @@ export class User extends AggregateRoot implements IUserProps {
       credentials: model.credentials
         ? model.credentials.map((item) => Credentials.fromRaw(item))
         : [],
-      guest: Guest.fromModel(model.guest),
+      guest: model.guest ? Guest.fromModel(model.guest) : undefined,
     })
   }
 

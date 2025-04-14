@@ -13,6 +13,8 @@ export class DeleteSocialLinkHandler
   async execute({
     dto,
   }: DeleteSocialLinkCommand): Promise<boolean | SocialLinkError> {
-    return await this.repository.delete(dto.id)
+    const res = await this.repository.delete(dto.id)
+
+    return res ? res : new SocialLinkError('SOCIAL_LINK_NOT_FOUND')
   }
 }
