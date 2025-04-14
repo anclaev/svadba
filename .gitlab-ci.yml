@@ -31,6 +31,7 @@ default:
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
   CI: true
+  YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 stages:
   - install
