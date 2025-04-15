@@ -35,8 +35,8 @@ variables:
 
 stages:
   - install
-  - tests
   - build
+  - tests
   - release
   - deploy
 
@@ -55,6 +55,99 @@ Install deps:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
 
+# Build staging images
+
+Build web (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  script:
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
+
+Build api (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  script:
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
+
+Build bot (staging):
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == "develop"
+  script:
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
+
+# Build production images
+
+Build web:
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - *get_version
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
+    - docker push $CI_IMAGE_TAG_WEB --all-tags
+  tags:
+    - production
+  environment: production
+
+Build api:
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - *get_version
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
+    - docker push $CI_IMAGE_TAG_API --all-tags
+  tags:
+    - production
+  environment: production
+
+Build bot:
+  extends: .docker
+  stage: build
+  needs:
+    - Install deps
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - *get_version
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
+    - docker push $CI_IMAGE_TAG_BOT --all-tags
+  tags:
+    - production
+  environment: production
+
+# Tests
+
 Unit tests:
   stage: tests
   needs:
@@ -72,6 +165,8 @@ Unit tests:
 e2e tests:
   stage: tests
   image: mcr.microsoft.com/playwright:v1.51.0-noble
+  variables:
+    SENTRY_AUTH_TOKEN: $WEB_SENTRY_AUTH_TOKEN
   needs:
     - Install deps
   script:
@@ -84,100 +179,6 @@ e2e tests:
     - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
       allow_failure: true
 
-# Staging images
-
-Build web (staging):
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-  script:
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
-
-Build api (staging):
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-  script:
-    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
-
-Build bot (staging):
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-  script:
-    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
-
-# Production images
-
-Build web:
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-    - e2e tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  script:
-    - *get_version
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
-    - docker push $CI_IMAGE_TAG_WEB --all-tags
-  tags:
-    - production
-  environment: production
-
-Build api:
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-    - e2e tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  script:
-    - *get_version
-    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
-    - docker push $CI_IMAGE_TAG_API --all-tags
-  tags:
-    - production
-  environment: production
-
-Build bot:
-  extends: .docker
-  stage: build
-  needs:
-    - Unit tests
-    - e2e tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  script:
-    - *get_version
-    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
-    - docker push $CI_IMAGE_TAG_BOT --all-tags
-  tags:
-    - production
-  environment: production
-
 # Deploy
 
 Deploy (staging):
@@ -187,6 +188,8 @@ Deploy (staging):
     - Build api (staging)
     - Build web (staging)
     - Build bot (staging)
+    - Unit tests
+    - e2e tests
   rules:
     - if: $CI_COMMIT_BRANCH == "develop"
   extends: .prepare-ssh
@@ -207,6 +210,8 @@ Deploy:
     - Build api
     - Build web
     - Build bot
+    - Unit tests
+    - e2e tests
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   extends: .prepare-ssh

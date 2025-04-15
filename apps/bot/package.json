@@ -8,7 +8,7 @@
   "packageManager": "yarn@4.1.1",
   "scripts": {
     "gen-proto": "rimraf src/proto/interfaces && proto-loader-gen-types --longs=String --enums=String  --oneofs --grpcLib=@grpc/grpc-js --outDir=src/proto/interfaces src/proto/*.proto",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"e2e/**/*.ts\"",
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",

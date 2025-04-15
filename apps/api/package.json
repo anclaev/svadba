@@ -5,7 +5,7 @@
   "author": "Artem Samarin <av@anclaev.ru>",
   "private": true,
   "scripts": {
-    "format": "prettier --write \"(src|tests)/*.(ts|js)\" \"src/**/*.(ts|js)\"",
+    "format": "prettier --write \"(src|e2e)/*.(ts|js)\" \"src/**/*.(ts|js)\"",
     "start": "nest start",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
