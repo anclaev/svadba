@@ -155,7 +155,6 @@ Unit tests:
   only:
     - develop
     - main
-  allow_failure: true
 
 e2e tests:
   stage: tests
@@ -167,7 +166,6 @@ e2e tests:
   only:
     - develop
     - main
-  allow_failure: true
 
 # Deploy
 
