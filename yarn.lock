@@ -4460,6 +4460,7 @@ __metadata:
     nest-winston: "npm:^1.10.2"
     nestjs-zod: "npm:^4.3.1"
     reflect-metadata: "npm:^0.2.2"
+    rimraf: "npm:latest"
     rxjs: "npm:^7.8.2"
     typescript: "npm:latest"
     winston: "npm:^3.17.0"
@@ -16500,7 +16501,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^6.0.1":
+"rimraf@npm:^6.0.1, rimraf@npm:latest":
   version: 6.0.1
   resolution: "rimraf@npm:6.0.1"
   dependencies:

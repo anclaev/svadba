@@ -162,6 +162,7 @@ e2e tests:
   needs:
     - install deps
   script:
+    - yarn turbo build --filter=@repo/shared --filter=bot --filter=api
     - CI=true yarn turbo e2e
   only:
     - develop

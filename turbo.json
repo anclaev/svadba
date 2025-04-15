@@ -6,8 +6,7 @@
     "build": {
       "dependsOn": ["db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "passThroughEnv": ["SENTRY_AUTH_TOKEN"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "proto/interfaces/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -40,12 +39,9 @@
       "cache": false,
       "persistent": true
     },
-    "pre-e2e": {
-      "inputs": ["proto/interfaces/**"]
-    },
     "e2e": {
       "cache": false,
-      "dependsOn": ["db:generate", "pre-e2e", "^e2e"],
+      "dependsOn": ["db:generate", "^build", "^e2e"],
       "passThroughEnv": ["PLAYWRIGHT_*"]
     }
   }

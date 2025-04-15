@@ -3,12 +3,13 @@
   "private": true,
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc --build"
+    "build": "rimraf ./dist && tsc --build"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
+    "rimraf": "latest",
     "typescript": "latest"
   },
   "packageManager": "yarn@4.1.1",
