@@ -40,7 +40,7 @@ stages:
   - release
   - deploy
 
-Install deps:
+install deps:
   stage: install
   script:
     - yarn
@@ -55,11 +55,11 @@ Install deps:
 
 # Build staging images
 
-Build web (staging):
+build web (staging):
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - develop
   script:
@@ -69,11 +69,11 @@ Build web (staging):
     - staging
   environment: staging
 
-Build api (staging):
+build api (staging):
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - develop
   script:
@@ -83,11 +83,11 @@ Build api (staging):
     - staging
   environment: staging
 
-Build bot (staging):
+build bot (staging):
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - develop
   script:
@@ -99,11 +99,11 @@ Build bot (staging):
 
 # Build production images
 
-Build web:
+build web:
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - main
   script:
@@ -114,11 +114,11 @@ Build web:
     - production
   environment: production
 
-Build api:
+build api:
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - main
   script:
@@ -129,11 +129,11 @@ Build api:
     - production
   environment: production
 
-Build bot:
+build bot:
   extends: .docker
   stage: build
   needs:
-    - Install deps
+    - install deps
   only:
     - main
   script:
@@ -146,10 +146,10 @@ Build bot:
 
 # Tests
 
-Unit tests:
+unit tests:
   stage: tests
   needs:
-    - Install deps
+    - install deps
   script:
     - yarn turbo test:ci
   only:
@@ -160,23 +160,23 @@ e2e tests:
   stage: tests
   image: mcr.microsoft.com/playwright:v1.51.0-noble
   needs:
-    - Install deps
+    - install deps
   script:
-    - CI=true SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN yarn turbo e2e
+    - CI=true yarn turbo e2e
   only:
     - develop
     - main
 
 # Deploy
 
-Deploy (staging):
+deploy (staging):
   image: alpine:latest
   stage: deploy
   needs:
-    - Build api (staging)
-    - Build web (staging)
-    - Build bot (staging)
-    - Unit tests
+    - build api (staging)
+    - build web (staging)
+    - build bot (staging)
+    - unit tests
     - e2e tests
   only:
     - develop
@@ -192,14 +192,14 @@ Deploy (staging):
   tags:
     - staging
 
-Deploy:
+deploy:
   image: alpine:latest
   stage: deploy
   needs:
-    - Build api
-    - Build web
-    - Build bot
-    - Unit tests
+    - build api
+    - build web
+    - build bot
+    - unit tests
     - e2e tests
   only:
     - main
@@ -218,7 +218,7 @@ Deploy:
 
 # Release
 
-Release:
+release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   only:
