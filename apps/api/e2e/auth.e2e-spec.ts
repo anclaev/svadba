@@ -13,6 +13,10 @@ import { PrismaService } from '#/core/prisma.service'
 
 import { mockUsers } from './mocks/users.mock'
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('Auth Controller (e2e)', () => {
   let app: INestApplication
   let prisma: DeepMockProxy<PrismaClient>

@@ -6,7 +6,12 @@
     "build": {
       "dependsOn": ["db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", "proto/interfaces/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "proto/interfaces/**"
+      ]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -41,7 +46,7 @@
     },
     "e2e": {
       "cache": false,
-      "dependsOn": ["db:generate", "^build", "^e2e"],
+      "dependsOn": ["^db:generate", "^build", "^e2e"],
       "passThroughEnv": ["PLAYWRIGHT_*"]
     }
   }

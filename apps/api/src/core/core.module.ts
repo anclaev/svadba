@@ -18,20 +18,25 @@ import { RedisService } from './redis.service'
     CacheModule.registerAsync({
       inject: [ConfigService],
       isGlobal: true,
-      useFactory: (config: ConfigService) => ({
-        stores: [
-          createKeyv({
-            url: `redis://${config.env('REDIS_HOST')}:${config.env('REDIS_PORT')}`,
-            username: config.env('REDIS_USERNAME'),
-            password: config.env('REDIS_PASSWORD'),
-            socket: {
-              host: config.env('REDIS_HOST'),
-              port: config.env('REDIS_PORT'),
-              tls: false,
-            },
-          }),
-        ],
-      }),
+      useFactory: (config: ConfigService) => {
+        return {
+          stores:
+            process.env.NODE_ENV !== 'test'
+              ? [
+                  createKeyv({
+                    url: `redis://${config.env('REDIS_HOST')}:${config.env('REDIS_PORT')}`,
+                    username: config.env('REDIS_USERNAME'),
+                    password: config.env('REDIS_PASSWORD'),
+                    socket: {
+                      host: config.env('REDIS_HOST'),
+                      port: config.env('REDIS_PORT'),
+                      tls: false,
+                    },
+                  }),
+                ]
+              : undefined,
+        }
+      },
     }),
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
@@ -42,14 +47,17 @@ import { RedisService } from './redis.service'
             ttl: seconds(config.env('REQ_TTL')),
           },
         ],
-        storage: new ThrottlerStorageRedisService(
-          new Redis({
-            host: config.env('REDIS_HOST'),
-            port: config.env('REDIS_PORT'),
-            username: config.env('REDIS_USERNAME'),
-            password: config.env('REDIS_PASSWORD'),
-          })
-        ),
+        storage:
+          process.env.NODE_ENV !== 'test'
+            ? new ThrottlerStorageRedisService(
+                new Redis({
+                  host: config.env('REDIS_HOST'),
+                  port: config.env('REDIS_PORT'),
+                  username: config.env('REDIS_USERNAME'),
+                  password: config.env('REDIS_PASSWORD'),
+                })
+              )
+            : undefined,
       }),
     }),
     ServeStaticModule.forRoot({

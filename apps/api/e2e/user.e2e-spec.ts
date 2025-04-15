@@ -13,6 +13,10 @@ import { CreateUserDto } from '#/user/api'
 
 import { mockUsers } from './mocks/users.mock'
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('User Controller (e2e)', () => {
   let app: INestApplication
   let prisma: DeepMockProxy<PrismaClient>
@@ -104,8 +108,6 @@ describe('User Controller (e2e)', () => {
   })
 
   beforeEach(() => {
-    jest.clearAllMocks()
-
     prisma.user.create.mockImplementation((args: any): any => {
       const newUser: User = {
         id: uuid(),

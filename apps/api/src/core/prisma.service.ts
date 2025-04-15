@@ -18,6 +18,8 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
 
   // istanbul ignore next
   async onModuleInit(): Promise<void> {
+    if (process.env.NODE_ENV === 'test') return
+
     // istanbul ignore next
     await this.$connect()
       // istanbul ignore next

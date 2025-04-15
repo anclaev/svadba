@@ -13,6 +13,10 @@ import { AppModule } from '#/app/app.module'
 
 import { mockSocialLinks } from './mocks/social-links.mock'
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('SocialLink GRPC Controller (e2e)', () => {
   let app: INestApplication
   let prisma: DeepMockProxy<PrismaClient>

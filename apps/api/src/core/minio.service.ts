@@ -26,6 +26,10 @@ export class MinioService extends Minio.Client implements OnModuleInit {
 
   async onModuleInit(): Promise<void> {
     try {
+      if (process.env.NODE_ENV === 'test') {
+        return
+      }
+
       const bucketExists = await this.bucketExists(this.bucket)
 
       if (!bucketExists) {

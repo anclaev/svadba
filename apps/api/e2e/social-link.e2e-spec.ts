@@ -15,6 +15,10 @@ import { IPaginationResult } from '@repo/shared'
 import { mockSocialLinks } from './mocks/social-links.mock'
 import { mockUsers } from './mocks/users.mock'
 
+beforeEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('SocialLink Controller (e2e)', () => {
   const endpoint = '/social-links'
 
