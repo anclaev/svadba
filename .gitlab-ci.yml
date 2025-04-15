@@ -49,11 +49,9 @@ Install deps:
     paths:
       - node_modules/
       - .yarn
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  only:
+    - develop
+    - main
 
 # Build staging images
 
@@ -62,8 +60,8 @@ Build web (staging):
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+  only:
+    - develop
   script:
     - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
@@ -76,8 +74,8 @@ Build api (staging):
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+  only:
+    - develop
   script:
     - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
@@ -90,8 +88,8 @@ Build bot (staging):
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+  only:
+    - develop
   script:
     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
@@ -106,8 +104,8 @@ Build web:
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  only:
+    - main
   script:
     - *get_version
     - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
@@ -121,8 +119,8 @@ Build api:
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  only:
+    - main
   script:
     - *get_version
     - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
@@ -136,8 +134,8 @@ Build bot:
   stage: build
   needs:
     - Install deps
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  only:
+    - main
   script:
     - *get_version
     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
@@ -154,30 +152,22 @@ Unit tests:
     - Install deps
   script:
     - yarn turbo test:ci
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      allow_failure: false
-    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
-      allow_failure: true
+  only:
+    - develop
+    - main
+  allow_failure: true
 
 e2e tests:
   stage: tests
   image: mcr.microsoft.com/playwright:v1.51.0-noble
-  variables:
-    SENTRY_AUTH_TOKEN: $WEB_SENTRY_AUTH_TOKEN
   needs:
     - Install deps
   script:
-    - CI=true yarn turbo e2e
-  rules:
-    - if: $CI_COMMIT_TAG
-      when: never
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      allow_failure: false
-    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
-      allow_failure: true
+    - CI=true SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN yarn turbo e2e
+  only:
+    - develop
+    - main
+  allow_failure: true
 
 # Deploy
 
@@ -190,8 +180,9 @@ Deploy (staging):
     - Build bot (staging)
     - Unit tests
     - e2e tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+  only:
+    - develop
+  when: on_success
   extends: .prepare-ssh
   script:
     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
@@ -212,8 +203,9 @@ Deploy:
     - Build bot
     - Unit tests
     - e2e tests
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  only:
+    - main
+  when: on_success
   extends: .prepare-ssh
   script:
     - *get_version
@@ -231,8 +223,8 @@ Deploy:
 Release:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
-  rules:
-    - if: $CI_COMMIT_TAG
+  only:
+    - tags
   before_script:
     - echo "Prepare release..."
   script:
