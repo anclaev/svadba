@@ -1,8 +1,13 @@
-import type { PrimaryButtonComponent } from './types'
+import { ButtonHTMLAttributes, FC, PropsWithChildren } from 'react'
 
 import './index.css'
 
-export const PrimaryButton: PrimaryButtonComponent = ({
+export type PrimaryButtonProps = { className?: string } & Pick<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'onClick'
+>
+
+export const PrimaryButton: FC<PropsWithChildren<PrimaryButtonProps>> = ({
   children,
   className,
   onClick,

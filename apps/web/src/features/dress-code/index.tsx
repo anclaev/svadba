@@ -7,10 +7,10 @@ import { FC } from 'react'
 import { PrimaryButton } from '@/shared/primary-button'
 import { Section } from '@/shared/section'
 
-import { DRESS_CODE_COLORS } from '@/core/constants/dress-code'
-import { ALBUM_LINK } from '@/core/constants/links'
+import { DRESS_CODE_COLORS } from '@/core/constants/ui/dress-code'
+import { ALBUM_LINK } from '@/core/constants/ui/social-links'
 
-import type { withSection } from '@/core/types'
+import type { withSection } from '@/core/types/ui'
 
 import './index.css'
 
@@ -35,6 +35,7 @@ export const DressCode: FC<withSection> = ({ section }) => {
             initial={{ opacity: 0, scale: 0 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: 'easeIn' }}
+            viewport={{ once: true }}
             key={index}
             className={`
               w-[100px] h-[100px]

@@ -1,0 +1,70 @@
+import { createKeyv } from '@keyv/redis'
+import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
+import { CacheModule } from '@nestjs/cache-manager'
+import { Global, Logger, Module } from '@nestjs/common'
+import { ServeStaticModule } from '@nestjs/serve-static'
+import { seconds, ThrottlerModule } from '@nestjs/throttler'
+import Redis from 'ioredis'
+import { join } from 'path'
+
+import { ConfigService } from '#/config/config.service'
+import { MinioService } from './minio.service'
+import { PrismaService } from './prisma.service'
+import { RedisService } from './redis.service'
+
+@Global()
+@Module({
+  imports: [
+    CacheModule.registerAsync({
+      inject: [ConfigService],
+      isGlobal: true,
+      useFactory: (config: ConfigService) => {
+        return {
+          stores:
+            process.env.NODE_ENV !== 'test'
+              ? [
+                  createKeyv({
+                    url: `redis://${config.env('REDIS_HOST')}:${config.env('REDIS_PORT')}`,
+                    username: config.env('REDIS_USERNAME'),
+                    password: config.env('REDIS_PASSWORD'),
+                    socket: {
+                      host: config.env('REDIS_HOST'),
+                      port: config.env('REDIS_PORT'),
+                      tls: false,
+                    },
+                  }),
+                ]
+              : undefined,
+        }
+      },
+    }),
+    ThrottlerModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        throttlers: [
+          {
+            limit: config.env('REQ_LIMIT'),
+            ttl: seconds(config.env('REQ_TTL')),
+          },
+        ],
+        storage:
+          process.env.NODE_ENV !== 'test'
+            ? new ThrottlerStorageRedisService(
+                new Redis({
+                  host: config.env('REDIS_HOST'),
+                  port: config.env('REDIS_PORT'),
+                  username: config.env('REDIS_USERNAME'),
+                  password: config.env('REDIS_PASSWORD'),
+                })
+              )
+            : undefined,
+      }),
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'assets'),
+    }),
+  ],
+  providers: [Logger, PrismaService, MinioService, RedisService],
+  exports: [PrismaService, MinioService, RedisService],
+})
+export class CoreModule {}

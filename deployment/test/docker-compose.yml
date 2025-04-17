@@ -1,0 +1,160 @@
+services:
+  db:
+    image: postgres:14
+    restart: no
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 20s
+      timeout: 20s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - db_data:/var/lib/postgresql/data/pgdata
+      - ../_scripts/db-init.sh:/docker-entrypoint-initdb.d/init-database.sh
+    networks:
+      - net
+
+  minio:
+    image: minio/minio:RELEASE.2025-02-07T23-21-09Z
+    restart: no
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_TOKEN}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_TOKEN}
+    volumes:
+      - minio_data:/mnt/data
+    command: minio server /mnt/data --address :${MINIO_PORT} --console-address :${MINIO_UI_PORT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${MINIO_PORT}/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+    networks:
+      - net
+
+  redis:
+    image: redis:latest
+    restart: no
+    environment:
+      REDIS_USER: ${REDIS_USERNAME}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_USER_PASSWORD: ${REDIS_PASSWORD}
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+    volumes:
+      - redis_data:/data
+      - ../_scripts/redis-init.sh:/init/redis-init.sh
+    entrypoint: /init/redis-init.sh
+    tty: true
+    networks:
+      - net
+
+  api:
+    image: anclaev/svadba-api:${VERSION}
+    restart: no
+    depends_on:
+      db:
+        condition: "service_healthy"
+      redis:
+        condition: "service_healthy"
+      minio:
+        condition: "service_healthy"
+    environment:
+      APP_VERSION: ${VERSION}
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      COOKIE_SECRET: ${API_COOKIE_SECRET}
+      JWT_ACCESS_SECRET: ${API_JWT_ACCESS_SECRET}
+      JWT_CONFIRMATION_SECRET: ${API_JWT_CONFIRMATION_SECRET}
+      JWT_RESET_PASSWORD_SECRET: ${API_JWT_RESET_PASSWORD_SECRET}
+      JWT_REFRESH_SECRET: ${API_JWT_REFRESH_SECRET}
+      S3_ENDPOINT: ${MINIO_ENDPOINT}
+      S3_PORT: ${MINIO_PORT}
+      S3_BUCKET: ${MINIO_BUCKET}
+      S3_ACCESS_TOKEN: ${MINIO_ACCESS_TOKEN}
+      S3_SECRET_TOKEN: ${MINIO_SECRET_TOKEN}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_USERNAME: ${REDIS_USERNAME}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_DB: ${REDIS_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:${API_PORT}/health"]
+      interval: 10s
+      timeout: 10s
+      start_period: 10s
+      retries: 3
+    networks:
+      - net
+
+  bot:
+    image: anclaev/svadba-bot:${VERSION}
+    restart: no
+    depends_on:
+      api:
+        condition: "service_healthy"
+    healthcheck:
+      test: ["CMD-SHELL", "netstat -ltn | grep -c ':${BOT_GRPC_PORT}'"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      GRPC_PORT: ${BOT_GRPC_PORT}
+    networks:
+      - net 
+
+  web:
+    image: anclaev/svadba-web:${VERSION}
+    restart: no
+    depends_on:
+      api:
+        condition: "service_healthy"  
+    environment:
+      API_URL: ${API_URL}
+      JWT_ACCESS_TIME: ${WEB_JWT_ACCESS_TIME}
+      JWT_REFRESH_TIME: ${WEB_JWT_REFRESH_TIME}
+      SENTRY_AUTH_TOKEN: ${WEB_SENTRY_AUTH_TOKEN}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://0.0.0.0:${WEB_PORT}"]
+      interval: 10s
+      timeout: 5s
+      start_period: 5s
+    networks:
+      - net
+
+  playwright-runner:
+    image: anclaev/svadba-playwright-runner:latest
+    restart: no
+    depends_on:
+      web:
+        condition: "service_healthy"
+      api:
+        condition: "service_healthy"
+    environment:
+      API_URL: ${API_URL}
+      WEB_URL: ${WEB_URL}
+    volumes:  
+      - ../../packages/e2e/tests:/app/tests
+      - ../../packages/e2e/playwright.config.ts:/app/playwright.config.ts
+      - ../../playwright-report:/app/playwright-report
+    networks:
+      - net
+    
+networks:
+  net:
+    driver: bridge
+
+volumes:
+  db_data:
+  minio_data:
+  redis_data:

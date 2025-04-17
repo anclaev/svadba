@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Docs
+docs/.obsidian
+
 # Dependencies
 node_modules
 .pnp
@@ -17,6 +20,12 @@ node_modules
 # Testing
 coverage
 
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
 # Turbo
 .turbo
 
@@ -28,7 +37,7 @@ coverage
 out/
 build
 dist
-
+**/proto/interfaces
 
 # Debug
 npm-debug.log*

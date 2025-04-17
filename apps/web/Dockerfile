@@ -1,9 +1,10 @@
 ARG VERSION=null
+ARG SENTRY_AUTH_TOKEN=""
 
 FROM node:18-alpine AS base
 WORKDIR /app
-RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk update \
+    apk add --no-cache libc6-compat
 
 # ----------------- Setup a turbo partial monorepo -----------------
 FROM base AS builder
@@ -18,11 +19,14 @@ RUN turbo prune web --docker
 FROM base AS installer
 RUN corepack enable 
  
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+
 COPY --from=builder /app/out/json/ .
 RUN yarn install --frozen-lockfile
  
 COPY --from=builder /app/out/full/ .
 RUN yarn turbo run build
+RUN mkdir -p ./apps/web/.next/cache 
  
 # ----------------- Run the production image -----------------
 LABEL version=$VERSION
@@ -34,8 +38,9 @@ USER nextjs
  
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/cache ./apps/web/.next/cache
 COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
- 
+
 ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 3000

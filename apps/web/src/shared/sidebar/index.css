@@ -1,0 +1,9 @@
+.transform-separator {
+  transform: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .transform-separator {
+    transform: rotate(90deg) translateX(50%) translateY(2500%);
+  }
+}

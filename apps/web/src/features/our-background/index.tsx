@@ -2,13 +2,13 @@
 
 import { motion } from 'framer-motion'
 import { getImageProps } from 'next/image'
-import { useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
-import getBackgroundImage from '@/core/utils/get-background-image'
+import { getBackgroundImage } from '@/core/utils/get-background-image'
 
-import type { OurBackgroundComponent } from './types'
-
-export const OurBackground: OurBackgroundComponent = ({ withoutTitle }) => {
+export const OurBackground: FC<{ withoutTitle?: boolean }> = ({
+  withoutTitle,
+}) => {
   const ourBackgroundUrl = useMemo(() => {
     const {
       props: { srcSet },
@@ -41,6 +41,7 @@ export const OurBackground: OurBackgroundComponent = ({ withoutTitle }) => {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeIn' }}
+            viewport={{ once: true }}
             className="block"
           >
             Artem
@@ -49,6 +50,7 @@ export const OurBackground: OurBackgroundComponent = ({ withoutTitle }) => {
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeIn' }}
+            viewport={{ once: true }}
             className="block ml-[20px] mr-[20px]"
           >
             &
@@ -58,6 +60,7 @@ export const OurBackground: OurBackgroundComponent = ({ withoutTitle }) => {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: 'easeIn' }}
+            viewport={{ once: true }}
             className="block"
           >
             Alina

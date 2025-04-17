@@ -13,7 +13,7 @@ const initialDelta: CountdownTimeDelta = {
   completed: false,
 }
 
-const useTimer = (date: Date): CountdownTimeDelta => {
+export const useTimer = (date: Date): CountdownTimeDelta => {
   const [delta, setDelta] = useState<CountdownTimeDelta>(initialDelta)
 
   useEffect(() => {
@@ -30,5 +30,3 @@ const useTimer = (date: Date): CountdownTimeDelta => {
     ...delta,
   }
 }
-
-export default useTimer
