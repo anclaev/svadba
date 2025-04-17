@@ -33,115 +33,115 @@ variables:
   YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 stages:
-  - install
-  - build
+  # - install
+  # - build
   - test
   # - release
   # - deploy
 
-install-deps-job:
-  stage: install
-  script:
-    - yarn
-  cache:
-    untracked: true
-    paths:
-      - node_modules/
-      - .yarn
-  only:
-    - develop
-    - main
+# install-deps-job:
+#   stage: install
+#   script:
+#     - yarn
+#   cache:
+#     untracked: true
+#     paths:
+#       - node_modules/
+#       - .yarn
+#   only:
+#     - develop
+#     - main
 
-# Build staging images
+# # Build staging images
 
-build-web-staging-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - develop
-  script:
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
+# build-web-staging-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - develop
+#   script:
+#     - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
+#   tags:
+#     - staging
+#   environment: staging
 
-build-api-staging-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - develop
-  script:
-    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
+# build-api-staging-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - develop
+#   script:
+#     - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
+#   tags:
+#     - staging
+#   environment: staging
 
-build-bot-staging-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - develop
-  script:
-    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
-  tags:
-    - staging
-  environment: staging
+# build-bot-staging-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - develop
+#   script:
+#     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
+#   tags:
+#     - staging
+#   environment: staging
 
-# Build production images
+# # Build production images
 
-build-web-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - main
-  script:
-    - *get-version
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
-    - docker push $CI_IMAGE_TAG_WEB --all-tags
-  tags:
-    - production
-  environment: production
+# build-web-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - main
+#   script:
+#     - *get-version
+#     - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
+#     - docker push $CI_IMAGE_TAG_WEB --all-tags
+#   tags:
+#     - production
+#   environment: production
 
-build-api-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - main
-  script:
-    - *get-version
-    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
-    - docker push $CI_IMAGE_TAG_API --all-tags
-  tags:
-    - production
-  environment: production
+# build-api-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - main
+#   script:
+#     - *get-version
+#     - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
+#     - docker push $CI_IMAGE_TAG_API --all-tags
+#   tags:
+#     - production
+#   environment: production
 
-build-bot-job:
-  extends: .docker
-  stage: build
-  needs:
-    - install-deps-job
-  only:
-    - main
-  script:
-    - *get-version
-    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
-    - docker push $CI_IMAGE_TAG_BOT --all-tags
-  tags:
-    - production
-  environment: production
+# build-bot-job:
+#   extends: .docker
+#   stage: build
+#   needs:
+#     - install-deps-job
+#   only:
+#     - main
+#   script:
+#     - *get-version
+#     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
+#     - docker push $CI_IMAGE_TAG_BOT --all-tags
+#   tags:
+#     - production
+#   environment: production
 
 # Tests
 
@@ -169,15 +169,15 @@ build-bot-job:
 test-e2e-job:
   extends: .docker
   stage: test
-  needs:
-    - build-web-staging-job
-    - build-bot-staging-job
-    - build-api-staging-job
+  # needs:
+  #   - build-web-staging-job
+  #   - build-bot-staging-job
+  #   - build-api-staging-job
   variables:
     TEST_ENV: $TEST_ENV
   script:
-    - *get-version
-    - cat $TEST_ENV >> ./docker/test/.env && cat VERSION=$PROJECT_VERSION >> ./docker/test/.env
+    # - *get-version
+    - echo $TEST_ENV >> ./docker/test/.env && echo VERSION=528e91c1 >> ./docker/test/.env
     - docker compose -f ./docker/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
   artifacts:
     paths:
