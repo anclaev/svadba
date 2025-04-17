@@ -15,7 +15,7 @@
     "test:cov": "jest --coverage",
     "test:ci": "jest --passWithNoTests  --coverage --ci",
     "e2e": "jest --config e2e/jest.config-e2e.ts --passWithNoTests --verbose",
-    "dev": "nodemon --watch 'src' --ext '*' --exec 'node -r @swc-node/register' src/main.ts",
+    "dev": "'node -r @swc-node/register' src/main.ts",
     "dev:debug": "GRPC_VERBOSITY=DEBUG GRPC_TRACE=all yarn dev",
     "build": "yarn & yarn gen-proto && rimraf dist && swc ./src -d dist --strip-leading-paths",
     "start": "node dist/main.js"

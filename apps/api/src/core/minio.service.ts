@@ -3,6 +3,8 @@ import * as Minio from 'minio'
 
 import { ConfigService } from '../config/config.service'
 
+import { getS3BucketPolicy } from '../common/utils'
+
 /**
  * Сервис подключения к Minio
  */
@@ -33,12 +35,26 @@ export class MinioService extends Minio.Client implements OnModuleInit {
       const bucketExists = await this.bucketExists(this.bucket)
 
       if (!bucketExists) {
-        this.logger.error(
-          `Бакет '${this.bucket}' не существует!`,
-          {},
+        this.logger.log(
+          `Бакета '${this.bucket}' не существует. Создаю...`,
           MinioService.name
         )
-        process.exit(1)
+        try {
+          await this.makeBucket(this.bucket)
+          await this.setBucketPolicy(
+            this.bucket,
+            JSON.stringify(getS3BucketPolicy(this.bucket))
+          )
+
+          this.logger.log(`Бакет '${this.bucket}' создан.`, MinioService.name)
+        } catch {
+          this.logger.error(
+            `Ошибка при создании бакета '${this.bucket}'!`,
+            {},
+            MinioService.name
+          )
+          process.exit(1)
+        }
       }
 
       this.logger.log(

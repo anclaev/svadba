@@ -3,8 +3,8 @@ ARG SENTRY_AUTH_TOKEN=""
 
 FROM node:18-alpine AS base
 WORKDIR /app
-RUN apk update
-RUN apk add --no-cache libc6-compat
+RUN apk update \
+    apk add --no-cache libc6-compat
 
 # ----------------- Setup a turbo partial monorepo -----------------
 FROM base AS builder

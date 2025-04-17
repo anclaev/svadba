@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "ui": "stream",
+  "ui": "tui",
   "globalEnv": ["DATABASE_URL", "TELEGRAM_BOT_TOKEN", "NODE_ENV"],
   "tasks": {
     "build": {
@@ -40,14 +40,19 @@
     "test": {},
     "test:cov": {},
     "test:ci": {},
+    "test:server": {
+      "cache": false,
+      "dependsOn": ["^db:generate", "^build", "^test:server"]
+    },
+    "test:e2e": {
+      "cache": false,
+      "dependsOn": ["^test:e2e"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "passThroughEnv": ["PLAYWRIGHT_*"]
+    },
     "test:watch": {
       "cache": false,
       "persistent": true
-    },
-    "e2e": {
-      "cache": false,
-      "dependsOn": ["^db:generate", "^build", "^e2e"],
-      "passThroughEnv": ["PLAYWRIGHT_*"]
     }
   }
 }
