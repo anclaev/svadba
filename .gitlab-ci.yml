@@ -156,7 +156,10 @@ test-server-job:
   stage: test
   needs:
     - install-deps-job
+  variables:
+    ENVS: $TEST_SERVER_ENV
   script:
+    - echo "$ENVS" >> ./apps/api/.env && echo 'VERSION=$CI_COMMIT_SHORT_SHA' >> ./apps/api/.env
     - yarn turbo build --filter=api
     - CI=true yarn turbo test:server
   rules:
