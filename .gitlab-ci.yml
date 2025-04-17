@@ -177,9 +177,8 @@ test-e2e-job:
     ENVS: $TEST_ENV
   script:
     # - *get-version
-    - echo "$ENVS" >> ./docker/test/.env
-    - echo VERSION=528e91c1 >> ./docker/test/.env
-    - cat ./docker/test/.env
+    - echo "$ENVS" >> ./docker/test/.env && echo VERSION=528e91c1 >> ./docker/test/.env
+    - chmod u+x ./docker/_scripts/db-init.sh && chmod u+x ./docker/_scripts/redis-init.sh
     - docker compose -f ./docker/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
   artifacts:
     paths:
