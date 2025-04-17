@@ -4,13 +4,19 @@ import { motion } from 'framer-motion'
 import Image, { getImageProps } from 'next/image'
 import { FC, useMemo } from 'react'
 
+import { getBackgroundImage } from '@/core/utils/get-background-image'
+
 import { Section } from '@/shared/section'
 
-import type { withSection } from '@/core/types'
-import getBackgroundImage from '@/core/utils/get-background-image'
-import type { TimingItem } from './types'
+import type { withSection } from '@/core/types/ui'
 
-const timingItems: TimingItem[] = [
+import './index.css'
+
+const timingItems: {
+  iconSrc: string
+  time: string
+  title: string
+}[] = [
   {
     iconSrc: '/assets/icons/rings.svg',
     time: '12:00',
@@ -37,8 +43,6 @@ const timingItems: TimingItem[] = [
     title: 'Завершение торжества',
   },
 ]
-
-import './index.css'
 
 export const Timing: FC<withSection> = ({ section }) => {
   const dateSrc = useMemo(() => {
@@ -94,6 +98,7 @@ export const Timing: FC<withSection> = ({ section }) => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.8, ease: 'easeIn', delay: 1 * index }}
+            viewport={{ once: true }}
             key={index}
             className="flex items-center timing-item"
           >

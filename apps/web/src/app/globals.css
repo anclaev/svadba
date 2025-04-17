@@ -176,3 +176,29 @@
 .link:hover:after {
   opacity: 1;
 }
+
+[data-sonner-toaster][data-sonner-theme='dark']
+  [data-sonner-toast][data-styled='true']
+  [data-cancel] {
+  background-color: var(--primary) !important;
+
+  @apply text-primary-foreground shadow-xs hover:bg-primary/90;
+}
+
+[data-sonner-toast][data-x-position='right'] {
+  display: flex !important;
+}
+[data-sonner-toast][data-x-position='right'] > button {
+  margin-left: 0 !important;
+  width: auto;
+}
+
+[data-sonner-toaster][data-sonner-theme='dark']
+  [data-sonner-toast]
+  [data-close-button]:hover {
+  background: inherit !important;
+}
+
+input {
+  font-size: 14px;
+}

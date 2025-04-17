@@ -1,35 +1,17 @@
+import { HOME_PAGE_SECTIONS } from '@/core/constants/ui/home-page-sections'
+
 import { OurBackground } from '@/features/our-background'
-import { Welcome } from '@/features/welcome'
-import { Section } from '@/shared/section'
-
-import { Timing } from '@/features/timing'
-
-import { HOME_SECTIONS } from '@/core/constants/home-sections'
-import { DressCode } from '@/features/dress-code'
-import { Place } from '@/features/place'
 import { Promo } from '@/features/promo'
+import { Welcome } from '@/features/welcome'
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-x-hidden">
       <OurBackground />
       <Welcome />
-      {HOME_SECTIONS.map((section) => {
-        switch (section.alias) {
-          case 'timing': {
-            return <Timing section={section} key={section.alias} />
-          }
-          case 'dress-code': {
-            return <DressCode section={section} key={section.alias} />
-          }
-          case 'place': {
-            return <Place section={section} key={section.alias} />
-          }
-          default: {
-            return <Section {...section} key={section.alias}></Section>
-          }
-        }
-      })}
+      {HOME_PAGE_SECTIONS.map((section) => (
+        <section.component section={section} key={section.alias} />
+      ))}
       <Promo />
     </main>
   )

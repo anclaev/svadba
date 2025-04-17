@@ -1,0 +1,16 @@
+export const TIMING_EVENT_ERRORS = {
+  TIMING_EVENT_ALREADY_EXISTS: 'TIMING_EVENT_ALREADY_EXISTS',
+  TIMING_EVENT_NOT_FOUND: 'TIMING_EVENT_NOT_FOUND',
+  TIMING_EVENT_BAD_OWNER: 'TIMING_EVENT_BAD_OWNER',
+  TIMING_EVENT_UNKNOWN_ERROR: 'TIMING_EVENT_UNKNOWN_ERROR',
+} as const
+
+export type TIMING_EVENT_ERRORS =
+  (typeof TIMING_EVENT_ERRORS)[keyof typeof TIMING_EVENT_ERRORS]
+
+export class TimingEventError extends Error {
+  constructor(key: TIMING_EVENT_ERRORS) {
+    super(key)
+    this.name = 'TimingEventException'
+  }
+}

@@ -1,7 +1,18 @@
-import Image from 'next/image'
-import { SectionComponent } from './types'
+import Image, { ImageProps } from 'next/image'
+import { CSSProperties, FC, PropsWithChildren } from 'react'
 
-export const Section: SectionComponent = ({
+import { withSection } from '@/core/types/ui'
+
+export type SectionProps = {
+  alias: string
+  component: FC<withSection>
+  title?: string
+  image?: ImageProps
+  className?: string
+  style?: CSSProperties
+}
+
+export const Section: FC<PropsWithChildren<SectionProps>> = ({
   title,
   image,
   className,

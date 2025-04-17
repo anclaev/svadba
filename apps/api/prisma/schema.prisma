@@ -1,0 +1,164 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+enum UserStatus {
+  CREATED // Создан
+  ACCEPTED // Подтверждён
+  BLOCKED // Заблокирован
+}
+
+enum UserRole {
+  PUBLIC // Обыкновенный
+  ADMIN // Администратор
+}
+
+enum GuestRole {
+  GUEST // Гость
+  PARENT // Родитель
+  CLOSE // Близкий
+  GROOM // Жених
+  BRIDE // Невеста
+}
+
+enum GuestSide {
+  GROOM // Жених
+  BRIDE // Невеста
+}
+
+enum QuestStatus {
+  STARTED
+  COMPLETED
+}
+
+enum TransactionStatus {
+  CREATED
+  WAITING
+  ACCEPTED
+  CANCELLED
+}
+
+model User {
+  id                 String               @id @default(uuid()) @db.Uuid()
+  telegramId         Int?                 @unique @map("telegram_id")
+  status             UserStatus           @default(CREATED)
+  role               UserRole             @default(PUBLIC)
+  login              String               @unique
+  password           String
+  name               String
+  isTelegramVerified Boolean              @default(false) @map("telegram_verified")
+  createdAt          DateTime?            @default(now()) @map("created_at")
+  guest              Guest?
+  credentials        Json[]               @default([])
+  uploads            Upload[]
+  achievements       Achievement[]
+  quests             Quest[]
+  transactions       TransactionHistory[]
+  dresscodeColors    DresscodeColor[]
+  timingEvents       TimingEvent[]
+  links              SocialLink[]
+}
+
+model Guest {
+  id        String     @id @default(uuid()) @db.Uuid()
+  side      GuestSide
+  role      GuestRole? @default(GUEST)
+  answers   Json?
+  createdAt DateTime?  @default(now()) @map("created_at")
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @unique @map("user_id") @db.Uuid()
+}
+
+model Quest {
+  id        String      @id @default(uuid()) @db.Uuid()
+  type      String
+  status    QuestStatus @default(STARTED)
+  createdAt DateTime    @default(now()) @map("created_at")
+  actor     User        @relation(fields: [actorId], references: [id])
+  actorId   String      @map("actor_id") @db.Uuid()
+}
+
+model TransactionHistory {
+  id             String            @id @default(uuid()) @db.Uuid()
+  status         TransactionStatus @default(CREATED)
+  purpose        String
+  amount         Int
+  currentBalance Int               @map("current_balance")
+  version        Int
+  createdAt      DateTime          @default(now()) @map("created_at")
+
+  account   User   @relation(fields: [accountId], references: [id])
+  accountId String @map("issuer_id") @db.Uuid()
+
+  achievement   Achievement? @relation(fields: [achievementId], references: [id])
+  achievementId String?      @map("achievement_id") @db.Uuid()
+}
+
+model Achievement {
+  id        String   @id @default(uuid()) @db.Uuid()
+  alias     String   @unique
+  title     String
+  amount    Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  image   Upload @relation(fields: [imageId], references: [id])
+  imageId String @map("image_id") @db.Uuid()
+
+  users        User[]
+  transactions TransactionHistory[] @ignore
+}
+
+model Upload {
+  id           String        @id @default(uuid()) @db.Uuid()
+  url          String
+  name         String
+  filename     String
+  ext          String
+  mimetype     String?
+  createdAt    DateTime      @default(now()) @map("created_at")
+  events       TimingEvent[]
+  achievements Achievement[] @ignore
+
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id") @db.Uuid()
+}
+
+model TimingEvent {
+  id        String   @id @default(uuid()) @db.Uuid()
+  order     Int      @unique
+  title     String
+  time      String
+  isPublic  Boolean  @default(true) @map("public")
+  createdAt DateTime @default(now()) @map("created_at")
+  icon      Upload?  @relation(fields: [iconId], references: [id])
+  iconId    String?  @map("icon_id") @db.Uuid()
+  owner     User     @relation(fields: [ownerId], references: [id])
+  ownerId   String   @map("owner_id") @db.Uuid()
+}
+
+model DresscodeColor {
+  id          String   @id @default(uuid()) @db.Uuid()
+  hex         String   @unique
+  description String?
+  isHidden    Boolean  @default(false) @map("hidden")
+  createdAt   DateTime @default(now()) @map("created_at")
+  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId     String   @map("owner_id") @db.Uuid()
+}
+
+model SocialLink {
+  id        String   @id @default(uuid()) @db.Uuid()
+  alias     String   @unique
+  title     String
+  href      String
+  icon      String?
+  creator   User     @relation(fields: [creatorId], references: [id])
+  creatorId String   @map("creator_id") @db.Uuid()
+  createdAt DateTime @default(now()) @map("created_at")
+}

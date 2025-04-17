@@ -1,0 +1,19 @@
+body {
+  background: #faf6ef;
+}
+
+.topbar,
+.topbar-wrapper:after {
+  background: #1e1e1e !important;
+}
+
+.topbar-wrapper {
+  position: relative;
+}
+
+.topbar-wrapper:after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  content: url('/logo.svg');
+}

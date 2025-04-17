@@ -1,0 +1,12 @@
+{
+  "name": "@anclaev/svadba-playwright-runner",
+  "packageManager": "yarn@4.1.1",
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.14.1",
+    "dotenv": "^16.5.0"
+  },
+  "scripts": {
+    "test:e2e": "playwright test"
+  }
+}

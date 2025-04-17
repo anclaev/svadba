@@ -1,4 +1,4 @@
-function getBackgroundImage(srcSet: string = ''): string {
+export function getBackgroundImage(srcSet: string = ''): string {
   const imageSet = srcSet
     .split(', ')
     .map((str) => {
@@ -8,5 +8,3 @@ function getBackgroundImage(srcSet: string = ''): string {
     .join(', ')
   return `image-set(${imageSet})`
 }
-
-export default getBackgroundImage

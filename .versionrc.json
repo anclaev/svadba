@@ -9,6 +9,6 @@
     { "type": "perf", "hidden": true },
     { "type": "test", "hidden": true }
   ],
-  "commitUrlFormat": "https://github.com/mokkapps/changelog-generator-demo/commits/{{hash}}",
-  "compareUrlFormat": "https://github.com/mokkapps/changelog-generator-demo/compare/{{previousTag}}...{{currentTag}}"
+  "commitUrlFormat": "https://gitlab.anclaev.com/av/svadba/-/commit/{{hash}}",
+  "compareUrlFormat": "https://gitlab.anclaev.com/av/svadba/-/compare/{{previousTag}}...{{currentTag}}"
 }
