@@ -11,10 +11,10 @@ default:
   before_script:
     - echo "$CI_REGISTRY_TOKEN" | docker login -u $CI_REGISTRY_USER --password-stdin
 
-.get-version: &get-version
-  - "apk update && apk add bash"
-  - 'export PROJECT_VERSION=$(cat package.json | grep version | head -1 | awk -F: ''{ print $2 }'' | sed ''s/[",]//g'' | tr -d ''[[:space:]]'')'
-  - 'echo "Current version is: $PROJECT_VERSION"'
+# .get-version: &get-version
+#   - "apk update && apk add bash"
+#   - 'export PROJECT_VERSION=$(cat package.json | grep version | head -1 | awk -F: ''{ print $2 }'' | sed ''s/[",]//g'' | tr -d ''[[:space:]]'')'
+#   - 'echo "Current version is: $PROJECT_VERSION"'
 
 .prepare-ssh:
   before_script:
@@ -36,8 +36,8 @@ stages:
   - install
   - build
   - test
-  # - deploy
-  # - release
+  - deploy
+  - release
 
 install-deps-job:
   stage: install
@@ -48,9 +48,9 @@ install-deps-job:
     paths:
       - node_modules/
       - .yarn
-  only:
-    - develop
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
 
 # Build staging images
 
@@ -59,8 +59,8 @@ build-web-staging-job:
   stage: build
   needs:
     - install-deps-job
-  only:
-    - develop
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
   script:
     - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
@@ -73,8 +73,8 @@ build-api-staging-job:
   stage: build
   needs:
     - install-deps-job
-  only:
-    - develop
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
   script:
     - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
@@ -87,8 +87,8 @@ build-bot-staging-job:
   stage: build
   needs:
     - install-deps-job
-  only:
-    - develop
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
   script:
     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
     - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
@@ -104,10 +104,9 @@ build-web-job:
   needs:
     - install-deps-job
   only:
-    - main
+    - tags
   script:
-    - *get-version
-    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_TAG --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_WEB:latest .
     - docker push $CI_IMAGE_TAG_WEB --all-tags
   tags:
     - production
@@ -119,10 +118,9 @@ build-api-job:
   needs:
     - install-deps-job
   only:
-    - main
+    - tags
   script:
-    - *get-version
-    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_TAG -t $CI_IMAGE_TAG_API:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_API:latest .
     - docker push $CI_IMAGE_TAG_API --all-tags
   tags:
     - production
@@ -134,10 +132,9 @@ build-bot-job:
   needs:
     - install-deps-job
   only:
-    - main
+    - tags
   script:
-    - *get-version
-    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_TAG -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_TAG -t $CI_IMAGE_TAG_BOT:latest .
     - docker push $CI_IMAGE_TAG_BOT --all-tags
   tags:
     - production
@@ -151,9 +148,9 @@ test-unit-job:
     - install-deps-job
   script:
     - yarn turbo test:ci
-  only:
-    - develop
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
 
 test-server-job:
   stage: test
@@ -162,9 +159,27 @@ test-server-job:
   script:
     - yarn turbo build --filter=api
     - CI=true yarn turbo test:server
-  only:
-    - develop
-    - main
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+
+test-e2e-staging-job:
+  extends: .docker
+  stage: test
+  needs:
+    - build-web-staging-job
+    - build-bot-staging-job
+    - build-api-staging-job
+  when: on_success
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+  allow_failure: true
+  variables:
+    ENVS: $TEST_ENV
+  script:
+    - echo "$ENVS" >> ./deployment/test/.env && echo 'VERSION=$CI_COMMIT_SHORT_SHA' >> ./deployment/test/.env
+    - chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
+    - docker compose -f ./deployment/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
 
 test-e2e-job:
   extends: .docker
@@ -173,81 +188,83 @@ test-e2e-job:
     - build-web-staging-job
     - build-bot-staging-job
     - build-api-staging-job
+  when: on_success
+  only:
+    - tags
   variables:
     ENVS: $TEST_ENV
   script:
-    - *get-version
-    - echo "$ENVS" >> ./docker/test/.env && echo 'VERSION=$PROJECT_VERSION' >> ./docker/test/.env
-    - chmod u+x ./docker/_scripts/db-init.sh && chmod u+x ./docker/_scripts/redis-init.sh
-    - docker compose -f ./docker/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
-  only:
-    - develop
-    - main
+    - echo "$ENVS" >> ./deployment/test/.env && echo 'VERSION=$CI_COMMIT_TAG' >> ./deployment/test/.env
+    - chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
+    - docker compose -f ./deployment/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
 
 # Deploy
 
-# deploy (staging):
-#   image: alpine:latest
-#   stage: deploy
-#   needs:
-#     - build api (staging)
-#     - build web (staging)
-#     - build bot (staging)
-#     - unit tests
-#     - e2e tests
-#   only:
-#     - develop
-#   when: on_success
-#   extends: .prepare-ssh
-#   script:
-#     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-#       && ./scripts/down-staging.sh
-#       && ./scripts/deploy-staging.sh $CI_COMMIT_SHORT_SHA"
-#   environment:
-#     name: staging
-#     url: $PUBLIC_URL_STAGING
-#   tags:
-#     - staging
+deploy (staging):
+  image: alpine:latest
+  stage: deploy
+  needs:
+    - build-api-staging-job
+    - build-web-staging-job
+    - build-bot-staging-job
+    - test-unit-job
+    - test-server-job
+    - test-e2e-staging-job
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+  extends: .prepare-ssh
+  script:
+    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+      && ./staging/down.sh
+      && ./staging/deploy.sh $CI_COMMIT_SHORT_SHA"
+  environment:
+    name: staging
+    url: $PUBLIC_URL_STAGING
+  tags:
+    - staging
 
-# deploy:
-#   image: alpine:latest
-#   stage: deploy
-#   needs:
-#     - build api
-#     - build web
-#     - build bot
-#     - unit tests
-#     - e2e tests
-#   only:
-#     - main
-#   when: on_success
-#   extends: .prepare-ssh
-#   script:
-#     - *get-version
-#     - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-#       && ./scripts/down.sh
-#       && ./scripts/deploy.sh $PROJECT_VERSION"
-#   environment:
-#     name: production
-#     url: $PUBLIC_URL_PRODUCTION
-#   tags:
-#     - production
+deploy:
+  image: alpine:latest
+  stage: deploy
+  needs:
+    - build-api-job
+    - build-web-job
+    - build-bot-job
+    - test-unit-job
+    - test-server-job
+    - test-e2e-job
+  when: on_success
+  only:
+    - tags
+  extends: .prepare-ssh
+  script:
+    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+      && ./production/down.sh
+      && ./production/deploy.sh $CI_COMMIT_TAG"
+  environment:
+    name: production
+    url: $PUBLIC_URL_PRODUCTION
+  tags:
+    - production
 
-# # Release
+# Release
 
-# release:
-#   stage: release
-#   image: registry.gitlab.com/gitlab-org/release-cli:latest
-#   only:
-#     - tags
-#   before_script:
-#     - echo "Prepare release..."
-#   script:
-#     - echo "Running the release job."
-#   release:
-#     tag_name: $CI_COMMIT_TAG
-#     name: "Release $CI_COMMIT_TAG"
-#     description: "./CHANGELOG.md"
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - deploy
+  when: on_success
+  only:
+    - tags
+  before_script:
+    - echo "Prepare release..."
+  script:
+    - echo "Running the release job."
+  release:
+    tag_name: $CI_COMMIT_TAG
+    name: "Release $CI_COMMIT_TAG"
+    description: "./CHANGELOG.md"
 
 prune-job:
   extends: .docker
