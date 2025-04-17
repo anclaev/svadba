@@ -11,7 +11,7 @@ export abstract class GuestRepository
   abstract create(entity: Guest): Promise<Guest | GuestError>
   abstract update(entity: Guest): Promise<Guest | GuestError>
   abstract delete(id: string): Promise<boolean | GuestError>
-  abstract exists(id: string): Promise<boolean | GuestError>
+  abstract exists(userId: string): Promise<boolean | GuestError>
   abstract findMore(
     paginationParams: IPaginationParams,
     queryParams: IGuestQueryParams
