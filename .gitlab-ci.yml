@@ -33,160 +33,157 @@ variables:
   YARN_ENABLE_IMMUTABLE_INSTALLS: false
 
 stages:
-  # - install
-  # - build
+  - install
+  - build
   - test
-  # - release
   # - deploy
+  # - release
 
-# install-deps-job:
-#   stage: install
-#   script:
-#     - yarn
-#   cache:
-#     untracked: true
-#     paths:
-#       - node_modules/
-#       - .yarn
-#   only:
-#     - develop
-#     - main
+install-deps-job:
+  stage: install
+  script:
+    - yarn
+  cache:
+    untracked: true
+    paths:
+      - node_modules/
+      - .yarn
+  only:
+    - develop
+    - main
 
-# # Build staging images
+# Build staging images
 
-# build-web-staging-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - develop
-#   script:
-#     - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
-#     - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
-#   tags:
-#     - staging
-#   environment: staging
+build-web-staging-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - develop
+  script:
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA --build-arg SENTRY_AUTH_TOKEN=$WEB_SENTRY_AUTH_TOKEN -t $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_WEB:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
 
-# build-api-staging-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - develop
-#   script:
-#     - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
-#     - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
-#   tags:
-#     - staging
-#   environment: staging
+build-api-staging-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - develop
+  script:
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_API:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
 
-# build-bot-staging-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - develop
-#   script:
-#     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
-#     - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
-#   tags:
-#     - staging
-#   environment: staging
+build-bot-staging-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - develop
+  script:
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$CI_COMMIT_SHORT_SHA -t $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_IMAGE_TAG_BOT:$CI_COMMIT_SHORT_SHA
+  tags:
+    - staging
+  environment: staging
 
 # # Build production images
 
-# build-web-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - main
-#   script:
-#     - *get-version
-#     - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
-#     - docker push $CI_IMAGE_TAG_WEB --all-tags
-#   tags:
-#     - production
-#   environment: production
+build-web-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - main
+  script:
+    - *get-version
+    - docker build -f apps/web/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:$PROJECT_VERSION -t $CI_IMAGE_TAG_WEB:latest .
+    - docker push $CI_IMAGE_TAG_WEB --all-tags
+  tags:
+    - production
+  environment: production
 
-# build-api-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - main
-#   script:
-#     - *get-version
-#     - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
-#     - docker push $CI_IMAGE_TAG_API --all-tags
-#   tags:
-#     - production
-#   environment: production
+build-api-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - main
+  script:
+    - *get-version
+    - docker build -f apps/api/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_API:$PROJECT_VERSION -t $CI_IMAGE_TAG_API:latest .
+    - docker push $CI_IMAGE_TAG_API --all-tags
+  tags:
+    - production
+  environment: production
 
-# build-bot-job:
-#   extends: .docker
-#   stage: build
-#   needs:
-#     - install-deps-job
-#   only:
-#     - main
-#   script:
-#     - *get-version
-#     - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
-#     - docker push $CI_IMAGE_TAG_BOT --all-tags
-#   tags:
-#     - production
-#   environment: production
+build-bot-job:
+  extends: .docker
+  stage: build
+  needs:
+    - install-deps-job
+  only:
+    - main
+  script:
+    - *get-version
+    - docker build -f apps/bot/Dockerfile --build-arg VERSION=$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:$PROJECT_VERSION -t $CI_IMAGE_TAG_BOT:latest .
+    - docker push $CI_IMAGE_TAG_BOT --all-tags
+  tags:
+    - production
+  environment: production
 
 # Tests
 
-# test-unit-job:
-#   stage: test
-#   needs:
-#     - install-deps-job
-#   script:
-#     - yarn turbo test:ci
-#   only:
-#     - develop
-#     - main
+test-unit-job:
+  stage: test
+  needs:
+    - install-deps-job
+  script:
+    - yarn turbo test:ci
+  only:
+    - develop
+    - main
 
-# test-server-job:
-#   stage: test
-#   needs:
-#     - install-deps-job
-#   script:
-#     - yarn turbo build --filter=api
-#     - CI=true yarn turbo test:server
-#   only:
-#     - develop
-#     - main
+test-server-job:
+  stage: test
+  needs:
+    - install-deps-job
+  script:
+    - yarn turbo build --filter=api
+    - CI=true yarn turbo test:server
+  only:
+    - develop
+    - main
 
 test-e2e-job:
   extends: .docker
   stage: test
-  # needs:
-  #   - build-web-staging-job
-  #   - build-bot-staging-job
-  #   - build-api-staging-job
+  needs:
+    - build-web-staging-job
+    - build-bot-staging-job
+    - build-api-staging-job
   variables:
     ENVS: $TEST_ENV
   script:
-    # - *get-version
-    - echo "$ENVS" >> ./docker/test/.env && echo VERSION=528e91c1 >> ./docker/test/.env
+    - *get-version
+    - echo "$ENVS" >> ./docker/test/.env && echo 'VERSION=$PROJECT_VERSION' >> ./docker/test/.env
     - chmod u+x ./docker/_scripts/db-init.sh && chmod u+x ./docker/_scripts/redis-init.sh
     - docker compose -f ./docker/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
-  artifacts:
-    paths:
-      - playwright-report/
-    expire_in: 1 week
   only:
     - develop
     - main
+
 # Deploy
 
 # deploy (staging):
@@ -251,3 +248,12 @@ test-e2e-job:
 #     tag_name: $CI_COMMIT_TAG
 #     name: "Release $CI_COMMIT_TAG"
 #     description: "./CHANGELOG.md"
+
+prune-job:
+  extends: .docker
+  stage: .post
+  script:
+    - docker rm -v $(docker ps --filter status=exited -q)
+    - docker rm -v $(docker ps --filter status=created -q)
+    - docker images -a | grep "anclaev/svadba" | awk '{print $3}' | xargs docker rmi
+    - docker volume prune -af
