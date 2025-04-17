@@ -29,6 +29,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@anclaev/svadba-playwright-runner@workspace:packages/e2e":
+  version: 0.0.0-use.local
+  resolution: "@anclaev/svadba-playwright-runner@workspace:packages/e2e"
+  dependencies:
+    "@playwright/test": "npm:^1.51.1"
+    "@types/node": "npm:^22.14.1"
+    dotenv: "npm:^16.5.0"
+  languageName: unknown
+  linkType: soft
+
 "@angular-devkit/core@npm:13.3.11, @angular-devkit/core@npm:^13.3.0":
   version: 13.3.11
   resolution: "@angular-devkit/core@npm:13.3.11"
@@ -9509,16 +9519,6 @@ __metadata:
   checksum: 10c0/199f2a0c1c16593ca0a145dbf76a962f8033ce3129f01284d48c45ed4e14fea9bbacd7b3610b6cdc33486cef20385ac054948fefc6272fcce645c09468f93031
   languageName: node
   linkType: hard
-
-"e2e@workspace:packages/e2e":
-  version: 0.0.0-use.local
-  resolution: "e2e@workspace:packages/e2e"
-  dependencies:
-    "@playwright/test": "npm:^1.51.1"
-    "@types/node": "npm:^22.14.1"
-    dotenv: "npm:^16.5.0"
-  languageName: unknown
-  linkType: soft
 
 "eastasianwidth@npm:^0.2.0":
   version: 0.2.0

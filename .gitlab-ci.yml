@@ -52,6 +52,17 @@ install-deps-job:
     - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
     - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
 
+# Build apps
+
+build-apps-job:
+  stage: build
+  needs:
+    - install-deps-job
+  rules:
+    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
+  script:
+    - yarn turbo build --filter=api --filter=bot --filter=web
+
 # Build staging images
 
 build-web-staging-job:
@@ -268,12 +279,3 @@ release:
     tag_name: $CI_COMMIT_TAG
     name: "Release $CI_COMMIT_TAG"
     description: "./CHANGELOG.md"
-
-prune-job:
-  extends: .docker
-  stage: .post
-  script:
-    - docker rm -v $(docker ps --filter status=exited -q)
-    - docker rm -v $(docker ps --filter status=created -q)
-    - docker images -a | grep "anclaev/svadba" | awk '{print $3}' | xargs docker rmi
-    - docker volume prune -af
