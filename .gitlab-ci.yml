@@ -177,7 +177,7 @@ test-e2e-job:
     TEST_ENV: $TEST_ENV
   script:
     # - *get-version
-    - echo $TEST_ENV >> ./docker/test/.env && echo VERSION=528e91c1 >> ./docker/test/.env
+    - echo "$TEST_ENV" >> ./docker/test/.env && echo VERSION=528e91c1 >> ./docker/test/.env
     - docker compose -f ./docker/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
   artifacts:
     paths:
