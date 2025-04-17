@@ -170,9 +170,9 @@ test-e2e-job:
   extends: .docker
   stage: test
   needs:
-    - build-web-job
-    - build-bot-job
-    - build-api-job
+    - build-web-staging-job
+    - build-bot-staging-job
+    - build-api-staging-job
   variables:
     TEST_ENV: $TEST_ENV
   script:
