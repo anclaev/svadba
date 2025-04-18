@@ -155,17 +155,16 @@ build-bot-job:
 test-unit-job:
   stage: test
   needs:
-    - install-deps-job
+    - build-apps-job
   script:
     - yarn turbo test:ci
   rules:
-    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
-    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 
 test-server-job:
   stage: test
   needs:
-    - install-deps-job
+    - build-apps-job
   variables:
     ENVS: $TEST_SERVER_ENV
   script:
@@ -173,8 +172,7 @@ test-server-job:
     - yarn turbo build --filter=api
     - CI=true yarn turbo test:server
   rules:
-    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
-    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 
 test-e2e-staging-job:
   extends: .docker
