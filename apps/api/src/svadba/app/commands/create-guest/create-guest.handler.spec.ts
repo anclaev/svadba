@@ -1,8 +1,5 @@
-import { mockedGuest, mockedGuestFactory } from '#/__test__/mocks/guest.mock'
-
-import * as uuid from 'uuid'
-
 import { DeepMockProxy, mockDeep } from 'jest-mock-extended'
+import * as uuid from 'uuid'
 
 import {
   Guest,
@@ -13,6 +10,8 @@ import {
 
 import { CreateGuestCommand } from './create-guest.command'
 import { CreateGuestHandler } from './create-guest.handler'
+
+import { mockedGuest, mockedGuestFactory } from '#/__test__/mocks/guest.mock'
 
 const mockedGuests: Guest[] = mockedGuestFactory(10)
 
