@@ -35,7 +35,7 @@
     "test": {},
     "test:cov": {},
     "test:ci": {
-      "dependsOn": ["^db:generate", "^build", "^test:ci"]
+      "dependsOn": ["db:generate", "^build", "^test:ci"]
     },
     "test:server": {
       "cache": false,
