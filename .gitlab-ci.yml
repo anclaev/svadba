@@ -49,8 +49,7 @@ install-deps-job:
       - node_modules/
       - .yarn
   rules:
-    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
-    - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'push'
 
 # Build apps
 
@@ -59,7 +58,7 @@ build-apps-job:
   needs:
     - install-deps-job
   rules:
-    - if: $CI_COMMIT_BRANCH == 'develop' && $CI_PIPELINE_SOURCE == 'push'
+    - if: $CI_PIPELINE_SOURCE == 'push'
   script:
     - yarn turbo build --filter=api --filter=bot --filter=web
 
