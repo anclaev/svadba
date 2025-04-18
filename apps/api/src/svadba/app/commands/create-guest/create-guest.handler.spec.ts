@@ -1,4 +1,4 @@
-import { mockedGuest, mockedGuestFactory } from '#/__test__/mocks'
+import { mockedGuest, mockedGuestFactory } from '#/__test__/mocks/guest.mock'
 
 import * as uuid from 'uuid'
 

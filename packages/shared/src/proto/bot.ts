@@ -3,6 +3,10 @@ import { Observable } from 'rxjs'
 export namespace bot {
   export const PACKAGE_NAME = 'bot'
 
+  export interface HealthResponse {
+    status: string
+  }
+
   export interface SendMessageResponse {
     status: string
   }
@@ -14,15 +18,20 @@ export namespace bot {
   }
 
   export interface BotServiceClient {
-    SendMessage(data: SendMessageRequest): SendMessageRequest
+    Health(): HealthResponse
+    SendMessage(data: SendMessageRequest): SendMessageResponse
   }
 
   export interface BotServiceController {
+    Health():
+      | Promise<HealthResponse>
+      | HealthResponse
+      | Observable<HealthResponse>
     SendMessage(
       request: SendMessageRequest
     ):
-      | Promise<SendMessageRequest>
-      | SendMessageRequest
-      | Observable<SendMessageRequest>
+      | Promise<SendMessageResponse>
+      | SendMessageResponse
+      | Observable<SendMessageResponse>
   }
 }

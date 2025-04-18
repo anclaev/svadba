@@ -13,7 +13,8 @@
       "decoratorMetadata": true
     },
     "paths": {
-      "#/*": ["./src/*"]
+      "#/*": ["./src/*"],
+      "#prisma/*": ["./generated/client/index.js"]
     },
     "keepClassNames": true
   },

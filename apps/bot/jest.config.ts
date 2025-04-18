@@ -1,16 +1,12 @@
-import { JestConfigWithTsJest } from 'ts-jest'
-
 import * as appConfig from '@repo/testing/jest.config'
 
-const config: JestConfigWithTsJest = {
+const config = {
   ...appConfig,
   transform: {
-    '^.+\\.(t|j)sx?$': [
+    '^.+\\.(t|j)s?$': [
       '@swc-node/jest',
       {
-        jsc: {
-          target: 'esnext',
-        },
+        exclude: [],
       },
     ],
   },

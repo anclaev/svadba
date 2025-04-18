@@ -6,7 +6,12 @@ const config: JestConfigWithTsJest = {
   testEnvironment: 'node',
   testRegex: '.e2e-spec.ts$',
   transform: {
-    '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.test.json' }],
+    '^.+\\.(t|j)s?$': [
+      '@swc-node/jest',
+      {
+        exclude: [],
+      },
+    ],
   },
   moduleNameMapper: {
     '^#/(.*)$': '<rootDir>/src/$1',
