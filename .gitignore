@@ -55,6 +55,7 @@ yarn-error.log*
 .DS_Store
 *.pem
 junit.xml
+bash.exe.stackdump
 
 # SSL 
 *.crt
