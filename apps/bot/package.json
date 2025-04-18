@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@repo/shared": "workspace:*",
+    "@repo/testing": "workspace:*",
     "@swc-node/jest": "^1.8.13",
     "@swc-node/register": "^1.10.10",
     "@swc/cli": "^0.6.0",

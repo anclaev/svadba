@@ -4478,7 +4478,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@repo/testing@npm:*, @repo/testing@workspace:packages/testing":
+"@repo/testing@npm:*, @repo/testing@workspace:*, @repo/testing@workspace:packages/testing":
   version: 0.0.0-use.local
   resolution: "@repo/testing@workspace:packages/testing"
   dependencies:
@@ -7771,6 +7771,7 @@ __metadata:
     "@grpc/proto-loader": "npm:^0.7.13"
     "@grpc/reflection": "npm:^1.0.4"
     "@repo/shared": "workspace:*"
+    "@repo/testing": "workspace:*"
     "@swc-node/jest": "npm:^1.8.13"
     "@swc-node/register": "npm:^1.10.10"
     "@swc/cli": "npm:^0.6.0"
