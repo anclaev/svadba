@@ -1,13 +1,9 @@
 import { JestConfigWithTsJest } from 'ts-jest'
 
+import * as appConfig from '@repo/testing/jest.config-e2e'
+
 const config: JestConfigWithTsJest = {
-  moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: '..',
-  testEnvironment: 'node',
-  testRegex: '.e2e-spec.ts$',
-  transform: {
-    '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: '<rootDir>/tsconfig.test.json' }],
-  },
+  ...appConfig,
   moduleNameMapper: {
     '^#/(.*)$': '<rootDir>/src/$1',
     '^#prisma': '<rootDir>/generated/client/index',

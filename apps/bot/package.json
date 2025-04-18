@@ -12,7 +12,7 @@
     "lint": "eslint \"{src,test}/**/*.ts\" --fix",
     "test": "jest --coverage --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test:cov": "jest --coverage --passWithNoTests",
     "test:ci": "jest --passWithNoTests  --coverage --ci",
     "test:server": "yarn gen-proto && jest --config e2e/jest.config-e2e.ts --passWithNoTests --verbose",
     "dev": "'node -r @swc-node/register' src/main.ts",
