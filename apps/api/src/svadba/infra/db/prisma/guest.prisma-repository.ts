@@ -72,9 +72,9 @@ export class GuestPrismaRepository extends GuestRepository {
     }
   }
 
-  async exists(id: string): Promise<boolean | GuestError> {
+  async exists(userId: string): Promise<boolean | GuestError> {
     try {
-      return !!(await this.prisma.guest.findUnique({ where: { id } }))
+      return !!(await this.prisma.guest.findUnique({ where: { userId } }))
     } catch {
       return new GuestError('GUEST_UNKNOWN_ERROR')
     }

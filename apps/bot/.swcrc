@@ -19,5 +19,6 @@
     "strictMode": true
   },
   "sourceMaps": true,
-  "minify": true
+  "minify": true,
+  "exclude": [".spec.ts", ".mock.ts"]
 }

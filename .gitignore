@@ -18,7 +18,14 @@ node_modules
 .yarn 
 
 # Testing
-coverage
+coverage/*.info
+coverage/lcov-report
+coverage/*.json
+coverage/*.xml
+**/coverage/*.info
+**/coverage/lcov-report
+**/coverage/*.json
+**/coverage/*.xml
 
 # Playwright
 test-results/
