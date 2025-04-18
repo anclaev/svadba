@@ -7784,6 +7784,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.2.6"
     grammy: "npm:^1.35.1"
     jest: "npm:^29.7.0"
+    jest-mock-extended: "npm:^4.0.0-beta1"
     nodemon: "npm:^3.1.9"
     prettier: "npm:^3.5.3"
     rimraf: "npm:^6.0.1"
