@@ -12,13 +12,15 @@ jobs:
   install:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Настройка Node
         uses: actions/setup-node@v4
         with:
           node-version: "${{ env.NODE_VERSION }}"
           cache: "yarn"
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
+        id: yarn-cache
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -30,9 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: install
     steps:
-      - name: Чтение репозитория
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v4
       - name: Установка ноды
         uses: actions/setup-node@v2
         with:
