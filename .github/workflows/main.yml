@@ -83,8 +83,16 @@ jobs:
         with:
           username: ${{ secrets.CI_REGISTRY_USERNAME }}
           password: ${{ secrets.CI_REGISTRY_TOKEN }}
-      - run: docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA .
-      - run: docker push ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/build-push-action@v6
+        with:
+          push: true
+          file: apps/bot/Dockerfile
+          build-args: |
+            VERSION=$GITHUB_SHA
+          tags: ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA
+          cache-from: type=registry,ref=user/app:buildcache
+          cache-to: type=registry,ref=user/app:buildcache,mode=max
 
   build-web:
     runs-on: ubuntu-latest
