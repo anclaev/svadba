@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 20-alpine
 
 jobs:
   install:
@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: "${{ env.NODE_VERSION }}"
           cache: "yarn"
+      - run: |
+          corepack enable
 
       - uses: actions/cache@v3
         id: yarn-cache
@@ -37,6 +39,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "${{ env.NODE_VERSION }}"
+      - run: |
+          corepack enable
 
       - name: Извлечение node_modules
         id: yarn-cache
@@ -106,6 +110,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "${{ env.NODE_VERSION }}"
+      - run: |
+          corepack enable
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
@@ -126,6 +132,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "${{ env.NODE_VERSION }}"
+      - run: |
+          corepack enable
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
