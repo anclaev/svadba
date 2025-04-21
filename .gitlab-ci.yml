@@ -16,16 +16,16 @@ default:
 #   - 'export PROJECT_VERSION=$(cat package.json | grep version | head -1 | awk -F: ''{ print $2 }'' | sed ''s/[",]//g'' | tr -d ''[[:space:]]'')'
 #   - 'echo "Current version is: $PROJECT_VERSION"'
 
-.prepare-ssh:
-  before_script:
-    - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
-    - eval $(ssh-agent -s)
-    - chmod 400 "$SSH_PRIVATE_KEY"
-    - ssh-add "$SSH_PRIVATE_KEY"
-    - mkdir -p ~/.ssh
-    - chmod 700 ~/.ssh
-    - ssh-keyscan -p 2219 $SSH_HOST >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+# .prepare-ssh:
+#   before_script:
+#     - "command -v ssh-agent >/dev/null || ( apk add --update openssh )"
+#     - eval $(ssh-agent -s)
+#     - chmod 400 "$SSH_PRIVATE_KEY"
+#     - ssh-add "$SSH_PRIVATE_KEY"
+#     - mkdir -p ~/.ssh
+#     - chmod 700 ~/.ssh
+#     - ssh-keyscan -p 2219 $SSH_HOST >> ~/.ssh/known_hosts
+#     - chmod 644 ~/.ssh/known_hosts
 
 variables:
   DOCKER_TLS_CERTDIR: "/certs"
@@ -189,7 +189,7 @@ test-e2e-staging-job:
     - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
   allow_failure: true
   variables:
-    ENVS: $TEST_ENV
+    ENVS: $TEST_E2E_ENV
   script:
     - echo "$ENVS" >> ./deployment/test/.env && echo 'VERSION=$CI_COMMIT_SHORT_SHA' >> ./deployment/test/.env
     - chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
@@ -226,11 +226,11 @@ deploy (staging):
     - test-e2e-staging-job
   rules:
     - if: $CI_COMMIT_BRANCH == 'main' && $CI_PIPELINE_SOURCE == 'push'
-  extends: .prepare-ssh
   script:
-    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-      && ./staging/down.sh
-      && ./staging/deploy.sh $CI_COMMIT_SHORT_SHA"
+    - curl
+    # - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+    #   && ./staging/down.sh
+    #   && ./staging/deploy.sh $CI_COMMIT_SHORT_SHA"
   environment:
     name: staging
     url: $PUBLIC_URL_STAGING
@@ -250,11 +250,11 @@ deploy:
   when: on_success
   only:
     - tags
-  extends: .prepare-ssh
   script:
-    - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
-      && ./production/down.sh
-      && ./production/deploy.sh $CI_COMMIT_TAG"
+    - curl
+    # - ssh -p 2219 $SSH_USER@$SSH_HOST "cd $SSH_PATH
+    #   && ./production/down.sh
+    #   && ./production/deploy.sh $CI_COMMIT_TAG"
   environment:
     name: production
     url: $PUBLIC_URL_PRODUCTION

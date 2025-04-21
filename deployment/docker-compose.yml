@@ -1,58 +1,10 @@
 services:
-  db:
-    image: postgres:14
-    restart: always
-    environment:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-      PGDATA: /var/lib/postgresql/data/pgdata
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
-      interval: 20s
-      timeout: 20s
-      retries: 5
-      start_period: 5s
-    volumes:
-      - svadba_db_data:/var/lib/postgresql/data/pgdata
-      - ./_scripts/db-init.sh:/docker-entrypoint-initdb.d/init-database.sh
-    networks:
-      - net
-
-  redis:
-    image: redis:latest
-    restart: always
-    environment:
-      REDIS_USER: ${REDIS_USERNAME}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      REDIS_USER_PASSWORD: ${REDIS_PASSWORD}
-    healthcheck:
-      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-      interval: 10s
-      timeout: 5s
-      start_period: 5s
-    volumes:
-      - svadba_redis_data:/data
-      - ./_scripts/redis-init.sh:/init/redis-init.sh
-    entrypoint: /init/redis-init.sh
-    tty: true
-    networks:
-      - net
-  
   api:
     image: anclaev/svadba-api:${VERSION}
     restart: always
-    depends_on:
-      db:
-        condition: "service_healthy"
-      redis:
-        condition: "service_healthy"
     environment:
       APP_VERSION: ${VERSION}
-      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      DATABASE_URL: ${DATABASE_URL}
       COOKIE_SECRET: ${API_COOKIE_SECRET}
       JWT_ACCESS_SECRET: ${API_JWT_ACCESS_SECRET}
       JWT_CONFIRMATION_SECRET: ${API_JWT_CONFIRMATION_SECRET}
@@ -75,17 +27,15 @@ services:
       start_period: 10s
       retries: 3 
     networks:
-      - net
-      - traefik-public
+      - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.${API_TRAEFIK_SERVICE}.rule=Host(`${API_TRAEFIK_HOST}`)
-      - traefik.http.routers.${API_TRAEFIK_SERVICE}.entrypoints=websecure
-      - traefik.http.routers.${API_TRAEFIK_SERVICE}.tls=true
-      - traefik.http.routers.${API_TRAEFIK_SERVICE}.tls.certresolver=le
-      - traefik.http.services.${API_TRAEFIK_SERVICE}.loadbalancer.server.port=${API_PORT}
-      - traefik.http.routers.${API_TRAEFIK_SERVICE}.service=${API_TRAEFIK_SERVICE}
-      - traefik.constraint-label=traefik-public
+      - traefik.http.routers.svadba-api.rule=Host(`${API_HOST}`)
+      - traefik.http.routers.svadba-api.entrypoints=websecure
+      - traefik.http.routers.svadba-api.tls=true
+      - traefik.http.routers.svadba-api.tls.certresolver=letsencrypt
+      - traefik.http.services.svadba-api.loadbalancer.server.port=${API_PORT}
+      - traefik.http.routers.svadba-api.service=svadba-api
 
   bot:
     image: anclaev/svadba-bot:${VERSION}
@@ -102,7 +52,7 @@ services:
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       GRPC_PORT: ${BOT_GRPC_PORT}
     networks:
-      - net
+      - dokploy-network
 
   web:
     image: anclaev/svadba-web:${VERSION}
@@ -121,26 +71,16 @@ services:
       timeout: 5s
       start_period: 5s
     networks:
-      - net
-      - traefik-public
+      - dokploy-network
     labels:
       - traefik.enable=true
-      - traefik.http.routers.${WEB_TRAEFIK_SERVICE}.rule=Host(`${WEB_TRAEFIK_HOST}`)
-      - traefik.http.routers.${WEB_TRAEFIK_SERVICE}.entrypoints=websecure
-      - traefik.http.routers.${WEB_TRAEFIK_SERVICE}.tls=true
-      - traefik.http.routers.${WEB_TRAEFIK_SERVICE}.tls.certresolver=le
-      - traefik.http.services.${WEB_TRAEFIK_SERVICE}.loadbalancer.server.port=${WEB_PORT}
-      - traefik.http.routers.${WEB_TRAEFIK_SERVICE}.service=${WEB_TRAEFIK_SERVICE}
-      - traefik.constraint-label=traefik-public
-
-volumes:
-  svadba_db_data:
-    external: true
-  svadba_redis_data:
-    external: true
+      - traefik.http.routers.svadba-web.rule=Host(`${WEB_HOST}`)
+      - traefik.http.routers.svadba-web.entrypoints=websecure
+      - traefik.http.routers.svadba-web.tls=true
+      - traefik.http.routers.svadba-web.tls.certresolver=letsencrypt
+      - traefik.http.services.svadba-web.loadbalancer.server.port=${WEB_PORT}
+      - traefik.http.routers.svadba-web.service=svadba-web
 
 networks:
-  net:
-    driver: bridge
-  traefik-public:
+  dokploy-network:
     external: true
