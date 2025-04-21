@@ -27,7 +27,7 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Установка зависимостей
-        run: yarn --prefer-offline
+        run: yarn
 
   build-local:
     runs-on: ubuntu-latest
