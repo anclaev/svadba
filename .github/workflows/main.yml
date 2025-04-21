@@ -34,12 +34,18 @@ jobs:
     needs: install
     steps:
       - uses: actions/checkout@v4
-      - name: Установка ноды
-        uses: actions/setup-node@v2
+      - name: Настройка Node
+        uses: actions/setup-node@v4
         with:
           node-version: '${{ env.NODE_VERSION }}'
       - run: |
           corepack enable
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Сборка сервисов
         run: yarn turbo build --filter=api --filter=bot --filter=web
@@ -75,8 +81,15 @@ jobs:
         with:
           username: ${{ secrets.CI_REGISTRY_USERNAME }}
           password: ${{ secrets.CI_REGISTRY_TOKEN }}
-      - run: docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA .
-      - run: docker push ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/bot/Dockerfile
+          push: true
+          tags: '${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA'
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   build-web:
     runs-on: ubuntu-latest
@@ -98,12 +111,19 @@ jobs:
       - name: Чтение репозитория
         uses: actions/checkout@v2
 
-      - name: Установка ноды
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - name: Настройка Node
+        uses: actions/setup-node@v4
         with:
           node-version: '${{ env.NODE_VERSION }}'
       - run: |
           corepack enable
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
@@ -120,12 +140,19 @@ jobs:
       - name: Чтение репозитория
         uses: actions/checkout@v2
 
-      - name: Установка ноды
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - name: Настройка Node
+        uses: actions/setup-node@v4
         with:
           node-version: '${{ env.NODE_VERSION }}'
       - run: |
           corepack enable
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
