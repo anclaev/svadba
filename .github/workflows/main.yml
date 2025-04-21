@@ -58,6 +58,7 @@ jobs:
             apps/*/dist
             packages/*/dist
             apps/*/generated
+            .turbo/cache
 
   build-api:
     runs-on: ubuntu-latest
@@ -153,7 +154,8 @@ jobs:
         with:
           name: dist
 
-      - run: echo "${{ secrets.TEST_SERVER_ENV }}" >> ./apps/api/.env && echo 'VERSION=$GITHUB_SHA' >> ./apps/api/.env
+      - run: echo "${{ secrets.TEST_SERVER_ENV }}" >> ./apps/api/.env
+      - run: echo 'VERSION=$GITHUB_SHA' >> ./apps/api/.env
       - run: CI=true yarn turbo test:server
 
   test-e2e:
