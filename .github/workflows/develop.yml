@@ -5,6 +5,9 @@ on:
       - "develop"
   workflow_dispatch:
 
+env:
+  NODE_VERSION: 20
+
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -12,7 +15,7 @@ jobs:
       - name: Настройка Node
         uses: actions/setup-node@v4
         with:
-          node-version: "$NODE_VERSION"
+          node-version: "${{ env.NODE_VERSION }}"
           cache: "yarn"
 
       - name: Получение пути к кэшу
@@ -39,7 +42,7 @@ jobs:
       - name: Установка ноды
         uses: actions/setup-node@v2
         with:
-          node-version: "$NODE_VERSION"
+          node-version: "${{ env.NODE_VERSION }}"
 
       - name: Извлечение node_modules
         id: yarn-cache
@@ -69,7 +72,7 @@ jobs:
       - name: Установка ноды
         uses: actions/setup-node@v2
         with:
-          node-version: "$NODE_VERSION"
+          node-version: "${{ env.NODE_VERSION }}"
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
@@ -89,7 +92,7 @@ jobs:
       - name: Установка ноды
         uses: actions/setup-node@v2
         with:
-          node-version: "$NODE_VERSION"
+          node-version: "${{ env.NODE_VERSION }}"
 
       - name: Загрузка артефактов
         uses: actions/download-artifact@v4
