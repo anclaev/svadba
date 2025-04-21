@@ -172,3 +172,43 @@ jobs:
       - run: echo "${{ secrets.TEST_E2E_ENV }}" >> ./deployment/test/.env && echo 'VERSION=$GITHUB_SHA' >> ./deployment/test/.env
       - run: chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
       - run: docker compose -f ./deployment/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - test-unit
+      - test-server
+      - test-e2e
+    steps:
+      - uses: actions/checkout@v4
+      - name: Получение переменных окружения
+        id: get-envs
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ secrets.DOKPLOY_HOST }}/api/compose.one?composeId=${{ secrets.DOKPLOY_COMPOSE_ID }}'
+          method: 'POST'
+          bearerToken: ''
+          customHeaders: '{"x-api-key": "${{ secrets.DOKPLOY_API_KEY }}"}'
+          maskResponse: true
+
+      - id: update-envs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '${{ env.NODE_VERSION }}'
+
+      - name: Обновление версии сервисов
+        env:
+          ENVS: ${{ steps.get-envs.outputs.response }}
+        run: |
+          exec OLD_ENV="$ENVS" VERSION="$GITHUB_SHA" COMPOSE_ID="${{ secrets.DOKPLOY_COMPOSE_ID }}" /usr/local/bin/node ./deployment/_scripts/update-envs.js > $REQ_BODY
+          echo "body:$REQ_BODY" >> $GITHUB_OUTPUT
+
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ secrets.DOKPLOY_HOST }}/api/compose.one?composeId=${{ secrets.DOKPLOY_COMPOSE_ID }}'
+          method: 'POST'
+          customHeaders: '{"x-api-key": "${{ secrets.DOKPLOY_API_KEY }}"}'
+          maskResponse: true
+          data: '${{ steps.update-envs.outputs.body  }}'
