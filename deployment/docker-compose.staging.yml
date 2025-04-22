@@ -28,7 +28,7 @@ services:
       retries: 3 
     networks:
       - dokploy-network
-      - svadba-minio-production-network
+      - svadba-minio-staging-network
     labels:
       - traefik.enable=true
       - traefik.http.routers.svadba-api.rule=Host(`${API_HOST}`)
@@ -85,5 +85,5 @@ services:
 networks:
   dokploy-network:
     external: true
-  svadba-minio-production-network:
+  svadba-minio-staging-network:
     external: true
