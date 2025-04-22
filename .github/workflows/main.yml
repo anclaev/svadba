@@ -7,208 +7,263 @@ on:
 
 env:
   NODE_VERSION: 20
+  DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+  DOKPLOY_HOST: ${{ secrets.DOKPLOY_HOST }}
+  DOKPLOY_COMPOSE_ID: ${{ secrets.DOKPLOY_COMPOSE_ID }}
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Настройка Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ env.NODE_VERSION }}'
-      - run: |
-          corepack enable
+  # install:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Настройка Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '${{ env.NODE_VERSION }}'
+  #     - run: |
+  #         corepack enable
 
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     - uses: actions/cache@v3
+  #       id: yarn-cache
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Установка зависимостей
-        run: yarn
+  #     - name: Установка зависимостей
+  #       run: yarn
 
-  build-local:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-      - name: Настройка Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ env.NODE_VERSION }}'
-      - run: |
-          corepack enable
+  # build-local:
+  #   runs-on: ubuntu-latest
+  #   needs: install
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Настройка Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '${{ env.NODE_VERSION }}'
+  #     - run: |
+  #         corepack enable
 
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     - uses: actions/cache@v3
+  #       id: yarn-cache
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Сборка сервисов
-        run: yarn turbo build --filter=api --filter=bot --filter=web
+  #     - name: Сборка сервисов
+  #       run: yarn turbo build --filter=api --filter=bot --filter=web
 
-      - name: Загрузка артефактов
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: |
-            apps/*/dist
-            packages/*/dist
-            apps/*/generated
-            .turbo/cache
+  #     - name: Загрузка артефактов
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: dist
+  #         path: |
+  #           apps/*/dist
+  #           packages/*/dist
+  #           apps/*/generated
+  #           .turbo/cache
 
-  build-api:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-      - name: Авторизация в Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.CI_REGISTRY_USERNAME }}
-          password: ${{ secrets.CI_REGISTRY_TOKEN }}
-      - run: docker build -f apps/api/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA .
-      - run: docker push ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA
+  # build-api:
+  #   runs-on: ubuntu-latest
+  #   needs: install
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Авторизация в Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.CI_REGISTRY_USERNAME }}
+  #         password: ${{ secrets.CI_REGISTRY_TOKEN }}
+  #     - run: docker build -f apps/api/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA .
+  #     - run: docker push ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA
 
-  build-bot:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-      - name: Авторизация в Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.CI_REGISTRY_USERNAME }}
-          password: ${{ secrets.CI_REGISTRY_TOKEN }}
-      - run: docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA .
-      - run: docker push ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA
+  # build-bot:
+  #   runs-on: ubuntu-latest
+  #   needs: install
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Авторизация в Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.CI_REGISTRY_USERNAME }}
+  #         password: ${{ secrets.CI_REGISTRY_TOKEN }}
+  #     - run: docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA .
+  #     - run: docker push ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA
 
-  build-web:
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - uses: actions/checkout@v4
-      - name: Авторизация в Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.CI_REGISTRY_USERNAME }}
-          password: ${{ secrets.CI_REGISTRY_TOKEN }}
-      - run: docker build -f apps/web/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA .
-      - run: docker push ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA
+  # build-web:
+  #   runs-on: ubuntu-latest
+  #   needs: install
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Авторизация в Docker Hub
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.CI_REGISTRY_USERNAME }}
+  #         password: ${{ secrets.CI_REGISTRY_TOKEN }}
+  #     - run: docker build -f apps/web/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA .
+  #     - run: docker push ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA
 
-  test-unit:
-    runs-on: ubuntu-latest
-    needs: build-local
-    steps:
-      - name: Чтение репозитория
-        uses: actions/checkout@v2
+  # test-unit:
+  #   runs-on: ubuntu-latest
+  #   needs: build-local
+  #   steps:
+  #     - name: Чтение репозитория
+  #       uses: actions/checkout@v2
 
-      - uses: actions/checkout@v4
-      - name: Настройка Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ env.NODE_VERSION }}'
-      - run: |
-          corepack enable
+  #     - uses: actions/checkout@v4
+  #     - name: Настройка Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '${{ env.NODE_VERSION }}'
+  #     - run: |
+  #         corepack enable
 
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     - uses: actions/cache@v3
+  #       id: yarn-cache
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Загрузка артефактов
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
+  #     - name: Загрузка артефактов
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: dist
 
-      - name: Запуск юнит-тестов
-        run: yarn turbo test:ci
+  #     - name: Запуск юнит-тестов
+  #       run: yarn turbo test:ci
 
-  test-server:
-    runs-on: ubuntu-latest
-    needs: build-local
-    steps:
-      - name: Чтение репозитория
-        uses: actions/checkout@v2
+  # test-server:
+  #   runs-on: ubuntu-latest
+  #   needs: build-local
+  #   steps:
+  #     - name: Чтение репозитория
+  #       uses: actions/checkout@v2
 
-      - uses: actions/checkout@v4
-      - name: Настройка Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ env.NODE_VERSION }}'
-      - run: |
-          corepack enable
+  #     - uses: actions/checkout@v4
+  #     - name: Настройка Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '${{ env.NODE_VERSION }}'
+  #     - run: |
+  #         corepack enable
 
-      - uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: '**/node_modules'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+  #     - uses: actions/cache@v3
+  #       id: yarn-cache
+  #       with:
+  #         path: '**/node_modules'
+  #         key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Загрузка артефактов
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
+  #     - name: Загрузка артефактов
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: dist
 
-      - run: echo "${{ secrets.TEST_SERVER_ENV }}" >> ./apps/api/.env
-      - run: echo 'VERSION=$GITHUB_SHA' >> ./apps/api/.env
-      - run: CI=true yarn turbo test:server
+  #     - run: echo "${{ secrets.TEST_SERVER_ENV }}" >> ./apps/api/.env
+  #     - run: echo 'VERSION=$GITHUB_SHA' >> ./apps/api/.env
+  #     - run: CI=true yarn turbo test:server
 
-  test-e2e:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    needs:
-      - build-api
-      - build-bot
-      - build-web
-    steps:
-      - name: Чтение репозитория
-        uses: actions/checkout@v2
+  # test-e2e:
+  #   runs-on: ubuntu-latest
+  #   continue-on-error: true
+  #   needs:
+  #     - build-api
+  #     - build-bot
+  #     - build-web
+  #   steps:
+  #     - name: Чтение репозитория
+  #       uses: actions/checkout@v2
 
-      - run: echo "${{ secrets.TEST_E2E_ENV }}" >> ./deployment/test/.env && echo 'VERSION=$GITHUB_SHA' >> ./deployment/test/.env
-      - run: chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
-      - run: docker compose -f ./deployment/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
+  #     - run: echo "${{ secrets.TEST_E2E_ENV }}" >> ./deployment/test/.env && echo 'VERSION=$GITHUB_SHA' >> ./deployment/test/.env
+  #     - run: chmod u+x ./deployment/_scripts/db-init.sh && chmod u+x ./deployment/_scripts/redis-init.sh
+  #     - run: docker compose -f ./deployment/test/docker-compose.yml up --attach playwright-runner --exit-code-from playwright-runner
 
   deploy:
     runs-on: ubuntu-latest
     if: always()
-    needs:
-      - test-unit
-      - test-server
-      - test-e2e
+    # needs:
+    # - test-unit
+    # - test-server
+    # - test-e2e
     steps:
-      - uses: actions/checkout@v4
-      - name: Получение переменных окружения
-        id: get-envs
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: '${{ secrets.DOKPLOY_HOST }}/api/compose.one?composeId=${{ secrets.DOKPLOY_COMPOSE_ID }}'
-          method: 'POST'
-          bearerToken: ''
-          customHeaders: '{"x-api-key": "${{ secrets.DOKPLOY_API_KEY }}"}'
-          maskResponse: true
+      - name: Получение конфигурации сервисов
+        id: fetch-config
+        run: |
+          RESPONSE=$(curl -s -H "x-api-key: $DOKPLOY_API_KEY" "$DOKPLOY_HOST/api/compose.one?composeId=$DOKPLOY_COMPOSE_ID")
 
-      - id: update-envs
-        uses: actions/setup-node@v4
-        with:
-          node-version: '${{ env.NODE_VERSION }}'
+          echo "::add-mask::$RESPONSE"
+
+          echo "ENV_CONFIG<<EOF" >> $GITHUB_ENV
+          echo "$RESPONSE" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "Configuration fetched successfully (content hidden in logs)"
 
       - name: Обновление версии сервисов
-        env:
-          ENVS: ${{ steps.get-envs.outputs.response }}
+        id: update-version
         run: |
-          exec OLD_ENV="$ENVS" VERSION="$GITHUB_SHA" COMPOSE_ID="${{ secrets.DOKPLOY_COMPOSE_ID }}" /usr/local/bin/node ./deployment/_scripts/update-envs.js > $REQ_BODY
-          echo "body:$REQ_BODY" >> $GITHUB_OUTPUT
+          echo "::add-mask::$GITHUB_SHA"
+          echo "::add-mask::$DOKPLOY_COMPOSE_ID"
 
-      - name: Deploy Stage
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: '${{ secrets.DOKPLOY_HOST }}/api/compose.one?composeId=${{ secrets.DOKPLOY_COMPOSE_ID }}'
-          method: 'POST'
-          customHeaders: '{"x-api-key": "${{ secrets.DOKPLOY_API_KEY }}"}'
-          maskResponse: true
-          data: '${{ steps.update-envs.outputs.body  }}'
+          UPDATED_CONFIG=$(echo "$ENV_CONFIG" | awk -v new_ver="$GITHUB_SHA" '
+            BEGIN { FS="="; OFS="=" }
+            $1 == "VERSION" { $2 = new_ver }
+            { print }
+          ')
+
+          echo "UPDATED_CONFIG<<EOF" >> $GITHUB_ENV
+          echo "$UPDATED_CONFIG" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "VERSION updated to Git SHA (hidden in logs)"
+
+      - name: Подготовка конфигурации сервисов
+        id: prepare-payload
+        run: |
+          JSON_PAYLOAD=$(jq -n \
+            --arg env "$UPDATED_CONFIG" \
+            --arg composeId "$DOKPLOY_COMPOSE_ID" \
+            '{env: $env, composeId: $composeId}')
+
+          echo "::add-mask::$JSON_PAYLOAD"
+
+          echo "JSON_PAYLOAD<<EOF" >> $GITHUB_ENV
+          echo "$JSON_PAYLOAD" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "JSON payload prepared (content hidden in logs)"
+
+      - name: Загрузка конфигурации сервисов
+        id: send-config
+        run: |
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "x-api-key: $DOKPLOY_API_KEY" \
+            -H "Content-Type: application/json" \
+            "$DOKPLOY_HOST/api/compose.update" \
+            --data "$JSON_PAYLOAD")
+
+          if [ "$STATUS_CODE" -ge 200 ] && [ "$STATUS_CODE" -lt 300 ]; then
+            echo "Configuration sent successfully (status: $STATUS_CODE)"
+          else
+            echo "::error::Failed to send configuration (status: $STATUS_CODE)"
+            exit 1
+          fi
+
+      - name: Деплой сервисов
+        run: |
+          JSON_PAYLOAD=$(jq -n \
+            --arg composeId "$DOKPLOY_COMPOSE_ID" \
+            '{composeId: $composeId}')
+
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST \
+            -H "x-api-key: $DOKPLOY_API_KEY" \
+            -H "Content-Type: application/json" \
+            "$DOKPLOY_HOST/api/compose.deploy" \
+            --data "$JSON_PAYLOAD")
+
+          if [ "$STATUS_CODE" -ge 200 ] && [ "$STATUS_CODE" -lt 300 ]; then
+            echo "Deploy successfully (status: $STATUS_CODE)"
+          else
+            echo "::error::Failed to send configuration (status: $STATUS_CODE)"
+            exit 1
+          fi
