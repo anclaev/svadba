@@ -187,15 +187,19 @@ jobs:
       - name: Получение конфигурации сервисов
         id: fetch-config
         run: |
-          RESPONSE=$(curl -s -H "x-api-key: $DOKPLOY_API_KEY" "$DOKPLOY_HOST/api/compose.one?composeId=$DOKPLOY_COMPOSE_ID")
+          curl -s -H "x-api-key: $DOKPLOY_API_KEY" "$DOKPLOY_HOST/api/compose.one?composeId=$DOKPLOY_COMPOSE_ID" -o response.json
 
-          echo "::add-mask::$RESPONSE"
+          ENV_CONFIG=$(jq -r '.env' response.json)
 
-          echo "ENV_CONFIG<<EOF" >> $GITHUB_ENV
-          echo "$RESPONSE" >> $GITHUB_ENV
+          echo "::add-mask::$ENV_CONFIG"
+
+          echo "RAW_ENV_CONFIG<<EOF" >> $GITHUB_ENV
+          echo "$ENV_CONFIG" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-          echo "Configuration fetched successfully (content hidden in logs)"
+          rm response.json
+
+          echo "Configuration fetched successfully (content masked)"
 
       - name: Обновление версии сервисов
         id: update-version
@@ -203,48 +207,46 @@ jobs:
           echo "::add-mask::$GITHUB_SHA"
           echo "::add-mask::$DOKPLOY_COMPOSE_ID"
 
-          UPDATED_CONFIG=$(echo "$ENV_CONFIG" | awk -v new_ver="$GITHUB_SHA" '
+          UPDATED_ENV=$(echo "$RAW_ENV_CONFIG" | awk -v new_ver="$GITHUB_SHA" '
             BEGIN { FS="="; OFS="=" }
             $1 == "VERSION" { $2 = new_ver }
             { print }
           ')
 
-          echo "UPDATED_CONFIG<<EOF" >> $GITHUB_ENV
-          echo "$UPDATED_CONFIG" >> $GITHUB_ENV
+          echo "UPDATED_ENV_CONFIG<<EOF" >> $GITHUB_ENV
+          echo "$UPDATED_ENV" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-          echo "VERSION updated to Git SHA (hidden in logs)"
+          echo "VERSION field updated with commit SHA"
 
       - name: Подготовка конфигурации сервисов
         id: prepare-payload
         run: |
           JSON_PAYLOAD=$(jq -n \
-            --arg env "$UPDATED_CONFIG" \
+            --arg env "$UPDATED_ENV_CONFIG" \
             --arg composeId "$DOKPLOY_COMPOSE_ID" \
             '{env: $env, composeId: $composeId}')
 
           echo "::add-mask::$JSON_PAYLOAD"
 
-          echo "JSON_PAYLOAD<<EOF" >> $GITHUB_ENV
+          echo "DEPLOYMENT_PAYLOAD<<EOF" >> $GITHUB_ENV
           echo "$JSON_PAYLOAD" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-          echo "JSON payload prepared (content hidden in logs)"
+          echo "Deployment payload prepared (content masked)"
 
       - name: Загрузка конфигурации сервисов
         id: send-config
         run: |
-          echo $JSON_PAYLOAD
-
           STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             -X POST \
             -H "x-api-key: $DOKPLOY_API_KEY" \
             -H "Content-Type: application/json" \
             "$DOKPLOY_HOST/api/compose.update" \
-            --data "$JSON_PAYLOAD")
+            --data "$DEPLOYMENT_PAYLOAD")
 
           if [ "$STATUS_CODE" -ge 200 ] && [ "$STATUS_CODE" -lt 300 ]; then
-            echo "Configuration sent successfully (status: $STATUS_CODE)"
+            echo "Deployment configuration sent successfully (status: $STATUS_CODE)"
           else
             echo "::error::Failed to send configuration (status: $STATUS_CODE)"
             exit 1
