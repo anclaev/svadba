@@ -10,6 +10,7 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'deployment/**'
+      - '**.json'
     paths-ignore:
       - 'docs/**'
       - 'config/**'
