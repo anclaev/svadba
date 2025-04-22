@@ -234,6 +234,8 @@ jobs:
       - name: Загрузка конфигурации сервисов
         id: send-config
         run: |
+          echo $JSON_PAYLOAD
+
           STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
             -X POST \
             -H "x-api-key: $DOKPLOY_API_KEY" \
