@@ -191,6 +191,8 @@ jobs:
 
           ENV_CONFIG=$(jq -r '.env' response.json)
 
+          echo $ENV_CONFIG
+
           echo "::add-mask::$ENV_CONFIG"
 
           echo "RAW_ENV_CONFIG<<EOF" >> $GITHUB_ENV
