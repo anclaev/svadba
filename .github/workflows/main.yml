@@ -189,6 +189,8 @@ jobs:
         run: |
           curl -s -H "x-api-key: $DOKPLOY_API_KEY" "$DOKPLOY_HOST/api/compose.one?composeId=$DOKPLOY_COMPOSE_ID" -o response.json
 
+          cat response.json
+
           ENV_CONFIG=$(jq -r '.env' response.json)
 
           echo $ENV_CONFIG
