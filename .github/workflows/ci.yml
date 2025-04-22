@@ -11,13 +11,7 @@ on:
       - 'packages/**'
       - 'deployment/**'
       - '**.json'
-    paths-ignore:
-      - 'docs/**'
-      - 'config/**'
-      - '.husky/**'
-      - '.vscode/**'
-      - '.idea/**'
-      - '**.md'
+      - '.github/**'
   workflow_dispatch:
 
 env:
