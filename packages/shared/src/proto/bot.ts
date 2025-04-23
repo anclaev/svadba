@@ -12,11 +12,10 @@ export namespace bot {
    */
   export const PACKAGE_NAME = 'bot'
 
-  /**
-   * Интерфейс ответа на отправку сообщения
-   * @interface SendMessageResponse
-   * @memberof bot
-   */
+  export interface HealthResponse {
+    status: string
+  }
+
   export interface SendMessageResponse {
     /**
      * Статус выполнения операции
@@ -56,12 +55,8 @@ export namespace bot {
    * @memberof bot
    */
   export interface BotServiceClient {
-    /**
-     * Метод для отправки сообщения через бота
-     * @param {SendMessageRequest} data - Данные запроса
-     * @returns {SendMessageResponse} - Ответ сервиса
-     */
-    SendMessage(data: SendMessageRequest): SendMessageRequest
+    Health(): HealthResponse
+    SendMessage(data: SendMessageRequest): SendMessageResponse
   }
 
   /**
@@ -70,20 +65,15 @@ export namespace bot {
    * @memberof bot
    */
   export interface BotServiceController {
-    /**
-     * Обработчик запроса на отправку сообщения
-     * @param {SendMessageRequest} request - Данные запроса
-     * @returns {(Promise<SendMessageResponse> | SendMessageResponse | Observable<SendMessageResponse>)} - Ответ сервиса
-     * @description Может возвращать:
-     * - Promise для асинхронных операций
-     * - Синхронный ответ
-     * - Observable для потоковой обработки
-     */
+    Health():
+      | Promise<HealthResponse>
+      | HealthResponse
+      | Observable<HealthResponse>
     SendMessage(
       request: SendMessageRequest
     ):
-      | Promise<SendMessageRequest>
-      | SendMessageRequest
-      | Observable<SendMessageRequest>
+      | Promise<SendMessageResponse>
+      | SendMessageResponse
+      | Observable<SendMessageResponse>
   }
 }

@@ -17,7 +17,7 @@ beforeEach(() => {
   jest.clearAllMocks()
 })
 
-describe('SocialLink GRPC Controller (e2e)', () => {
+describe('SocialLink gRPC Controller (e2e)', () => {
   let app: INestApplication
   let prisma: DeepMockProxy<PrismaClient>
   let client: any

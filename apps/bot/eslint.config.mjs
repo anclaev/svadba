@@ -19,7 +19,6 @@ export default tseslint.config(
       sourceType: 'module',
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
@@ -31,11 +30,11 @@ export default tseslint.config(
       '@typescript-eslint/restrict-plus-operands': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-redundant-type-constituents': 'off',
     },
   }
 )

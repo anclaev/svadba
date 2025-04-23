@@ -23,6 +23,7 @@ export interface IGuestModel {
 export interface IGuestProps {
   id: string
   userId?: string
+  user?: IUserModel
   side: GuestSide
   role: GuestRole
   answers: InputJsonValue

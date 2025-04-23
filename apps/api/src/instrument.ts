@@ -1,8 +1,6 @@
 import * as Sentry from '@sentry/nestjs'
 import { nodeProfilingIntegration } from '@sentry/profiling-node'
 
-// TODO: Вынести DSN в переменную окружения
-
 /**
  * Инициализация Sentry для мониторинга ошибок и производительности
  * @function
