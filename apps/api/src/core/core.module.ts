@@ -12,9 +12,30 @@ import { MinioService } from './minio.service'
 import { PrismaService } from './prisma.service'
 import { RedisService } from './redis.service'
 
+/**
+ * Глобальный core-модуль приложения
+ * @module CoreModule
+ * @description
+ * Содержит основные сервисы и конфигурации, используемые во всем приложении:
+ * - Кеширование через Redis
+ * - Ограничение запросов (rate limiting)
+ * - Обслуживание статических файлов
+ * - Основные сервисы (Prisma, MinIO, Redis)
+ *
+ * @Global
+ * @decorator @Global() - делает модуль доступным во всем приложении без явного импорта
+ */
 @Global()
 @Module({
   imports: [
+    /**
+     * Асинхронная регистрация модуля кеширования
+     * @property {boolean} isGlobal - Глобальная видимость модуля
+     * @property {Function} useFactory - Фабрика конфигурации
+     * @description
+     * Настраивает Redis-кеш для текущего окружения.
+     * В тестовом окружении (NODE_ENV=test) кеш отключен.
+     */
     CacheModule.registerAsync({
       inject: [ConfigService],
       isGlobal: true,
@@ -38,6 +59,13 @@ import { RedisService } from './redis.service'
         }
       },
     }),
+    /**
+     * Модуль ограничения запросов (rate limiting)
+     * @property {Function} useFactory - Фабрика конфигурации
+     * @description
+     * Настраивает лимит запросов с использованием Redis в production окружении.
+     * В тестовом окружении storage отключен.
+     */
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -60,11 +88,30 @@ import { RedisService } from './redis.service'
             : undefined,
       }),
     }),
+    /**
+     * Модуль для обслуживания статических файлов
+     * @description
+     * Предоставляет доступ к файлам из папки assets
+     */
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'assets'),
     }),
   ],
+  /**
+   * Провайдеры модуля
+   * @property {Provider} Logger - Сервис логирования
+   * @property {Provider} PrismaService - Сервис работы с базой данных
+   * @property {Provider} MinioService - Сервис работы с объектным хранилищем
+   * @property {Provider} RedisService - Сервис работы с Redis
+   */
   providers: [Logger, PrismaService, MinioService, RedisService],
+
+  /**
+   * Экспортируемые провайдеры
+   * @property {Provider} PrismaService - Сервис БД
+   * @property {Provider} MinioService - Сервис хранилища
+   * @property {Provider} RedisService - Сервис кеширования
+   */
   exports: [PrismaService, MinioService, RedisService],
 })
 export class CoreModule {}

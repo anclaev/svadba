@@ -4,8 +4,6 @@ import { TerminusModule } from '@nestjs/terminus'
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup'
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod'
 
-import { AppController } from '#/app/app.controller'
-import { AppHealthIndicator } from '#/app/app.health'
 import { AuthModule } from '#/auth/auth.module'
 import { ConfigModule } from '#/config/config.module'
 import { CoreModule } from '#/core/core.module'
@@ -14,6 +12,25 @@ import { SvadbaModule } from '#/svadba/svadba.module'
 import { UploadModule } from '#/upload/upload.module'
 import { UserModule } from '#/user/user.module'
 
+import { AppController } from './app.controller'
+import { AppHealthIndicator } from './app.health'
+
+/**
+ * Корневой модуль приложения
+ * @class AppModule
+ * @Module
+ * @description Главный модуль приложения, который:
+ * - Импортирует все функциональные модули
+ * - Настраивает глобальные интерцепторы и пайпы
+ * - Подключает системы мониторинга и логирования
+ *
+ * @example
+ * // Пример использования в main.ts
+ * async function bootstrap() {
+ *   const app = await NestFactory.create(AppModule);
+ *   await app.listen(3000);
+ * }
+ */
 @Module({
   imports: [
     SentryModule.forRoot(),

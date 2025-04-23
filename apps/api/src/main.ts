@@ -21,18 +21,44 @@ import { ConfigService } from '#/config/config.service'
 
 import './instrument'
 
+/**
+ * Функция инициализации и запуска NestJS приложения
+ * @async
+ * @function bootstrap
+ * @description Основная функция запуска приложения, выполняющая:
+ * - Настройку логгера
+ * - Конфигурацию HTTPS в development-режиме
+ * - Создание экземпляра приложения
+ * - Настройку глобальных интерцепторов
+ * - Конфигурацию безопасности (helmet, CORS)
+ * - Подключение микросервисов gRPC
+ * - Настройку Swagger документации
+ * - Запуск сервера
+ *
+ * @throws {Error} В случае ошибок при инициализации приложения
+ *
+ * @example
+ * // Запуск приложения
+ * bootstrap().catch(err => {
+ *   console.error('Ошибка запуска приложения:', err);
+ *   process.exit(1);
+ * });
+ */
 async function bootstrap() {
+  // Инициализация логгера с названием приложения
   const logger = loggerFactory({ appName: APP_NAME })
 
+  // Проверка режима разработки
   const isDev = process.env.NODE_ENV === 'development'
   const httpsOptions: HttpsOptions = {}
 
-  // SSL для разработки
+  // Настройка HTTPS сертификатов для development режима
   if (isDev) {
     httpsOptions.cert = fs.readFileSync('./src/certs/localhost.crt')
     httpsOptions.key = fs.readFileSync('./src/certs/localhost.key')
   }
 
+  // Создание экземпляра приложения NestJS
   const app = await NestFactory.create<
     INestApplication<NestExpressApplication>
   >(AppModule, {
@@ -41,37 +67,30 @@ async function bootstrap() {
     httpsOptions: isDev ? httpsOptions : undefined,
   })
 
-  // Глобальная сериализация
+  // Настройка глобального интерцептора для сериализации
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
+  // Получение конфигурации
   const config = app.get(ConfigService)
   const host = config.env('HOST')
   const port = config.env('PORT')
   const origin = config.env('ORIGIN')
   const version = config.env('APP_VERSION')
 
-  // Поддержка cookie
-  app.use(cookieParser(config.env('COOKIE_SECRET')))
+  // Настройка middlewares
+  app.use(cookieParser(config.env('COOKIE_SECRET'))) // Поддержка cookies
+  app.use(helmet()) // Защитные HTTP-заголовки
+  app.use(compression()) // Сжатие ответов
+  app.use(bearerToken()) // Парсинг Bearer токенов
+  app.enableShutdownHooks() // Обработка хуков жизненного цикла
 
-  // Заголовки безопасности
-  app.use(helmet())
-
-  // Базовое сжатие ответов
-  app.use(compression())
-
-  // Перехватчик bearer-токенов
-  app.use(bearerToken())
-
-  // Включение хуков жизненного цикла
-  app.enableShutdownHooks()
-
-  // Поддержка CORS
+  // Настройка CORS
   app.enableCors({
     credentials: true,
     origin,
   })
 
-  // Подключение gRPC
+  // Подключение gRPC микросервиса
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
@@ -83,9 +102,8 @@ async function bootstrap() {
     },
   })
 
-  // Настройка Swagger
+  // Настройка Swagger документации
   patchNestJsSwagger()
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Svadba API')
     .setDescription('Серверная часть проекта Svadba')
@@ -101,8 +119,8 @@ async function bootstrap() {
     customCssUrl: '/swagger.css',
   })
 
+  // Запуск микросервисов и приложения
   await app.startAllMicroservices()
-
   await app.listen(port).finally(() => {
     logger.log(`Сервис успешно запущен! (https://${host}:${port})`, 'App')
   })
