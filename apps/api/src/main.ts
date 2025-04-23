@@ -1,3 +1,4 @@
+import { ReflectionService } from '@grpc/reflection'
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common'
 import { HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface'
 import { NestFactory, Reflector } from '@nestjs/core'
@@ -6,6 +7,7 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { loggerFactory, social_link } from '@repo/shared'
 import compression from 'compression'
+
 import cookieParser from 'cookie-parser'
 import bearerToken from 'express-bearer-token'
 import * as fs from 'fs'
@@ -74,6 +76,7 @@ async function bootstrap() {
   const config = app.get(ConfigService)
   const host = config.env('HOST')
   const port = config.env('PORT')
+  const grpcPort = config.env('GRPC_PORT')
   const origin = config.env('ORIGIN')
   const version = config.env('APP_VERSION')
 
@@ -94,10 +97,14 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
+      url: `localhost:${grpcPort}`,
       package: social_link.PACKAGE_NAME,
       protoPath: join(__dirname, 'proto/social-link.proto'),
       loader: {
         includeDirs: [join(__dirname, 'proto')],
+      },
+      onLoadPackageDefinition: (pkg: any, server: any) => {
+        new ReflectionService(pkg).addToServer(server)
       },
     },
   })

@@ -6,6 +6,8 @@ services:
       APP_VERSION: ${VERSION}
       DATABASE_URL: ${DATABASE_URL}
       COOKIE_SECRET: ${API_COOKIE_SECRET}
+      GRPC_PORT: ${API_GRPC_PORT}
+      SENTRY_DSN: ${API_SENTRY_DSN}
       JWT_ACCESS_SECRET: ${API_JWT_ACCESS_SECRET}
       JWT_CONFIRMATION_SECRET: ${API_JWT_CONFIRMATION_SECRET}
       JWT_RESET_PASSWORD_SECRET: ${API_JWT_RESET_PASSWORD_SECRET}
@@ -50,8 +52,12 @@ services:
       timeout: 5s
       start_period: 5s
     environment:
+      APP_VERSION: ${VERSION}
+      WEB_ENDPOINT: ${WEB_URL}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      PORT: ${BOT_PORT}
       GRPC_PORT: ${BOT_GRPC_PORT}
+      SENTRY_DSN: ${BOT_SENTRY_DSN}
     networks:
       - dokploy-network
 

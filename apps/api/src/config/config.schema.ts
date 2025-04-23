@@ -50,6 +50,19 @@ export const configSchema = z.object({
     .default(3001),
 
   /**
+   * gRPC-порт сервиса
+   * @type {z.ZodNumber}
+   * @default 3002
+   * @minimum 1000
+   * @maximum 10000
+   */
+  GRPC_PORT: z.coerce
+    .number({ message: 'gRPC-порт сервиса не установлен.' })
+    .min(1000)
+    .max(10000)
+    .default(3002),
+
+  /**
    * Настройки CORS (разрешенные домены)
    * @type {z.ZodString}
    * @default 'localhost'
@@ -66,6 +79,16 @@ export const configSchema = z.object({
   APP_VERSION: z
     .string({ message: 'Версия приложения не предоставлена.' })
     .nonempty({ message: 'Версия приложения не может быть пустой.' }),
+
+  /**
+   * Sentry DSN
+   * @type {z.ZodString}
+   * @format url
+   * @required
+   */
+  SENTRY_DSN: z
+    .string({ message: 'Sentry DSN не установлен.' })
+    .url({ message: 'Некорректный Sentry DSN.' }),
 
   /**
    * URL подключения к базе данных (обязательный)
@@ -278,9 +301,11 @@ export const configSchema = z.object({
  * @property {('production'|'development'|'staging'|'local'|'test')} NODE_ENV - Окружение приложения
  * @property {string} HOST - Хост сервиса
  * @property {number} PORT - Порт сервиса (1000-10000)
+ * @property {number} GRPC_PORT - gRPC-порт сервиса (1000-10000)
  * @property {string} ORIGIN - Разрешенные домены для CORS
  * @property {string} APP_VERSION - Версия приложения (обязательная)
  * @property {string} DATABASE_URL - URL базы данных
+ * @property {string} SENTRY_DSN - Sentry DSN
  * @property {string} S3_ENDPOINT - Хост S3 хранилища
  * @property {number} S3_PORT - Порт S3 хранилища (1-10000)
  * @property {string} S3_BUCKET - Имя бакета S3
