@@ -12,7 +12,7 @@ RUN yarn global add turbo@2.4.4
 
 COPY . .
  
-RUN turbo prune api --docker
+RUN turbo prune bot --docker
  
 # ---------------- Install and build the project -----------------
 FROM base AS installer
@@ -38,4 +38,4 @@ COPY --from=installer --chown=nestjs:nestjs /app .
  
 EXPOSE 3001
 
-ENTRYPOINT [ "sh", "-c", "node apps/api/dist/main" ]
+ENTRYPOINT [ "sh", "-c", "node apps/bot/dist/main" ]
