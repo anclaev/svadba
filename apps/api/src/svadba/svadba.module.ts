@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 
-import { guestCommandHandlers } from './app'
+import { guestCommandHandlers, guestQueryHandlers } from './app'
 
 import {
   DresscodeColorRepository,
@@ -38,6 +38,7 @@ const guestRepositoryProvider = {
     dresscodeRepositoryProvider,
     guestRepositoryProvider,
     ...guestCommandHandlers,
+    ...guestQueryHandlers,
   ],
 })
 export class SvadbaModule {}
