@@ -4,10 +4,13 @@ import { CacheModule } from '@nestjs/cache-manager'
 import { Global, Logger, Module } from '@nestjs/common'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { seconds, ThrottlerModule } from '@nestjs/throttler'
+import { ConfigService } from '@repo/shared'
 import Redis from 'ioredis'
 import { join } from 'path'
 
-import { ConfigService } from '#/config/config.service'
+import { Config } from '#/common/config.schema'
+
+// import { ConfigService } from '#/config/config.service'
 import { MinioService } from './minio.service'
 import { PrismaService } from './prisma.service'
 import { RedisService } from './redis.service'
@@ -39,7 +42,7 @@ import { RedisService } from './redis.service'
     CacheModule.registerAsync({
       inject: [ConfigService],
       isGlobal: true,
-      useFactory: (config: ConfigService) => {
+      useFactory: (config: ConfigService<Config>) => {
         return {
           stores:
             process.env.NODE_ENV !== 'test'
@@ -50,7 +53,7 @@ import { RedisService } from './redis.service'
                     password: config.env('REDIS_PASSWORD'),
                     socket: {
                       host: config.env('REDIS_HOST'),
-                      port: config.env('REDIS_PORT'),
+                      port: Number(config.env('REDIS_PORT')),
                       tls: false,
                     },
                   }),
@@ -68,11 +71,11 @@ import { RedisService } from './redis.service'
      */
     ThrottlerModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config: ConfigService<Config>) => ({
         throttlers: [
           {
-            limit: config.env('REQ_LIMIT'),
-            ttl: seconds(config.env('REQ_TTL')),
+            limit: Number(config.env('REQ_LIMIT')),
+            ttl: seconds(Number(config.env('REQ_TTL'))),
           },
         ],
         storage:
@@ -80,7 +83,7 @@ import { RedisService } from './redis.service'
             ? new ThrottlerStorageRedisService(
                 new Redis({
                   host: config.env('REDIS_HOST'),
-                  port: config.env('REDIS_PORT'),
+                  port: Number(config.env('REDIS_PORT')),
                   username: config.env('REDIS_USERNAME'),
                   password: config.env('REDIS_PASSWORD'),
                 })

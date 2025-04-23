@@ -5,7 +5,7 @@ import { NestFactory, Reflector } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-import { loggerFactory, social_link } from '@repo/shared'
+import { ConfigService, loggerFactory, social_link } from '@repo/shared'
 import compression from 'compression'
 
 import cookieParser from 'cookie-parser'
@@ -15,11 +15,10 @@ import helmet from 'helmet'
 import { patchNestJsSwagger } from 'nestjs-zod'
 import { join } from 'path'
 
+import { Config } from '#/common/config.schema'
 import { APP_NAME } from '#/common/constants'
 
 import { AppModule } from '#/app/app.module'
-
-import { ConfigService } from '#/config/config.service'
 
 import './instrument'
 
@@ -73,7 +72,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
   // Получение конфигурации
-  const config = app.get(ConfigService)
+  const config = app.get(ConfigService<Config>)
   const host = config.env('HOST')
   const port = config.env('PORT')
   const grpcPort = config.env('GRPC_PORT')

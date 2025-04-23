@@ -1,9 +1,9 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common'
+import { ConfigService } from '@repo/shared'
 import * as Minio from 'minio'
 
-import { ConfigService } from '../config/config.service'
-
-import { getS3BucketPolicy } from '../common/utils'
+import { Config } from '#/common/config.schema'
+import { getS3BucketPolicy } from '#/common/utils'
 
 /**
  * Сервис для работы с S3-совместимым хранилищем (MinIO)
@@ -49,11 +49,11 @@ export class MinioService extends Minio.Client implements OnModuleInit {
    */
   constructor(
     private readonly logger: Logger,
-    readonly config: ConfigService
+    readonly config: ConfigService<Config>
   ) {
     super({
       endPoint: config.env('S3_ENDPOINT'),
-      port: config.env('S3_PORT'),
+      port: Number(config.env('S3_PORT')),
       accessKey: config.env('S3_ACCESS_TOKEN'),
       secretKey: config.env('S3_SECRET_TOKEN'),
       useSSL: false,

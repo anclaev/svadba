@@ -1,12 +1,11 @@
 import { NestjsGrammyModule } from '@grammyjs/nestjs'
 import { Logger, Module } from '@nestjs/common'
 import { ClientsModule, Transport } from '@nestjs/microservices'
-import { bot } from '@repo/shared'
+import { bot, ConfigService } from '@repo/shared'
 import { join } from 'path'
 
+import { Config } from '#/common/config.schema'
 import { BOT_NAME } from '#/common/constants'
-
-import { ConfigService } from '#/config/config.service'
 
 import { sessionMiddleware } from './lib'
 
@@ -18,7 +17,7 @@ import { BotUpdate } from './bot.update'
     NestjsGrammyModule.forRootAsync({
       inject: [ConfigService],
       botName: BOT_NAME,
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config: ConfigService<Config>) => ({
         token: config.get('TELEGRAM_BOT_TOKEN'),
         middlewares: [sessionMiddleware],
         pollingOptions: {

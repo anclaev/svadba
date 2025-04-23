@@ -1,10 +1,10 @@
 import { InjectBot, Start, Update } from '@grammyjs/nestjs'
 import { Injectable, Logger, UseFilters } from '@nestjs/common'
+import { ConfigService } from '@repo/shared'
 import { Bot, InlineKeyboard } from 'grammy'
 
+import { Config } from '#/common/config.schema'
 import { BOT_NAME } from '#/common/constants'
-
-import { ConfigService } from '#/config/config.service'
 
 import { GrammyExceptionFilter, IContext } from './lib'
 
@@ -14,14 +14,16 @@ import { GrammyExceptionFilter, IContext } from './lib'
 export class BotUpdate {
   private readonly inlineKeyboard: InlineKeyboard
   private readonly botToken: string
+  private readonly webEndpoint: string
 
   constructor(
     @InjectBot(BOT_NAME)
     private readonly bot: Bot<IContext>,
     private readonly logger: Logger,
-    private readonly config: ConfigService
+    private readonly config: ConfigService<Config>
   ) {
-    this.botToken = this.config.get('TELEGRAM_BOT_TOKEN')
+    this.botToken = this.config.env('TELEGRAM_BOT_TOKEN')
+    this.webEndpoint = this.config.env('WEB_ENDPOINT')
 
     if (this.bot.isInited()) {
       this.logger.log(
@@ -40,7 +42,7 @@ export class BotUpdate {
       {
         reply_markup: new InlineKeyboard().url(
           'Посетить сайт',
-          'https://svadba.anclaev.com'
+          this.webEndpoint
         ),
       }
     )

@@ -1,11 +1,11 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { QueryBus } from '@nestjs/cqrs'
 import { PassportStrategy } from '@nestjs/passport'
-import { isNull } from '@repo/shared'
+import { ConfigService, isNull } from '@repo/shared'
 import type { Request } from 'express'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { ConfigService } from '#/config/config.service'
+import { Config } from '#/common/config.schema'
 
 import { User, UserError } from '#/user/domain'
 
@@ -15,7 +15,7 @@ import { UserByIdQuery } from '#/user/app'
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    readonly config: ConfigService,
+    readonly config: ConfigService<Config>,
     private readonly query: QueryBus
   ) {
     super({
@@ -49,7 +49,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       throw new UnauthorizedException('Авторизация не пройдена.')
     }
 
-    const user = await this.query.execute(new UserByIdQuery(data.id))
+    const user = await this.query.execute(new UserByIdQuery(data!.id))
 
     if (user instanceof UserError) {
       throw new UnauthorizedException('Авторизация не пройдена.')

@@ -24,10 +24,11 @@ import {
 } from '@nestjs/swagger'
 
 import { ThrottlerGuard } from '@nestjs/throttler'
+import { ConfigService } from '@repo/shared'
 import { randomUUID } from 'crypto'
 import { Request, Response } from 'express'
 
-import { ConfigService } from '#/config/config.service'
+import { Config } from '#/common/config.schema'
 
 import { User, USER_ERRORS, UserError } from '#/user/domain'
 
@@ -57,7 +58,7 @@ export class AuthController {
 
   constructor(
     private auth: AuthService,
-    private config: ConfigService
+    private config: ConfigService<Config>
   ) {
     this.NODE_ENV = this.config.env('NODE_ENV')
   }
@@ -293,7 +294,7 @@ export class AuthController {
       secure: true,
       path: '/',
       domain: this.config.env('HOST'),
-      maxAge: this.config.env('JWT_ACCESS_TIME') * 1000,
+      maxAge: Number(this.config.env('JWT_ACCESS_TIME')) * 1000,
     })
 
     res.cookie(Cookies.REFRESH_COOKIE, refreshCookieData, {
@@ -302,7 +303,7 @@ export class AuthController {
       secure: true,
       path: '/auth/refresh',
       domain: this.config.env('HOST'),
-      maxAge: this.config.env('JWT_REFRESH_TIME') * 1000,
+      maxAge: Number(this.config.env('JWT_REFRESH_TIME')) * 1000,
     })
   }
 }

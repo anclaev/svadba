@@ -3,12 +3,11 @@ import { INestApplication } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MicroserviceOptions, Transport } from '@nestjs/microservices'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { bot, loggerFactory } from '@repo/shared'
+import { bot, ConfigService, loggerFactory } from '@repo/shared'
 import { join } from 'path'
 
+import { Config } from './common/config.schema'
 import { APP_NAME } from './common/constants'
-
-import { ConfigService } from '#/config/config.service'
 
 import { AppModule } from '#/app/app.module'
 
@@ -24,7 +23,7 @@ async function bootstrap() {
     logger,
   })
 
-  const config = app.get(ConfigService)
+  const config = app.get(ConfigService<Config>)
   const port = config.env('PORT')
   const grpcPort = config.env('GRPC_PORT')
 

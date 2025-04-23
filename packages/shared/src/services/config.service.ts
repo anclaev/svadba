@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { ConfigService as RootConfigService } from '@nestjs/config'
-
-import { Config } from './config.schema'
+import { Path, ConfigService as RootConfigService } from '@nestjs/config'
 
 /**
  * Кастомный сервис конфигурации, расширяющий стандартный ConfigService из @nestjs/config
@@ -30,7 +28,7 @@ import { Config } from './config.schema'
  * @see {@link RootConfigService} - базовый сервис
  */
 @Injectable()
-export class ConfigService extends RootConfigService<Config, true> {
+export class ConfigService<C> extends RootConfigService<C, true> {
   /**
    * Конструктор ConfigService
    * @constructor
@@ -43,26 +41,26 @@ export class ConfigService extends RootConfigService<Config, true> {
 
   /**
    * Получает значение конфигурации по ключу с автоматическим выводом типа
-   * @template T - Ключ из типа Config
+   * @template T - Ключ из типа C
    * @param {T} key - Ключ параметра конфигурации
-   * @returns {Config[T]} Значение параметра конфигурации с автоматическим выводом типа
+   * @returns {C[T]} Значение параметра конфигурации с автоматическим выводом типа
    *
    * @throws {Error} Если параметр не найден в конфигурации
    *
    * @example
    * // Получение строкового параметра
-   * const apiUrl = configService.env('API_URL');
+   * const apiUrl = configService<Config>.env('API_URL');
    *
    * @example
    * // Получение числового параметра
-   * const port = configService.env('SERVER_PORT');
+   * const port = configService<Config>.env('SERVER_PORT');
    *
    * @description
    * Метод использует механизм вывода типов TypeScript на основе ключа.
    * Возвращаемый тип соответствует типу, указанному в интерфейсе Config.
    * Опция { infer: true } обеспечивает правильный вывод типов из родительского класса.
    */
-  env<T extends keyof Config>(key: T): Config[T] {
-    return this.get(key, { infer: true }) as Config[T]
+  env<T extends Path<C>>(key: T): string {
+    return this.get(key as Path<C>, { infer: true })
   }
 }

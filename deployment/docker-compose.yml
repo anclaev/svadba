@@ -5,6 +5,7 @@ services:
     environment:
       APP_VERSION: ${VERSION}
       DATABASE_URL: ${DATABASE_URL}
+      PORT: ${API_PORT}
       GRPC_PORT: ${API_GRPC_PORT}
       SENTRY_DSN: ${API_SENTRY_DSN}
       COOKIE_SECRET: ${API_COOKIE_SECRET}

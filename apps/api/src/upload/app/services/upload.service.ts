@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@repo/shared'
 import { randomUUID } from 'crypto'
 
-import { ConfigService } from '#/config/config.service'
+import { Config } from '#/common/config.schema'
+
 import { MinioService } from '#/core/minio.service'
 
 import type { UploadedObjectInfo } from 'minio/dist/main/internal/type'
@@ -15,7 +17,7 @@ export class UploadService {
 
   constructor(
     private readonly minio: MinioService,
-    private readonly config: ConfigService
+    private readonly config: ConfigService<Config>
   ) {
     this.bucket = this.config.env('S3_BUCKET')
   }

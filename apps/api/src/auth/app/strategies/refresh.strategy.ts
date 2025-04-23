@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
-import { isNull } from '@repo/shared'
+import { ConfigService, isNull } from '@repo/shared'
 import { Request } from 'express'
 import { ExtractJwt, Strategy } from 'passport-jwt'
 
-import { ConfigService } from '#/config/config.service'
+import { Config } from '#/common/config.schema'
 
 import { User } from '#/user/domain'
 
@@ -18,7 +18,7 @@ import {
 @Injectable()
 export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
   constructor(
-    readonly config: ConfigService,
+    readonly config: ConfigService<Config>,
     private readonly auth: AuthService
   ) {
     super({
@@ -73,6 +73,6 @@ export class RefreshStrategy extends PassportStrategy(Strategy, 'refresh') {
       throw new UnauthorizedException('Токен обновления просрочен.')
     }
 
-    return user
+    return user!
   }
 }

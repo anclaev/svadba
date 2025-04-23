@@ -71,6 +71,7 @@ services:
         condition: "service_healthy"
     environment:
       APP_VERSION: ${VERSION}
+      PORT: ${API_PORT}
       DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       GRPC_PORT: ${API_GRPC_PORT}
       SENTRY_DSN: ${API_SENTRY_DSN}
