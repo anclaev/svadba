@@ -89,7 +89,10 @@ export class UserPrismaRepository extends UserRepository {
 
   async findById(id: string): Promise<User | UserError> {
     try {
-      const user = await this.prisma.user.findUnique({ where: { id } })
+      const user = await this.prisma.user.findUnique({
+        where: { id },
+        include: { guest: true },
+      })
 
       return user
         ? UserPrismaMapper.toEntity(user as IUserPrismaModel)
@@ -103,6 +106,7 @@ export class UserPrismaRepository extends UserRepository {
     try {
       const user = await this.prisma.user.findUnique({
         where: { login: login.trim() },
+        include: { guest: true },
       })
 
       return user

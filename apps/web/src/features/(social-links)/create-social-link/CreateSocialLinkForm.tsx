@@ -52,7 +52,7 @@ export const CreateSocialLinkForm: FC<CreateSocialLinkFormProps> = ({
     defaultValues: {
       alias: '',
       href: '',
-      icon: undefined,
+      icon: '',
       title: '',
     },
   })

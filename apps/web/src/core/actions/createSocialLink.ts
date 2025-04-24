@@ -30,7 +30,10 @@ export async function createSocialLink(
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...payload,
+          icon: payload.icon.trim() !== '' ? payload.icon : undefined,
+        }),
         mode: 'cors',
       }
     )

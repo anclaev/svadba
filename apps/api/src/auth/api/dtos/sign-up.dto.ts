@@ -12,10 +12,10 @@ const SignUpSchema = z.object({
   name: z
     .string({ message: 'Имя должно быть строкой.' })
     .nonempty({ message: 'Имя не может быть пустым.' }),
-  // side: z.enum(['GROOM', 'BRIDE'], { message: 'Некорректная сторона гостя.' }),
-  // role: z.enum(['GUEST', 'PARENT', 'CLOSE'], {
-  //   message: 'Некорректная роль гостя.',
-  // }),
+  side: z.enum(['GROOM', 'BRIDE'], { message: 'Некорректная сторона гостя.' }),
+  role: z.enum(['GUEST', 'PARENT', 'CLOSE'], {
+    message: 'Некорректная роль гостя.',
+  }),
   // answers: z.any().default({}),
 })
 

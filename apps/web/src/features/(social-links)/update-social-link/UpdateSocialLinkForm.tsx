@@ -48,7 +48,7 @@ export const UpdateSocialLinkForm: FC<UpdateSocialLinkDialogProps> = ({
     resolver: zodResolver(UpdateSocialLinkFormSchema),
     defaultValues: {
       href: initialState.href,
-      icon: initialState.icon || undefined,
+      icon: initialState.icon || '',
       title: initialState.title,
     },
   })

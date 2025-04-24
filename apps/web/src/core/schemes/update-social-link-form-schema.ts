@@ -8,12 +8,11 @@ export const UpdateSocialLinkFormSchema = z.object({
   href: z
     .string({ message: 'Ссылка должна быть строкой.' })
     .url({ message: 'Некорректная ссылка.' })
-    .nonempty({ message: 'Ссылка не может быть пустой.' })
-    .optional(),
-  icon: z
-    .string({ message: 'Иконка должна быть строкой.' })
-    .url({ message: 'Иконка должна быть ссылкой.' })
-    .optional(),
+    .nonempty({ message: 'Ссылка не может быть пустой.' }),
+  icon: z.union([
+    z.literal(''),
+    z.string().trim().url({ message: 'Некорректная ссылка на иконку.' }),
+  ]),
 })
 
 export type UpdateSocialLinkFormValues = z.infer<

@@ -9,7 +9,10 @@ import { Config } from '#/common/config.schema'
 import { REDIS_KEY } from '#/common/constants'
 import { RedisService } from '#/core/redis.service'
 
+import { CreateGuestCommand } from '#/svadba/app'
 import { CreateUserCommand, UserByIdQuery, UserByLoginQuery } from '#/user/app'
+
+import { GuestError } from '#/svadba/domain'
 import { User, UserError } from '#/user/domain'
 
 import { SignUpDto } from '#/auth/api'
@@ -56,7 +59,7 @@ export class AuthService {
       return new UserError('USER_ALREADY_EXISTS')
     }
 
-    const registeredUser = await this.commandBus.execute(
+    const createdUser = await this.commandBus.execute(
       new CreateUserCommand({
         login: data.login,
         name: data.name,
@@ -64,9 +67,27 @@ export class AuthService {
       })
     )
 
-    if (registeredUser instanceof UserError) return registeredUser
+    if (createdUser instanceof UserError) return createdUser
 
-    return this.login(registeredUser)
+    const createdGuest = await this.commandBus.execute(
+      new CreateGuestCommand({
+        userId: createdUser.id,
+        side: data.side,
+        role: data.role,
+      })
+    )
+
+    if (createdGuest instanceof GuestError) {
+      // TODO: Добавить компенсирующую транзакцию удаления пользователя при ошибке создания гостя
+
+      return new UserError('USER_UNKNOWN_ERROR')
+    }
+
+    createdUser.guest = createdGuest
+    createdUser.guestId = createdGuest.id
+    createdUser.commit()
+
+    return this.login(createdUser)
   }
 
   async login(user: User): Promise<LoginResult> {
