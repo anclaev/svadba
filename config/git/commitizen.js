@@ -33,12 +33,11 @@ module.exports = {
     { name: 'api' },
     { name: 'web' },
     { name: 'bot' },
+    { name: 'shared' },
     { name: 'db' },
-    { name: 'core' },
-    { name: 'common' },
-    { name: 'docker' },
     { name: 'config' },
     { name: 'docs' },
+    { name: 'deployment' },
   ],
 
   // Возможность задать спец ОБЛАСТЬ для определенного типа коммита (пример для 'fix')
