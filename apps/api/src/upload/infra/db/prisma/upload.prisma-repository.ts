@@ -34,6 +34,7 @@ export class UploadPrismaRepository extends UploadRepository {
               id: ownerId,
             },
           },
+          updatedAt: new Date(),
         },
         include: { owner: true },
       })
@@ -62,6 +63,7 @@ export class UploadPrismaRepository extends UploadRepository {
                 },
               }
             : undefined,
+          updatedAt: new Date(),
         },
         include: { owner: true },
       })

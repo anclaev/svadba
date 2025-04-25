@@ -16,6 +16,7 @@ export class TimingEventPrismaMapper {
     return {
       ...entity,
       createdAt: entity.createdAt!,
+      updatedAt: entity.updatedAt!,
       owner: UserPrismaMapper.toModel(owner),
       icon: icon ? UploadPrismaMapper.toModel(icon) : undefined,
     }
@@ -29,6 +30,7 @@ export class TimingEventPrismaMapper {
         ? (UploadPrismaMapper.toEntity(model.icon) as unknown as IUploadModel)
         : undefined,
       createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.updatedAt),
     })
   }
 }

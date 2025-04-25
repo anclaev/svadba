@@ -55,6 +55,7 @@ export class GuestPrismaRepository extends GuestRepository {
             ? (model.answers as InputJsonValue)
             : undefined,
           userId: model.userId,
+          updatedAt: new Date(),
         },
       })
 

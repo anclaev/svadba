@@ -32,6 +32,7 @@ export class UserPrismaRepository extends UserRepository {
           ...model,
           guest: undefined,
           credentials: model.credentials as InputJsonValue[],
+          updatedAt: new Date(),
         },
         include: { guest: true },
       })
@@ -61,6 +62,7 @@ export class UserPrismaRepository extends UserRepository {
                 },
               }
             : undefined,
+          updatedAt: new Date(),
         },
         include: { guest: true },
       })

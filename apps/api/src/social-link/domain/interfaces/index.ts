@@ -10,6 +10,7 @@ export interface ISocialLinkModel {
   icon: string | null
   creator: IUserModel
   creatorId: string
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -21,5 +22,6 @@ export interface ISocialLinkProps {
   icon: string | null
   creator?: User
   creatorId: string
+  updatedAt?: Date
   createdAt?: Date
 }

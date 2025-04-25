@@ -64,7 +64,7 @@ model User {
   password           String
   name               String
   isTelegramVerified Boolean    @default(false) @map("telegram_verified")
-  updatedAt          DateTime?  @map("updated_at") @db.Timestamptz(6)
+  updatedAt          DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
   createdAt          DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения 
@@ -91,12 +91,11 @@ model Guest {
   side      GuestSide
   role      GuestRole? @default(GUEST)
   answers   Json?
+  updatedAt DateTime   @default(now()) @map("updated_at") @db.Timestamptz(6)
   createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime?  @map("updated_at") @db.Timestamptz(6)
-
   // Отношения
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique @map("user_id") @db.Uuid()
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @unique @map("user_id") @db.Uuid()
 
   // Индексы
   @@index([side])
@@ -146,14 +145,14 @@ model TransactionHistory {
 }
 
 model Achievement {
-  id          String    @id @default(uuid()) @db.Uuid()
-  alias       String    @unique
+  id          String   @id @default(uuid()) @db.Uuid()
+  alias       String   @unique
   title       String
   description String?
   amount      Int
-  isHidden    Boolean   @default(false) @map("is_hidden")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
+  isHidden    Boolean  @default(false) @map("is_hidden")
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения
   image   Upload @relation(fields: [imageId], references: [id])
@@ -168,15 +167,15 @@ model Achievement {
 }
 
 model Upload {
-  id        String    @id @default(uuid()) @db.Uuid()
+  id        String   @id @default(uuid()) @db.Uuid()
   url       String
   name      String
   filename  String
   ext       String
   mimetype  String?
   size      Int?
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения
   events       TimingEvent[]
@@ -190,14 +189,14 @@ model Upload {
 }
 
 model TimingEvent {
-  id          String    @id @default(uuid()) @db.Uuid()
-  order       Int       @unique
+  id          String   @id @default(uuid()) @db.Uuid()
+  order       Int      @unique
   title       String
   description String?
   time        String
-  isPublic    Boolean   @default(true) @map("public")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
+  isPublic    Boolean  @default(true) @map("public")
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения
   icon    Upload? @relation(fields: [iconId], references: [id])
@@ -212,12 +211,12 @@ model TimingEvent {
 }
 
 model DresscodeColor {
-  id          String    @id @default(uuid()) @db.Uuid()
-  hex         String    @unique
+  id          String   @id @default(uuid()) @db.Uuid()
+  hex         String   @unique
   description String?
-  isHidden    Boolean   @default(false) @map("hidden")
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
+  isHidden    Boolean  @default(false) @map("hidden")
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения
   owner   User   @relation(fields: [ownerId], references: [id])
@@ -249,13 +248,13 @@ model RegistrationLink {
 }
 
 model SocialLink {
-  id        String    @id @default(uuid()) @db.Uuid()
-  alias     String    @unique
+  id        String   @id @default(uuid()) @db.Uuid()
+  alias     String   @unique
   title     String
   href      String
   icon      String?
-  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   // Отношения
   creator   User   @relation(fields: [creatorId], references: [id])

@@ -75,6 +75,13 @@ export class User extends AggregateRoot implements IUserProps {
   guestId: string | null
 
   @ApiProperty({
+    description: 'Дата изменения пользователя',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  updatedAt?: Date
+
+  @ApiProperty({
     description: 'Дата создания пользователя',
     type: 'string',
     example: '2025-03-27T10:53:02.377Z',

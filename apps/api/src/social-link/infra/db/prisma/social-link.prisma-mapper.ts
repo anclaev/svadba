@@ -20,6 +20,7 @@ export class SocialLinkPrismaMapper {
       ...model,
       creator: model.creator as unknown as IUserModel,
       createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.updatedAt),
     })
   }
 

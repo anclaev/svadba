@@ -12,6 +12,7 @@ export class DresscodeColorPrismaMapper {
     return {
       ...entity,
       createdAt: entity.createdAt!,
+      updatedAt: entity.updatedAt!,
       owner: UserPrismaMapper.toModel(owner),
     }
   }
@@ -21,6 +22,7 @@ export class DresscodeColorPrismaMapper {
       ...model,
       owner: model.owner as unknown as IUserModel,
       createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.updatedAt),
     })
   }
 }

@@ -56,6 +56,13 @@ export class DresscodeColor
   ownerId: string
 
   @ApiProperty({
+    description: 'Дата изменения цвета',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  updatedAt?: Date
+
+  @ApiProperty({
     description: 'Дата создания цвета',
     type: 'string',
     example: '2025-03-27T10:53:02.377Z',
