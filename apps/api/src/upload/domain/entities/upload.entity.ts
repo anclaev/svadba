@@ -54,6 +54,13 @@ export class Upload extends AggregateRoot implements IUploadProps {
   mimetype: string | null
 
   @ApiProperty({
+    description: 'Размер загрузки в байтах',
+    example: 1,
+    type: 'number',
+  })
+  size: number | null
+
+  @ApiProperty({
     description: 'Создатель загрузки',
     type: () => User,
   })
@@ -61,6 +68,13 @@ export class Upload extends AggregateRoot implements IUploadProps {
 
   @Exclude()
   ownerId: string
+
+  @ApiProperty({
+    description: 'Дата обновления загрузки',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  updatedAt?: Date
 
   @ApiProperty({
     description: 'Дата создания загрузки',

@@ -30,7 +30,8 @@ export class UserPrismaMapper {
       ...model,
       credentials: model.credentials as unknown as ICredentialsProps[],
       guest: model.guest ? (model.guest as unknown as IGuestModel) : undefined,
-      createdAt: new Date(model.createdAt!),
+      createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.createdAt),
     })
   }
   static toProto(entity: UserEntity): user.User {

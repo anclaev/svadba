@@ -33,6 +33,13 @@ export class TimingEvent extends AggregateRoot implements ITimingEventProps {
   title: string
 
   @ApiProperty({
+    description: 'Описание мероприятия',
+    example: 'Проведение свадебного банкета',
+    type: 'string',
+  })
+  description: string | null
+
+  @ApiProperty({
     description: 'Время мероприятия',
     example: '12:00',
     type: 'string',
@@ -69,6 +76,13 @@ export class TimingEvent extends AggregateRoot implements ITimingEventProps {
     type: 'string',
   })
   ownerId: string
+
+  @ApiProperty({
+    description: 'Дата изменения мероприятия',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  updatedAt?: Date
 
   @ApiProperty({
     description: 'Дата создания мероприятия',
