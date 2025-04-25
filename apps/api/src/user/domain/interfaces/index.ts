@@ -18,7 +18,7 @@ export interface IUserModel {
   role: UserRole
   login: string
   password: string
-  name: string | null
+  name: string
   guest?: IGuestModel
   guestId: string | null
   credentials: ICredentialsProps[]
