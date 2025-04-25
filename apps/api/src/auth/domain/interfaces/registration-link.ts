@@ -1,0 +1,13 @@
+export const REGISTRATION_LINK_ERRORS = {
+  REGISTRATION_LINK_UNKNOWN_ERROR: 'REGISTRATION_LINK_UNKNOWN_ERROR',
+} as const
+
+export type REGISTRATION_LINK_ERRORS =
+  (typeof REGISTRATION_LINK_ERRORS)[keyof typeof REGISTRATION_LINK_ERRORS]
+
+export class RegistrationLinkError extends Error {
+  constructor(key: REGISTRATION_LINK_ERRORS) {
+    super(key)
+    this.name = 'RegistrationLinkException'
+  }
+}

@@ -1,0 +1,77 @@
+import { RegistrationLinkStatus } from '#prisma'
+import { AggregateRoot } from '@nestjs/cqrs'
+import { ApiProperty, ApiSchema } from '@nestjs/swagger'
+import { InputJsonValue } from '@prisma/client/runtime/library'
+
+import { User } from '#/user/domain'
+
+import { IRegistrationLinkProps } from '../interfaces'
+
+@ApiSchema({
+  name: 'Регистрационная ссылка',
+  description: 'Ссылка для регистрации пользователя',
+})
+export class RegistrationLink
+  extends AggregateRoot
+  implements IRegistrationLinkProps
+{
+  @ApiProperty({
+    description: 'Идентификатор регистрационной ссылки',
+    example: '0ffc0421-d8cc-4f1e-9562-9ad64766ed37',
+    type: 'string',
+  })
+  id: string
+
+  @ApiProperty({
+    description: 'Статус регистрационной ссылки',
+    type: 'string',
+    example: 'PENDIND',
+  })
+  status: RegistrationLinkStatus
+
+  @ApiProperty({
+    description: 'Флаг активности регистрационной ссылки',
+    type: 'boolean',
+    default: 'true',
+  })
+  isActive: boolean
+
+  @ApiProperty({
+    description: 'Данные для регистрации пользователя',
+    type: 'object',
+    example: {
+      name: 'Иван Иванов',
+      login: 'IvanIvanov',
+      side: 'GROOM',
+      role: 'GUEST',
+    },
+    additionalProperties: true,
+  })
+  meta: InputJsonValue = {}
+
+  @ApiProperty({
+    description: 'Создатель регистрационной ссылки',
+    type: () => User,
+  })
+  owner: User
+
+  @ApiProperty({
+    description: 'Идентификатор создателя регистрационной ссылки',
+    type: 'string',
+  })
+  ownerId: string
+
+  @ApiProperty({
+    description: 'Дата истечения срока регистрационной ссылки',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  expiresAt: Date
+
+  @ApiProperty({
+    description: 'Дата создания регистрационной ссылки',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  createdAt?: Date
+}
