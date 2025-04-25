@@ -5,7 +5,7 @@ import { InputJsonValue } from '@prisma/client/runtime/library'
 
 import { User } from '#/user/domain'
 
-import { IRegistrationLinkProps } from '../interfaces'
+import { IRegistrationLinkModel, IRegistrationLinkProps } from '../interfaces'
 
 @ApiSchema({
   name: 'Регистрационная ссылка',
@@ -74,4 +74,21 @@ export class RegistrationLink
     example: '2025-03-27T10:53:02.377Z',
   })
   createdAt?: Date
+
+  constructor(props: IRegistrationLinkProps) {
+    super()
+
+    Object.assign(this, props)
+  }
+
+  static create(props: IRegistrationLinkProps): RegistrationLink {
+    return new this(props)
+  }
+
+  static fromModel(props: IRegistrationLinkModel): RegistrationLink {
+    return new this({
+      ...props,
+      owner: User.fromModel(props.owner),
+    })
+  }
 }

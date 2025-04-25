@@ -6,18 +6,28 @@ import { PassportModule } from '@nestjs/passport'
 import { SvadbaModule } from '#/svadba/svadba.module'
 import { UserModule } from '#/user/user.module'
 
-import { AuthController } from '#/auth/api'
+import { AuthController } from './api'
 
-import {
-  AuthService,
-  JwtStrategy,
-  LocalStrategy,
-  RefreshStrategy,
-} from '#/auth/app'
+import { AuthService, JwtStrategy, LocalStrategy, RefreshStrategy } from './app'
+
+import { RegistrationLinkRepository } from './domain'
+
+import { RegistrationLinkPrismaRepository } from './infra'
+
+export const registrationLinkRepositoryProvider = {
+  provide: RegistrationLinkRepository,
+  useClass: RegistrationLinkPrismaRepository,
+}
 
 @Module({
   imports: [CqrsModule, PassportModule, JwtModule, UserModule, SvadbaModule],
-  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshStrategy],
   controllers: [AuthController],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    RefreshStrategy,
+    registrationLinkRepositoryProvider,
+  ],
 })
 export class AuthModule {}
