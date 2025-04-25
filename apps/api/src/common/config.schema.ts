@@ -1,3 +1,4 @@
+import { zUrlArrayFromString } from '@repo/shared'
 import { z } from 'zod'
 
 /**
@@ -64,12 +65,12 @@ export const configSchema = z.object({
 
   /**
    * Настройки CORS (разрешенные домены)
-   * @type {z.ZodString}
-   * @default 'localhost'
+   * @type {z.ZodArray}
    */
-  ORIGIN: z
-    .string({ message: 'Некорректная настройка CORS.' })
-    .default('localhost'),
+  ALLOWED_ORIGINS: z
+    .string({ message: 'Разрешённые домены должны быть строкой.' })
+    .nonempty({ message: 'Разрешённые домены не установлены.' })
+    .transform(zUrlArrayFromString),
 
   /**
    * Версия приложения (обязательная)
@@ -302,7 +303,7 @@ export const configSchema = z.object({
  * @property {string} HOST - Хост сервиса
  * @property {number} PORT - Порт сервиса (1000-10000)
  * @property {number} GRPC_PORT - gRPC-порт сервиса (1000-10000)
- * @property {string} ORIGIN - Разрешенные домены для CORS
+ * @property {string[]} ALLOWED_ORIGINS - разрешённые домены для CORS (обязательные)
  * @property {string} APP_VERSION - Версия приложения (обязательная)
  * @property {string} DATABASE_URL - URL базы данных
  * @property {string} SENTRY_DSN - Sentry DSN

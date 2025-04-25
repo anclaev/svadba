@@ -7,7 +7,6 @@ import { NestExpressApplication } from '@nestjs/platform-express'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { ConfigService, loggerFactory, social_link } from '@repo/shared'
 import compression from 'compression'
-
 import cookieParser from 'cookie-parser'
 import bearerToken from 'express-bearer-token'
 import * as fs from 'fs'
@@ -76,7 +75,7 @@ async function bootstrap() {
   const host = config.env('HOST')
   const port = config.env('PORT')
   const grpcPort = config.env('GRPC_PORT')
-  const origin = config.env('ORIGIN')
+  const allowedOrigins = config.env('ALLOWED_ORIGINS')
   const version = config.env('APP_VERSION')
 
   // Настройка middlewares
@@ -89,7 +88,10 @@ async function bootstrap() {
   // Настройка CORS
   app.enableCors({
     credentials: true,
-    origin,
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    exposedHeaders: ['Set-Cookie'],
+    allowedHeaders: ['Set-Cookie', 'Authorization'],
   })
 
   // Подключение gRPC микросервиса
