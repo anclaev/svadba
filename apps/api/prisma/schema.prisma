@@ -32,6 +32,11 @@ enum GuestSide {
   BRIDE // Невеста
 }
 
+enum RegistrationLinkStatus {
+  PENDING
+  APPLIED
+}
+
 enum QuestStatus {
   STARTED
   COMPLETED
@@ -62,7 +67,8 @@ model User {
   transactions       TransactionHistory[]
   dresscodeColors    DresscodeColor[]
   timingEvents       TimingEvent[]
-  links              SocialLink[]
+  socialLinks        SocialLink[]
+  registrationLinks  RegistrationLink[]
 }
 
 model Guest {
@@ -150,6 +156,21 @@ model DresscodeColor {
   createdAt   DateTime @default(now()) @map("created_at")
   owner       User     @relation(fields: [ownerId], references: [id])
   ownerId     String   @map("owner_id") @db.Uuid()
+}
+
+model RegistrationLink {
+  id        String                 @id @default(uuid()) @db.Uuid()
+  status    RegistrationLinkStatus @default(PENDING)
+  isActive  Boolean                @default(true) @map("is_active")
+  expiresAt DateTime               @map("expires_at")
+  createdAt DateTime               @default(now()) @map("created_at")
+  meta      Json
+  owner     User                   @relation(fields: [ownerId], references: [id])
+  ownerId   String                 @map("owner_id") @db.Uuid()
+
+  @@index([status])
+  @@index([expiresAt])
+  @@index([isActive])
 }
 
 model SocialLink {
