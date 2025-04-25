@@ -8,67 +8,82 @@ generator client {
   output   = "../generated/client"
 }
 
+// Статусы пользователя
 enum UserStatus {
-  CREATED // Создан
-  ACCEPTED // Подтверждён
-  BLOCKED // Заблокирован
+  CREATED // Аккаунт создан, но не подтверждён
+  ACCEPTED // Аккаунт подтверждён и активен
+  BLOCKED // Аккаунт заблокирован
 }
 
 enum UserRole {
-  PUBLIC // Обыкновенный
-  ADMIN // Администратор
+  PUBLIC // Обычный пользователь
+  ADMIN // Администратор системы
 }
 
+// Роли гостей на мероприятии
 enum GuestRole {
-  GUEST // Гость
-  PARENT // Родитель
-  CLOSE // Близкий
+  GUEST // Обычный гость
+  PARENT // Родитель жениха/невесты
+  CLOSE // Близкий родственник/друг
   GROOM // Жених
   BRIDE // Невеста
 }
 
+// Сторона, к которой относится гость
 enum GuestSide {
-  GROOM // Жених
-  BRIDE // Невеста
+  GROOM // Сторона жениха
+  BRIDE // Сторона невесты
 }
 
+// Статусы регистрационных ссылок
 enum RegistrationLinkStatus {
-  PENDING
-  APPLIED
+  PENDING // Ссылка ожидает использования
+  APPLIED // Ссылка была использована
 }
 
+// Статусы квестов
 enum QuestStatus {
-  STARTED
-  COMPLETED
+  STARTED // Квест начат
+  COMPLETED // Квест завершён
 }
 
+// Статусы транзакций
 enum TransactionStatus {
-  CREATED
-  WAITING
-  ACCEPTED
-  CANCELLED
+  CREATED // Транзакция создана
+  WAITING // Транзакция в ожидании обработки
+  ACCEPTED // Транзакция выполнена успешно
+  CANCELLED // Транзакция отменена
 }
 
 model User {
-  id                 String               @id @default(uuid()) @db.Uuid()
-  telegramId         Int?                 @unique @map("telegram_id")
-  status             UserStatus           @default(CREATED)
-  role               UserRole             @default(PUBLIC)
-  login              String               @unique
+  id                 String     @id @default(uuid()) @db.Uuid()
+  telegramId         Int?       @unique @map("telegram_id")
+  status             UserStatus @default(CREATED)
+  role               UserRole   @default(PUBLIC)
+  login              String     @unique
   password           String
   name               String
-  isTelegramVerified Boolean              @default(false) @map("telegram_verified")
-  createdAt          DateTime?            @default(now()) @map("created_at")
-  guest              Guest?
-  credentials        Json[]               @default([])
-  uploads            Upload[]
-  achievements       Achievement[]
-  quests             Quest[]
-  transactions       TransactionHistory[]
-  dresscodeColors    DresscodeColor[]
-  timingEvents       TimingEvent[]
-  socialLinks        SocialLink[]
-  registrationLinks  RegistrationLink[]
+  isTelegramVerified Boolean    @default(false) @map("telegram_verified")
+  updatedAt          DateTime?  @map("updated_at") @db.Timestamptz(6)
+  createdAt          DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  // Отношения 
+  guest             Guest?
+  credentials       Json[]               @default([])
+  uploads           Upload[]
+  achievements      UserAchievement[]
+  quests            Quest[]
+  transactions      TransactionHistory[]
+  dresscodeColors   DresscodeColor[]
+  timingEvents      TimingEvent[]
+  socialLinks       SocialLink[]
+  registrationLinks RegistrationLink[]
+
+  // Индексы
+  @@index([telegramId])
+  @@index([status])
+  @@index([role])
+  @@index([createdAt])
 }
 
 model Guest {
@@ -76,18 +91,35 @@ model Guest {
   side      GuestSide
   role      GuestRole? @default(GUEST)
   answers   Json?
-  createdAt DateTime?  @default(now()) @map("created_at")
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String     @unique @map("user_id") @db.Uuid()
+  createdAt DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime?  @map("updated_at") @db.Timestamptz(6)
+
+  // Отношения
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique @map("user_id") @db.Uuid()
+
+  // Индексы
+  @@index([side])
+  @@index([role])
+  @@index([createdAt])
 }
 
 model Quest {
-  id        String      @id @default(uuid()) @db.Uuid()
-  type      String
-  status    QuestStatus @default(STARTED)
-  createdAt DateTime    @default(now()) @map("created_at")
-  actor     User        @relation(fields: [actorId], references: [id])
-  actorId   String      @map("actor_id") @db.Uuid()
+  id          String      @id @default(uuid()) @db.Uuid()
+  type        String
+  status      QuestStatus @default(STARTED)
+  createdAt   DateTime    @default(now()) @map("created_at") @db.Timestamptz(6)
+  completedAt DateTime?   @map("completed_at") @db.Timestamptz(6)
+
+  // Отноешния
+  actor   User   @relation(fields: [actorId], references: [id])
+  actorId String @map("actor_id") @db.Uuid()
+
+  // Индексы
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([actorId])
 }
 
 model TransactionHistory {
@@ -97,89 +129,150 @@ model TransactionHistory {
   amount         Int
   currentBalance Int               @map("current_balance")
   version        Int
-  createdAt      DateTime          @default(now()) @map("created_at")
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  processedAt    DateTime?         @map("processed_at") @db.Timestamptz(6)
 
-  account   User   @relation(fields: [accountId], references: [id])
-  accountId String @map("issuer_id") @db.Uuid()
-
+  // Отношения
+  issuer        User         @relation(fields: [issuerId], references: [id])
+  issuerId      String       @map("issuer_id") @db.Uuid()
   achievement   Achievement? @relation(fields: [achievementId], references: [id])
   achievementId String?      @map("achievement_id") @db.Uuid()
+
+  // Индексы
+  @@index([status])
+  @@index([createdAt])
+  @@index([issuerId])
+  @@index([achievementId])
 }
 
 model Achievement {
-  id        String   @id @default(uuid()) @db.Uuid()
-  alias     String   @unique
-  title     String
-  amount    Int
-  createdAt DateTime @default(now()) @map("created_at")
+  id          String    @id @default(uuid()) @db.Uuid()
+  alias       String    @unique
+  title       String
+  description String?
+  amount      Int
+  isHidden    Boolean   @default(false) @map("is_hidden")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
 
+  // Отношения
   image   Upload @relation(fields: [imageId], references: [id])
   imageId String @map("image_id") @db.Uuid()
 
-  users        User[]
+  users        UserAchievement[]
   transactions TransactionHistory[] @ignore
+
+  // Индексы
+  @@index([alias])
+  @@index([createdAt])
 }
 
 model Upload {
-  id           String        @id @default(uuid()) @db.Uuid()
-  url          String
-  name         String
-  filename     String
-  ext          String
-  mimetype     String?
-  createdAt    DateTime      @default(now()) @map("created_at")
+  id        String    @id @default(uuid()) @db.Uuid()
+  url       String
+  name      String
+  filename  String
+  ext       String
+  mimetype  String?
+  size      Int?
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
+
+  // Отношения
   events       TimingEvent[]
   achievements Achievement[] @ignore
+  owner        User          @relation(fields: [ownerId], references: [id])
+  ownerId      String        @map("owner_id") @db.Uuid()
 
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @map("owner_id") @db.Uuid()
+  // Индексы
+  @@index([ownerId])
+  @@index([createdAt])
 }
 
 model TimingEvent {
-  id        String   @id @default(uuid()) @db.Uuid()
-  order     Int      @unique
-  title     String
-  time      String
-  isPublic  Boolean  @default(true) @map("public")
-  createdAt DateTime @default(now()) @map("created_at")
-  icon      Upload?  @relation(fields: [iconId], references: [id])
-  iconId    String?  @map("icon_id") @db.Uuid()
-  owner     User     @relation(fields: [ownerId], references: [id])
-  ownerId   String   @map("owner_id") @db.Uuid()
+  id          String    @id @default(uuid()) @db.Uuid()
+  order       Int       @unique
+  title       String
+  description String?
+  time        String
+  isPublic    Boolean   @default(true) @map("public")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
+
+  // Отношения
+  icon    Upload? @relation(fields: [iconId], references: [id])
+  iconId  String? @map("icon_id") @db.Uuid()
+  owner   User    @relation(fields: [ownerId], references: [id])
+  ownerId String  @map("owner_id") @db.Uuid()
+
+  // Индексы
+  @@index([order])
+  @@index([isPublic])
+  @@index([ownerId])
 }
 
 model DresscodeColor {
-  id          String   @id @default(uuid()) @db.Uuid()
-  hex         String   @unique
+  id          String    @id @default(uuid()) @db.Uuid()
+  hex         String    @unique
   description String?
-  isHidden    Boolean  @default(false) @map("hidden")
-  createdAt   DateTime @default(now()) @map("created_at")
-  owner       User     @relation(fields: [ownerId], references: [id])
-  ownerId     String   @map("owner_id") @db.Uuid()
+  isHidden    Boolean   @default(false) @map("hidden")
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @map("updated_at") @db.Timestamptz(6)
+
+  // Отношения
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id") @db.Uuid()
+
+  // Индексы
+  @@index([hex])
+  @@index([isHidden])
+  @@index([ownerId])
 }
 
 model RegistrationLink {
   id        String                 @id @default(uuid()) @db.Uuid()
   status    RegistrationLinkStatus @default(PENDING)
   isActive  Boolean                @default(true) @map("is_active")
-  expiresAt DateTime               @map("expires_at")
-  createdAt DateTime               @default(now()) @map("created_at")
+  expiresAt DateTime               @map("expires_at") @db.Timestamptz(6)
+  createdAt DateTime               @default(now()) @map("created_at") @db.Timestamptz(6)
   meta      Json
-  owner     User                   @relation(fields: [ownerId], references: [id])
-  ownerId   String                 @map("owner_id") @db.Uuid()
 
+  // Отношения
+  owner   User   @relation(fields: [ownerId], references: [id])
+  ownerId String @map("owner_id") @db.Uuid()
+
+  // Индексы
   @@index([status])
   @@index([expiresAt])
   @@index([isActive])
+  @@index([ownerId])
 }
 
 model SocialLink {
-  id        String   @id @default(uuid()) @db.Uuid()
-  alias     String   @unique
+  id        String    @id @default(uuid()) @db.Uuid()
+  alias     String    @unique
   title     String
   href      String
   icon      String?
-  creator   User     @relation(fields: [creatorId], references: [id])
-  creatorId String   @map("creator_id") @db.Uuid()
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
+
+  // Отношения
+  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId String @map("creator_id") @db.Uuid()
+
+  // Индексы
+  @@index([alias])
+  @@index([creatorId])
+}
+
+// Промежуточная таблица для связи многие-ко-многим User и Achievement
+model UserAchievement {
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String      @map("user_id") @db.Uuid
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+  achievementId String      @map("achievement_id") @db.Uuid
+  earnedAt      DateTime    @default(now()) @map("earned_at") @db.Timestamptz(6)
+
+  @@id([userId, achievementId])
 }

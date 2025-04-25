@@ -1,4 +1,3 @@
-import { zUrlArrayFromString } from '@repo/shared'
 import { z } from 'zod'
 
 /**
@@ -63,15 +62,6 @@ export const configSchema = z.object({
     .nonempty({ message: 'Версия приложения не может быть пустой.' }),
 
   /**
-   * Настройки CORS (разрешенные домены)
-   * @type {z.ZodArray}
-   */
-  ALLOWED_ORIGINS: z
-    .string({ message: 'Разрешённые домены должны быть строкой.' })
-    .nonempty({ message: 'Разрешённые домены не установлены.' })
-    .transform(zUrlArrayFromString),
-
-  /**
    * Эндпойнт веб-интерфейса
    * @type {z.ZodString}
    * @format url
@@ -113,7 +103,6 @@ export const configSchema = z.object({
  * @property {number} GRPC_PORT - gRPC-порт сервиса (1000-10000)
  * @property {string} SENTRY_DSN - Sentry DSN
  * @property {string} APP_VERSION - Версия приложения (обязательная)
- * @property {string[]} ALLOWED_ORIGINS - разрешённые домены для CORS (обязательные)
  * @property {string} WEB_ENDPOINT - URL веб-интерфейса
  * @property {string} TELEGRAM_BOT_TOKEN - Токен бота Telegram
  *
