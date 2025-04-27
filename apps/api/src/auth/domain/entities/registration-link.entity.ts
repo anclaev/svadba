@@ -5,7 +5,11 @@ import { InputJsonValue } from '@prisma/client/runtime/library'
 
 import { User } from '#/user/domain'
 
-import { IRegistrationLinkModel, IRegistrationLinkProps } from '../interfaces'
+import {
+  IRegistrationLinkModel,
+  IRegistrationLinkProps,
+  RegistrationLinkMeta,
+} from '../interfaces'
 
 @ApiSchema({
   name: 'Регистрационная ссылка',
@@ -88,7 +92,35 @@ export class RegistrationLink
   static fromModel(props: IRegistrationLinkModel): RegistrationLink {
     return new this({
       ...props,
-      owner: User.fromModel(props.owner),
+      owner: props.owner ? User.fromModel(props.owner) : undefined,
     })
+  }
+
+  get isExpired(): boolean {
+    return this.expiresAt < new Date()
+  }
+
+  get isApplied(): boolean {
+    return this.status === 'APPLIED'
+  }
+
+  setMeta(meta: RegistrationLinkMeta): void {
+    this.meta = meta
+    this.commit()
+  }
+
+  apply() {
+    this.status = 'APPLIED'
+    this.commit()
+  }
+
+  deactivate() {
+    this.isActive = false
+    this.commit()
+  }
+
+  activate() {
+    this.isActive = true
+    this.commit()
   }
 }

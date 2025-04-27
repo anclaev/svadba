@@ -17,10 +17,11 @@ export abstract class RegistrationLinkRepository
     entity: RegistrationLink
   ): Promise<RegistrationLink | RegistrationLinkError>
   abstract delete(id: string): Promise<boolean | RegistrationLinkError>
+  abstract deleteExpired(date: Date): Promise<number | RegistrationLinkError>
   abstract exists(id: string): Promise<boolean | RegistrationLinkError>
   abstract findMore(
-    paginationParams: IPaginationParams,
-    queryParams: IRegistrationLinkQueryParams
+    paginationParams: Partial<IPaginationParams>,
+    queryParams: Partial<IRegistrationLinkQueryParams>
   ): Promise<IPaginationResult<RegistrationLink> | RegistrationLinkError>
   abstract findById(
     id: string

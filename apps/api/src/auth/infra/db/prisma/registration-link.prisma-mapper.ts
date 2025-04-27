@@ -14,7 +14,7 @@ export class RegistrationLinkPrismaMapper {
     return {
       ...entity,
       meta: entity.meta as JsonValue,
-      owner: UserPrismaMapper.toModel(owner),
+      owner: owner ? UserPrismaMapper.toModel(owner) : undefined,
       createdAt: entity.createdAt!,
     }
   }

@@ -60,11 +60,11 @@ export class SocialLinkController {
     private readonly queryBus: QueryBus
   ) {}
 
-  @ApiOperation({ summary: 'Получение ссылки по ID' })
+  @ApiOperation({ summary: 'Получение социальной ссылки по ID' })
   @ApiQuery({ type: IdQueryParamsDto })
-  @ApiNotFoundResponse({ description: 'Ссылка не найдена' })
+  @ApiNotFoundResponse({ description: 'Социальная ссылка не найдена' })
   @ApiOkResponse({
-    description: 'Ссылка успешно получена',
+    description: 'Социальная ссылка успешно получена',
     type: SocialLink,
   })
   @CacheKey('social_link_by_id')
@@ -87,10 +87,10 @@ export class SocialLinkController {
     return socialLink
   }
 
-  @ApiOperation({ summary: 'Получение списка ссылок' })
+  @ApiOperation({ summary: 'Получение списка социальных ссылок' })
   @ApiQuery({ type: SocialLinksDto })
   @ApiOkResponse({
-    description: 'Список ссылок успешно получен',
+    description: 'Список социальных ссылок успешно получен',
   })
   @CacheKey('social_links')
   @CacheTTL(TTL_MS.DAY)
@@ -111,18 +111,20 @@ export class SocialLinkController {
     return res
   }
 
-  @ApiOperation({ summary: 'Создание ссылки' })
+  @ApiOperation({ summary: 'Создание социальной ссылки' })
   @ApiBody({
-    description: 'Данные для создания ссылки',
+    description: 'Данные для создания социальной ссылки',
     type: CreateSocialLinkDto,
   })
   @ApiCreatedResponse({
-    description: 'Ссылка успешно создана',
+    description: 'Социальная ссылка успешно создана',
     type: () => SocialLink,
   })
-  @ApiConflictResponse({ description: 'Неуникальный алиас ссылки' })
+  @ApiConflictResponse({ description: 'Неуникальный алиас социальной ссылки' })
   @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
-  @ApiBadRequestResponse({ description: 'Некорректный создатель ссылки' })
+  @ApiBadRequestResponse({
+    description: 'Некорректный создатель социальной ссылки',
+  })
   @ApiCookieAuth()
   @Auth(['ADMIN'])
   @Post()
@@ -154,16 +156,16 @@ export class SocialLinkController {
     return res
   }
 
-  @ApiOperation({ summary: 'Обновление ссылки по идентификатору' })
+  @ApiOperation({ summary: 'Обновление социальной ссылки по идентификатору' })
   @ApiBody({
-    description: 'Данные для обновления ссылки',
+    description: 'Данные для обновления социальной ссылки',
     type: UpdateSocialLinkDto,
   })
   @ApiOkResponse({
-    description: 'Ссылка успешно обновлена',
+    description: 'Социальная ссылка успешно обновлена',
     type: SocialLink,
   })
-  @ApiNotFoundResponse({ description: 'Ссылка не найдена' })
+  @ApiNotFoundResponse({ description: 'Социальная ссылка не найдена' })
   @ApiUnauthorizedResponse({ description: 'Ошибка доступа' })
   @ApiCookieAuth()
   @Auth(['ADMIN'])
@@ -195,11 +197,14 @@ export class SocialLinkController {
   }
 
   @ApiOperation({
-    summary: 'Удаление ссылки по идентификатору',
+    summary: 'Удаление социальной ссылки по идентификатору',
   })
   @ApiQuery({ type: () => IdQueryParamsDto })
-  @ApiOkResponse({ description: 'Ссылка успешно удалена', type: Boolean })
-  @ApiNotFoundResponse({ description: 'Ссылка не найдена' })
+  @ApiOkResponse({
+    description: 'Социальная ссылка успешно удалена',
+    type: Boolean,
+  })
+  @ApiNotFoundResponse({ description: 'Социальная ссылка не найдена' })
   @ApiCookieAuth()
   @Auth(['ADMIN'])
   @Delete(':id')

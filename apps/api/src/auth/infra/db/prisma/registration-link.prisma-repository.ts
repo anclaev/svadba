@@ -10,6 +10,7 @@ import {
   IRegistrationLinkQueryParams,
   RegistrationLink,
   RegistrationLinkError,
+  RegistrationLinkMeta,
   RegistrationLinkRepository,
 } from '#/auth/domain'
 
@@ -88,6 +89,22 @@ export class RegistrationLinkPrismaRepository extends RegistrationLinkRepository
     }
   }
 
+  async deleteExpired(date: Date): Promise<number | RegistrationLinkError> {
+    try {
+      return (
+        await this.prisma.registrationLink.deleteMany({
+          where: {
+            expiresAt: {
+              lt: date,
+            },
+          },
+        })
+      ).count
+    } catch {
+      return new RegistrationLinkError('REGISTRATION_LINK_UNKNOWN_ERROR')
+    }
+  }
+
   async exists(id: string): Promise<boolean | RegistrationLinkError> {
     try {
       return !!(await this.prisma.registrationLink.findUnique({
@@ -119,6 +136,8 @@ export class RegistrationLinkPrismaRepository extends RegistrationLinkRepository
     paginationParams: IPaginationParams,
     queryParams: IRegistrationLinkQueryParams
   ): Promise<IPaginationResult<RegistrationLink> | RegistrationLinkError> {
+    const query = queryParams.meta ? this.createMetaQuery(queryParams.meta) : []
+
     try {
       const [registrationLinks, total] = await Promise.all([
         await this.prisma.registrationLink.findMany({
@@ -134,16 +153,12 @@ export class RegistrationLinkPrismaRepository extends RegistrationLinkRepository
                   equals: queryParams.status,
                 }
               : undefined,
-            expiresAt: queryParams.isExpired
-              ? {
-                  gte: new Date(),
-                }
-              : undefined,
             ownerId: queryParams.ownerId
               ? {
                   equals: queryParams.ownerId,
                 }
               : undefined,
+            AND: query,
           },
         }),
         await this.prisma.registrationLink.count(),
@@ -162,5 +177,30 @@ export class RegistrationLinkPrismaRepository extends RegistrationLinkRepository
 
       return new RegistrationLinkError('REGISTRATION_LINK_UNKNOWN_ERROR')
     }
+  }
+
+  private createMetaQuery(meta: RegistrationLinkMeta): any[] {
+    const query = []
+
+    for (const key of Object.keys(meta)) {
+      // Уникальные поле
+      if (key === 'login') {
+        query.push({
+          meta: {
+            path: ['login'],
+            equals: meta[key] as string,
+          },
+        })
+      } else {
+        query.push({
+          meta: {
+            path: [key],
+            string_contains: meta[key as keyof typeof meta] as string,
+          },
+        })
+      }
+    }
+
+    return query
   }
 }
