@@ -8,6 +8,7 @@ export class GuestPrismaMapper {
     return {
       ...entity,
       createdAt: entity.createdAt ? entity.createdAt : undefined,
+      updatedAt: entity.updatedAt ? entity.updatedAt : undefined,
     } as GuestModel
   }
   static toEntity(model: GuestModel): GuestEntity {
@@ -17,7 +18,8 @@ export class GuestPrismaMapper {
       side: model.side,
       role: model.role!,
       answers: model.answers as JsonObject,
-      createdAt: new Date(model.createdAt!),
+      createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.updatedAt),
     })
   }
 }

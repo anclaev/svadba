@@ -66,6 +66,7 @@ export class DresscodeColorPrismaRepository extends DresscodeColorRepository {
               id: model.ownerId,
             },
           },
+          updatedAt: new Date(),
         },
       })
 

@@ -23,6 +23,7 @@ export interface IUserModel {
   guestId: string | null
   credentials: ICredentialsProps[]
   isTelegramVerified: boolean
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -38,5 +39,6 @@ export interface IUserProps {
   guestId?: string | null
   credentials: Credentials[]
   isTelegramVerified: boolean
+  updatedAt?: Date
   createdAt?: Date
 }

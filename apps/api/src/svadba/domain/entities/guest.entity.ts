@@ -44,6 +44,13 @@ export class Guest extends AggregateRoot implements IGuestProps {
   answers: InputJsonValue = {}
 
   @ApiProperty({
+    description: 'Дата изменения гостя',
+    type: 'string',
+    example: '2025-03-27T10:53:02.377Z',
+  })
+  updatedAt?: Date
+
+  @ApiProperty({
     description: 'Дата создания гостя',
     type: 'string',
     example: '2025-03-27T10:53:02.377Z',

@@ -1,5 +1,6 @@
 export * from './dresscode-color.model'
 export * from './guest.model'
+export * from './registration-link.model'
 export * from './social-link.model'
 export * from './timing-event.model'
 export * from './upload.model'

@@ -2,6 +2,7 @@ import { createKeyv } from '@keyv/redis'
 import { ThrottlerStorageRedisService } from '@nest-lab/throttler-storage-redis'
 import { CacheModule } from '@nestjs/cache-manager'
 import { Global, Logger, Module } from '@nestjs/common'
+import { ScheduleModule } from '@nestjs/schedule'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { seconds, ThrottlerModule } from '@nestjs/throttler'
 import { ConfigService } from '@repo/shared'
@@ -20,6 +21,7 @@ import { RedisService } from './redis.service'
  * @module CoreModule
  * @description
  * Содержит основные сервисы и конфигурации, используемые во всем приложении:
+ * - Поддержка CRON
  * - Кеширование через Redis
  * - Ограничение запросов (rate limiting)
  * - Обслуживание статических файлов
@@ -31,6 +33,12 @@ import { RedisService } from './redis.service'
 @Global()
 @Module({
   imports: [
+    /**
+     * Модуль CRON-работ
+     * @description
+     * Предоставляет функционал CRON-работ.
+     */
+    ScheduleModule.forRoot(),
     /**
      * Асинхронная регистрация модуля кеширования
      * @property {boolean} isGlobal - Глобальная видимость модуля

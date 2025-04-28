@@ -231,6 +231,15 @@ export const configSchema = z.object({
     .string({ message: 'Некорректный секрет cookie.' })
     .nonempty({ message: 'Секрет cookie не может быть пустым.' }),
 
+  /**
+   * Время действия регистрацонной ссылки (в секундах)
+   * @type {z.ZodNumber}
+   * @default 604800 (7 дней)
+   */
+  REGISTRATION_LINK_EXPIRATION: z.coerce
+    .number({ message: 'Некорректное время действия регистрационной ссылки.' })
+    .default(604800),
+
   // Redis Configuration
   /**
    * Конфигурация Redis

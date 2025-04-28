@@ -7,6 +7,22 @@
 export const APP_NAME = 'Svadba API'
 
 /**
+ * Минимальная длина логина пользователя
+ * @constant {number} USER_LOGIN_MIN_LENGTH
+ * @default 8
+ * @description Используется для ограничения минимальной длины логина пользователя
+ */
+export const USER_LOGIN_MIN_LENGTH = 4
+
+/**
+ * Минимальная длина пароля пользователя
+ * @constant {number} USER_PASSWORD_MIN_LENGTH
+ * @default 8
+ * @description Используется для ограничения минимальной длины пароля пользователя
+ */
+export const USER_PASSWORD_MIN_LENGTH = 8
+
+/**
  * Константы времени жизни в миллисекундах
  * @constant {Object} TTL_MS
  * @readonly
