@@ -1,4 +1,4 @@
-import { RegistrationLinkItemModel } from '../models/registration-link.model'
+import { RegistrationLinkItemModel } from '@/core/models/(registration-links)'
 
 import { withPagination } from '..'
 import { PaginationDto } from '../../dtos/pagination.dto'
