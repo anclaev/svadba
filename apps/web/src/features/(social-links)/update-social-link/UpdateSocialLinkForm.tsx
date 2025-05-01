@@ -16,14 +16,14 @@ import {
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 
-import { updateSocialLink } from '@/core/actions/updateSocialLink'
+import { updateSocialLink } from '@/core/actions/(social-links)'
 
 import {
   UpdateSocialLinkFormSchema,
   UpdateSocialLinkFormValues,
-} from '@/core/schemes/update-social-link-form-schema'
+} from '@/core/schemes/(social-links)'
 
-import type { UpdateSocialLink } from '@/core/types/update-social-link'
+import type { UpdateSocialLink } from '@/core/types'
 import type { UpdateSocialLinkDialogProps } from './UpdateSocialLinkDialog'
 
 export const UpdateSocialLinkForm: FC<UpdateSocialLinkDialogProps> = ({

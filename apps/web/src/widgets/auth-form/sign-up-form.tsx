@@ -26,12 +26,9 @@ import {
 } from '@/shared/ui/select'
 import { Separator } from '@/shared/ui/separator'
 
-import {
-  SignUpFormSchema,
-  SignUpFormValues,
-} from '@/core/schemes/sign-up-form-schema'
+import { SignUpFormSchema, SignUpFormValues } from '@/core/schemes/(auth)'
 
-import { registerUser } from '@/core/actions/registerUser'
+import { registerUser } from '@/core/actions/(auth)'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
 

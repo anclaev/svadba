@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { ShieldOff } from 'lucide-react'
 import { FC } from 'react'
 
-import { Button } from '../../../shared/ui/button'
+import { Button } from '@/shared/ui/button'
 
 const MotionShield = motion(ShieldOff)
 

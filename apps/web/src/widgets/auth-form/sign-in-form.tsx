@@ -18,12 +18,9 @@ import {
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 
-import {
-  SignInFormSchema,
-  SignInFormValues,
-} from '@/core/schemes/sign-in-form-schema'
+import { SignInFormSchema, SignInFormValues } from '@/core/schemes/(auth)'
 
-import trackedAuthorizeUser from '@/core/actions/authorizeUser'
+import trackedAuthorizeUser from '@/core/actions/(auth)/authorizeUser'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'

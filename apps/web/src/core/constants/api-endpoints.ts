@@ -4,8 +4,12 @@ export const API_ENDPOINTS = {
   AUTH_LOGOUT: '/auth/logout',
   AUTH_PROFILE: '/auth/profile',
   AUTH_SIGN_UP: '/auth/sign-up',
-  LINKS: '/social-links',
+  SOCIAL_LINKS: '/social-links',
   CREATE_SOCIAL_LINK: '/social-links',
   UPDATE_SOCIAL_LINK: '/social-links',
   DELETE_SOCIAL_LINK: '/social-links',
+  REGISTRATION_LINKS: '/registration-links',
+  CREATE_REGISTRATION_LINK: '/registration-links',
+  UPDATE_REGISTRATION_LINK: '/registration-links',
+  DELETE_REGISTRATION_LINK: '/registration-links',
 } as const
