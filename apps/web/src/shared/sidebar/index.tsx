@@ -96,7 +96,7 @@ export const Sidebar: FC<SidebarProps> = ({ className = '' }) => {
   return (
     !isServicePage && (
       <nav
-        className={`${className} left-[50%] md:left-auto overflow-x-scroll md:overflow-auto transform-[translateX(-50%)] md:transform-none rounded-2xl bg-white space-y-0 flex md:block w-auto max-w-[calc(100%-40px)]  md:w-[30%] md:max-w-[250px] shadow`}
+        className={`${className} left-[50%] md:left-auto overflow-x-scroll md:overflow-auto transform-[translateX(-50%)] md:transform-none rounded-2xl bg-white space-y-0 flex md:block w-auto max-w-[calc(100%-40px)]  md:w-[30%] md:max-w-[250px] shadow z-10`}
       >
         {navItems.map(
           (item) =>

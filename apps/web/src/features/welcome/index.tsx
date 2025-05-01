@@ -6,7 +6,7 @@ import { useMemo } from 'react'
 
 import { EVENT_DATE } from '@/core/constants/ui/event-date'
 
-import { useTimer } from '@/core/hooks/use-timer'
+import { useTimer } from '@/core/hooks'
 
 import { getBackgroundImage } from '@/core/utils/get-background-image'
 

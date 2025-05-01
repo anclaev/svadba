@@ -1,4 +1,4 @@
-import { Env } from '../schemes/env-schema'
+import { Env } from '@/core/schemes/env-schema'
 
 export const INITIAL_ENV: Env = {
   SENTRY_AUTH_TOKEN: '',

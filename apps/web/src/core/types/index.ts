@@ -1,13 +1,9 @@
 import type { Paginated } from '../models/pagination-meta.model'
 import type { GuestRole, UserStatus } from '../models/user.model'
 
-export * from './authorize-user'
-export * from './create-social-link'
-export * from './delete-social-link'
-export * from './get-profile'
-export * from './get-social-links'
-export * from './refresh-user'
-export * from './register-user'
+export * from './(auth)'
+export * from './(registration-links)'
+export * from './(social-links)'
 
 export type AppError = {
   message: string

@@ -1,6 +1,6 @@
 import { createStore } from 'zustand/vanilla'
 
-import { UserModel } from '../models/user.model'
+import { UserModel } from '@/core/models'
 
 export type AuthState = {
   user: UserModel | null

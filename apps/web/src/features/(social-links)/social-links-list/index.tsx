@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { SquarePen } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 
 import { CreatePopover } from '@/shared/create-popover'
 import { Badge } from '@/shared/ui/badge'
@@ -27,13 +28,12 @@ import { SocialLinkListItem } from './SocialLinkListItem'
 import { SocialLinkListItemSkeleton } from './SocialLinkListItemSkeleton'
 
 import { usePagination } from '@/core/hooks/use-pagination'
-import { getSocialLinksQuery } from '@/core/queries/getSocialLinks.query'
+import { getSocialLinksQuery } from '@/core/queries/(social-links)'
 
 import type {
   SocialLinkItemModel,
   SocialLinkModel,
 } from '@/core/models/social-link.model'
-import { toast } from 'sonner'
 
 export const SocialLinksList = () => {
   const {
@@ -46,7 +46,7 @@ export const SocialLinksList = () => {
     handlePreviousPage,
   } = usePagination({
     page: 1,
-    size: 10,
+    size: 5,
     count: 1,
   })
 
@@ -148,14 +148,12 @@ export const SocialLinksList = () => {
             <TableHead className="font-semibold">Название</TableHead>
             <TableHead className="font-semibold">Алиас</TableHead>
             <TableHead className="font-semibold">Ссылка</TableHead>
-            <TableHead className="font-semibold"></TableHead>
+            <TableHead className="font-semibold w-[42px]"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {isPending ? (
             <>
-              <SocialLinkListItemSkeleton />
-              <SocialLinkListItemSkeleton />
               <SocialLinkListItemSkeleton />
               <SocialLinkListItemSkeleton />
               <SocialLinkListItemSkeleton />

@@ -12,7 +12,7 @@ import { UpdateSocialLinkForm } from './UpdateSocialLinkForm'
 
 import type { SocialLinkModel } from '@/core/models/social-link.model'
 
-type initialFormState = {
+type InitialFormState = {
   id: string
   title: string
   href: string
@@ -20,7 +20,7 @@ type initialFormState = {
 }
 
 export type UpdateSocialLinkDialogProps = {
-  initialState: initialFormState
+  initialState: InitialFormState
   closeDialog: () => void
   handleUpdated: (link: SocialLinkModel) => void
 }

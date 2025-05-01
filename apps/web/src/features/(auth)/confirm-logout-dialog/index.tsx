@@ -3,10 +3,10 @@
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { logoutUser } from '@/core/actions/logoutUser'
+import { logoutUser } from '@/core/actions/(auth)'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 
-import { ConfirmDialog } from '../../../shared/confirm-dialog'
+import { ConfirmDialog } from '@/shared/confirm-dialog'
 
 export const ConfirmLogoutDialog = () => {
   const clearUser = useAuthStore((store) => store.clearUser)

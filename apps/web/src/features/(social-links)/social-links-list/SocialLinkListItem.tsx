@@ -13,13 +13,14 @@ import { TableCell, TableRow } from '@/shared/ui/table'
 import { UpdateSocialLinkDialog } from '../update-social-link/UpdateSocialLinkDialog'
 import { SocialLinkListItemCommands } from './SocialLinkListItemCommands'
 
-import { deleteSocialLink } from '@/core/actions/deleteSocialLink'
+import { deleteSocialLink } from '@/core/actions/(social-links)'
 
 import type {
   SocialLinkItemModel,
   SocialLinkModel,
 } from '@/core/models/social-link.model'
-import type { DeleteSocialLink } from '@/core/types'
+
+import type { DeleteSocialLink } from '@/core/types/(social-links)'
 
 export type SocialLinkListItemProps = {
   item: SocialLinkItemModel
