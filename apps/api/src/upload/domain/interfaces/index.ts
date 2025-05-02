@@ -9,8 +9,10 @@ export interface IUploadModel {
   filename: string
   ext: string
   mimetype: string | null
+  size: number | null
   owner: IUserModel
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -21,7 +23,9 @@ export interface IUploadProps {
   filename: string
   ext: string
   mimetype: string | null
+  size: number | null
   owner: User
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }

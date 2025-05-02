@@ -6,12 +6,7 @@
     "build": {
       "dependsOn": ["db:generate", "^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        "proto/interfaces/**"
-      ]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -39,7 +34,9 @@
     },
     "test": {},
     "test:cov": {},
-    "test:ci": {},
+    "test:ci": {
+      "dependsOn": ["db:generate", "^build", "^test:ci"]
+    },
     "test:server": {
       "cache": false,
       "dependsOn": ["^db:generate", "^build", "^test:server"]

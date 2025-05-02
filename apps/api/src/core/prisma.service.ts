@@ -8,15 +8,49 @@ import {
 import { PrismaClient } from '#prisma'
 
 /**
- * Сервис подключения к базе данных
+ * Сервис для работы с Prisma ORM
+ * @class PrismaService
+ * @extends {PrismaClient}
+ * @implements {OnModuleInit}
+ * @description Обеспечивает подключение к базе данных через Prisma Client
+ * и управление жизненным циклом соединения. Автоматически проверяет подключение
+ * при инициализации модуля.
+ *
+ * @example
+ * // Использование в другом сервисе
+ * @Injectable()
+ * export class UserService {
+ *   constructor(private readonly prisma: PrismaService) {}
+ *
+ *   async getUsers() {
+ *     return this.prisma.user.findMany();
+ *   }
+ * }
  */
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
+  /**
+   * Конструктор PrismaService
+   * @constructor
+   * @param {Logger} logger - Логгер для записи событий подключения
+   */
   constructor(private readonly logger: Logger) {
     super()
   }
 
-  // istanbul ignore next
+  /**
+   * Хук инициализации модуля
+   * @async
+   * @method onModuleInit
+   * @description Выполняет подключение к базе данных при старте приложения:
+   * 1. Пропускает подключение в тестовом окружении (NODE_ENV=test)
+   * 2. Устанавливает соединение с базой данных
+   * 3. Логирует результат подключения
+   * 4. Завершает процесс при ошибке подключения
+   *
+   * @throws {Error} Завершает процесс с кодом 1 при ошибке подключения
+   * @returns {Promise<void>}
+   */
   async onModuleInit(): Promise<void> {
     if (process.env.NODE_ENV === 'test') return
 
@@ -42,28 +76,22 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
         )
       })
 
-    // istanbul ignore next
-    process.on('error', () => {
-      return
-    })
-
-    // istanbul ignore next
-    process.on('warn', () => {
-      return
-    })
-
-    // istanbul ignore next
-    process.on('info', () => {
-      return
-    })
-
-    // istanbul ignore next
-    process.on('query', () => {
-      return
-    })
+    // Пустые обработчики событий процесса для избежания утечек памяти
+    process.on('error', () => {})
+    process.on('warn', () => {})
+    process.on('info', () => {})
+    process.on('query', () => {})
   }
 
-  // istanbul ignore next
+  /**
+   * Регистрирует обработчики graceful shutdown
+   * @method enableShutdownHooks
+   * @param {INestApplication} app - Экземпляр NestJS приложения
+   * @description Настраивает корректное завершение работы:
+   * 1. Логирует событие завершения
+   * 2. Закрывает соединение с базой данных
+   * 3. Корректно завершает работу приложения
+   */
   enableShutdownHooks(app: INestApplication): void {
     // istanbul ignore next
     process.on('beforeExit', async (event) => {

@@ -18,14 +18,14 @@ import {
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
 
-import { createSocialLink } from '@/core/actions/createSocialLink'
+import { createSocialLink } from '@/core/actions/(social-links)'
 import {
   CreateSocialLinkFormSchema,
   type CreateSocialLinkFormValues,
-} from '@/core/schemes/create-social-link-form-schema'
+} from '@/core/schemes/(social-links)'
 import { translit } from '@/core/utils/translit'
 
-import type { SocialLinkModel } from '@/core/models/social-link.model'
+import type { SocialLinkModel } from '@/core/models'
 import type { CreateSocialLink } from '@/core/types'
 
 export type CreateSocialLinkFormProps = {
@@ -52,7 +52,7 @@ export const CreateSocialLinkForm: FC<CreateSocialLinkFormProps> = ({
     defaultValues: {
       alias: '',
       href: '',
-      icon: undefined,
+      icon: '',
       title: '',
     },
   })

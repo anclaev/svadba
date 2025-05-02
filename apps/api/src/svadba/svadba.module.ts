@@ -1,9 +1,17 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 
-import { DresscodeColorRepository, TimingEventRepository } from './domain'
+import { guestCommandHandlers, guestQueryHandlers } from './app'
+
+import {
+  DresscodeColorRepository,
+  GuestRepository,
+  TimingEventRepository,
+} from './domain'
+
 import {
   DresscodeColorPrismaRepository,
+  GuestPrismaRepository,
   TimingEventPrismaRepository,
 } from './infra'
 
@@ -17,9 +25,20 @@ const dresscodeRepositoryProvider = {
   useClass: DresscodeColorPrismaRepository,
 }
 
+const guestRepositoryProvider = {
+  provide: GuestRepository,
+  useClass: GuestPrismaRepository,
+}
+
 @Module({
   imports: [CqrsModule],
   controllers: [],
-  providers: [timingEventRepositoryProvider, dresscodeRepositoryProvider],
+  providers: [
+    timingEventRepositoryProvider,
+    dresscodeRepositoryProvider,
+    guestRepositoryProvider,
+    ...guestCommandHandlers,
+    ...guestQueryHandlers,
+  ],
 })
 export class SvadbaModule {}

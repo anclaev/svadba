@@ -14,7 +14,7 @@ export const EnvProvider = ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
-  const [env, setEnv] = useState<Env>(INITIAL_ENV)
+  const [env] = useState<Env>(INITIAL_ENV)
 
   useEffect(() => {
     // getPublicEnv().then((env) => {

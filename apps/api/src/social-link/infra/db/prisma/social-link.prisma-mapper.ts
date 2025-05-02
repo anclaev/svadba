@@ -1,10 +1,11 @@
+import { social_link } from '@repo/shared'
+
 import { ISocialLinkPrismaModel } from '#/common/models'
 
+import { IUserModel } from '#/user/domain'
 import { UserPrismaMapper } from '#/user/infra'
 
 import { SocialLink as SocialLinkEntity } from '#/social-link/domain'
-import { IUserModel } from '#/user/domain'
-import { social_link } from '@repo/shared'
 
 export class SocialLinkPrismaMapper {
   static toModel(entity: SocialLinkEntity): ISocialLinkPrismaModel {
@@ -20,6 +21,7 @@ export class SocialLinkPrismaMapper {
       ...model,
       creator: model.creator as unknown as IUserModel,
       createdAt: new Date(model.createdAt),
+      updatedAt: new Date(model.updatedAt),
     })
   }
 

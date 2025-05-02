@@ -9,27 +9,23 @@ const SocialLinksSchema = QueryPaginationSchema.extend({
     .string({
       message: 'Алиас должен быть строкой.',
     })
-    .nonempty({ message: 'Алиас не должен быть пустым.' })
-    .optional(),
+    .nonempty({ message: 'Алиас не должен быть пустым.' }),
   title: z
     .string({
       message: 'Название должно быть строкой.',
     })
-    .nonempty({ message: 'Название не должно быть пустым.' })
-    .optional(),
+    .nonempty({ message: 'Название не должно быть пустым.' }),
   href: z
     .string({
       message: 'Ссылка должна быть строкой.',
     })
-    .nonempty({ message: 'Ссылка не должна быть пустой.' })
-    .optional(),
+    .nonempty({ message: 'Ссылка не должна быть пустой.' }),
   creatorLogin: z
     .string({
       message: 'Логин создателя быть строкой.',
     })
-    .nonempty({ message: 'Логин создателя не должен быть пустым.' })
-    .optional(),
-})
+    .nonempty({ message: 'Логин создателя не должен быть пустым.' }),
+}).partial()
 
 @ApiSchema({
   name: 'SocialLinksDto',

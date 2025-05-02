@@ -7,7 +7,7 @@ import { isNull } from '@/core/utils'
 
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 
-import { getProfile } from '@/core/actions/getProfile'
+import { getProfile } from '@/core/actions/(auth)'
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { setUser, startLoading, stopLoading } = useAuthStore((store) => store)
@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     authorize()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return children

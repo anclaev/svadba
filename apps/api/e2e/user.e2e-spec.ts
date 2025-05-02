@@ -1,4 +1,4 @@
-import { PrismaClient, User, UserRole, UserStatus } from '#prisma'
+import { PrismaClient, UserRole, UserStatus } from '#prisma'
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid'
 import { AppModule } from '#/app/app.module'
 import { PrismaService } from '#/core/prisma.service'
 import { CreateUserDto } from '#/user/api'
+import { IUserModel } from '#/user/domain'
 
 import { mockUsers } from './mocks/users.mock'
 
@@ -22,9 +23,9 @@ describe('User Controller (e2e)', () => {
   let prisma: DeepMockProxy<PrismaClient>
 
   let adminAuthCookie: any
-  let adminUser: User
+  let adminUser: IUserModel
   let publicAuthCookie: any
-  let publicUser: User
+  let publicUser: IUserModel
 
   beforeAll(async () => {
     prisma = mockDeep<PrismaClient>()
@@ -63,7 +64,12 @@ describe('User Controller (e2e)', () => {
       )
     })
 
-    prisma.user.findMany.mockResolvedValue(mockUsers)
+    const mockFindManyUsers = mockUsers.map((user) => ({
+      ...user,
+      guestId: user.guestId,
+    }))
+
+    prisma.user.findMany.mockResolvedValue(mockFindManyUsers as any)
 
     prisma.user.update.mockImplementation((args: any): any => {
       const user = mockUsers.find((u) => u.id === args.where.id)
@@ -109,7 +115,7 @@ describe('User Controller (e2e)', () => {
 
   beforeEach(() => {
     prisma.user.create.mockImplementation((args: any): any => {
-      const newUser: User = {
+      const newUser: IUserModel = {
         id: uuid(),
         password: args.data.password,
         login: args.data.login,
@@ -120,6 +126,7 @@ describe('User Controller (e2e)', () => {
         telegramId: null,
         status: UserStatus.CREATED,
         createdAt: new Date(),
+        guestId: null,
       }
       mockUsers.push(newUser)
       return Promise.resolve(newUser)

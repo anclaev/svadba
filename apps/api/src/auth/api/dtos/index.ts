@@ -1,4 +1,6 @@
 export * from './auth.dto'
+export * from './create-registration-link.dto'
 export * from './login.dto'
 export * from './logout.dto'
 export * from './sign-up.dto'
+export * from './update-registration-link.dto'

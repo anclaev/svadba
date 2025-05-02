@@ -1,4 +1,4 @@
-import { PrismaClient, User, UserRole, UserStatus } from '#prisma'
+import { PrismaClient, UserRole, UserStatus } from '#prisma'
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -10,7 +10,10 @@ import { v4 as uuid } from 'uuid'
 import { AppModule } from '#/app/app.module'
 import { SignUpDto } from '#/auth/api'
 import { PrismaService } from '#/core/prisma.service'
+import { IGuestModel } from '#/svadba/domain'
+import { IUserModel } from '#/user/domain'
 
+import { mockGuests } from './mocks/guests.mock'
 import { mockUsers } from './mocks/users.mock'
 
 beforeEach(() => {
@@ -22,7 +25,7 @@ describe('Auth Controller (e2e)', () => {
   let prisma: DeepMockProxy<PrismaClient>
 
   let publicAuthCookie: any
-  let publicUser: User
+  let publicUser: IUserModel
 
   beforeAll(async () => {
     prisma = mockDeep<PrismaClient>()
@@ -64,7 +67,7 @@ describe('Auth Controller (e2e)', () => {
     })
 
     prisma.user.create.mockImplementation((args: any): any => {
-      const newUser: User = {
+      const newUser: IUserModel = {
         id: uuid(),
         password: args.data.password,
         login: args.data.login,
@@ -75,9 +78,24 @@ describe('Auth Controller (e2e)', () => {
         telegramId: null,
         status: UserStatus.CREATED,
         createdAt: new Date(),
+        guestId: null,
       }
       mockUsers.push(newUser)
       return Promise.resolve(newUser)
+    })
+
+    prisma.guest.create.mockImplementation((args: any): any => {
+      const newGuest: IGuestModel = {
+        id: uuid(),
+        userId: args.data.userId,
+        answers: args.data.answers ?? {},
+        role: args.data.role,
+        side: args.data.side,
+        createdAt: new Date(),
+      }
+
+      mockGuests.push(newGuest)
+      return Promise.resolve(newGuest)
     })
 
     await request(app.getHttpServer())
@@ -113,6 +131,8 @@ describe('Auth Controller (e2e)', () => {
       login: 'test_public',
       password: 'testpassword',
       name: 'Test Public',
+      role: 'GUEST',
+      side: 'GROOM',
     }
 
     it('должен вернуть 409 код, если логин уже занят', async () => {
@@ -132,6 +152,7 @@ describe('Auth Controller (e2e)', () => {
           expect(res.body.user.role).toBe(UserRole.PUBLIC)
           expect(res.body.user.status).toBe(UserStatus.CREATED)
           expect(res.body.user.password).toBeUndefined()
+          expect(res.body.user.guest).toBeDefined()
         })
     })
   })

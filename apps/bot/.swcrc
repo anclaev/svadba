@@ -2,22 +2,26 @@
   "$schema": "https://swc.rs/schema.json",
   "jsc": {
     "target": "esnext",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "parser": {
-      "syntax": "typescript"
+      "syntax": "typescript",
+      "decorators": true,
+      "dynamicImport": true
     },
     "transform": {
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
     "paths": {
-      "#/*": ["./*"]
-    }
+      "#/*": ["./src/*"]
+    },
+    "keepClassNames": true
   },
   "module": {
     "type": "commonjs",
     "strictMode": true
   },
   "sourceMaps": true,
-  "minify": true
+  "minify": true,
+  "exclude": [".spec.ts", ".mock.ts"]
 }

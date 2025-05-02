@@ -17,15 +17,18 @@ export interface IGuestModel {
   side: GuestSide
   role: GuestRole
   answers: InputJsonValue
+  updatedAt?: Date
   createdAt?: Date
 }
 
 export interface IGuestProps {
   id: string
   userId?: string
+  user?: IUserModel
   side: GuestSide
   role: GuestRole
   answers: InputJsonValue
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -36,6 +39,7 @@ export interface IDresscodeColorModel {
   isHidden: boolean
   owner: IUserModel
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -46,6 +50,7 @@ export interface IDresscodeColorProps {
   isHidden: boolean
   owner: User
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -53,12 +58,14 @@ export interface ITimingEventModel {
   id: string
   order: number
   title: string
+  description: string | null
   time: string
   isPublic: boolean
   icon?: IUploadModel
   iconId: string | null
   owner: IUserModel
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }
 
@@ -66,11 +73,13 @@ export interface ITimingEventProps {
   id: string
   order: number
   title: string
+  description: string | null
   time: string
   isPublic: boolean
   icon?: Upload
   iconId: string | null
   owner: User
   ownerId: string
+  updatedAt?: Date
   createdAt?: Date
 }
