@@ -9,6 +9,6 @@
     { "type": "perf", "hidden": true },
     { "type": "test", "hidden": true }
   ],
-  "commitUrlFormat": "https://gitlab.anclaev.com/av/svadba/-/commit/{{hash}}",
-  "compareUrlFormat": "https://gitlab.anclaev.com/av/svadba/-/compare/{{previousTag}}...{{currentTag}}"
+  "commitUrlFormat": "https://github.com/anclaev/svadba/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/anclaev/svadba/compare/{{previousTag}}...{{currentTag}}"
 }
