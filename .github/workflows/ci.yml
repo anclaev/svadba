@@ -10,7 +10,6 @@ on:
       - 'apps/**'
       - 'packages/**'
       - 'deployment/**'
-      - '**.json'
       - '.github/**'
   workflow_dispatch:
 
