@@ -104,7 +104,7 @@ jobs:
       - name: Сборка образа / Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          docker build -f apps/api/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:'${GITHUB_REF/refs\/tags\//}' -t ${{ secrets.CI_IMAGE_TAG_API }}:latest .
+          docker build -f apps/api/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_API }}:${GITHUB_REF/refs\/tags\//} -t ${{ secrets.CI_IMAGE_TAG_API }}:latest .
           docker push ${{ secrets.CI_IMAGE_TAG_API }} --all-tags
 
   build-bot:
@@ -132,7 +132,7 @@ jobs:
       - name: Сборка образа / Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:'${GITHUB_REF/refs\/tags\//}' -t ${{ secrets.CI_IMAGE_TAG_BOT }}:latest .
+          docker build -f apps/bot/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_BOT }}:${GITHUB_REF/refs\/tags\//} -t ${{ secrets.CI_IMAGE_TAG_BOT }}:latest .
           docker push ${{ secrets.CI_IMAGE_TAG_BOT }} --all-tags
 
   build-web:
@@ -160,7 +160,7 @@ jobs:
       - name: Сборка образа / Production
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          docker build -f apps/web/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:'${GITHUB_REF/refs\/tags\//}' -t ${{ secrets.CI_IMAGE_TAG_WEB }}:latest .
+          docker build -f apps/web/Dockerfile --build-arg VERSION=$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:$GITHUB_SHA -t ${{ secrets.CI_IMAGE_TAG_WEB }}:${GITHUB_REF/refs\/tags\//} -t ${{ secrets.CI_IMAGE_TAG_WEB }}:latest .
           docker push ${{ secrets.CI_IMAGE_TAG_WEB }} --all-tags
 
   test-unit:
@@ -251,7 +251,10 @@ jobs:
 
   deploy-staging:
     name: Деплой / Staging
-    if: github.ref == 'refs/heads/main' && !contains(github.event.head_commit.message, 'skip deploy')
+    if: |
+      github.ref == 'refs/heads/main' && 
+      !contains(github.event.head_commit.message, 'skip deploy') && 
+      !contains(github.event.head_commit.message, 'chore(release)')
     runs-on: ubuntu-latest
     needs:
       - test-unit
@@ -348,7 +351,11 @@ jobs:
 
   deploy-production:
     name: Деплой / Production
-    if: startsWith(github.ref, 'refs/tags/v') && needs.test-unit.result == 'success' && needs.test-server.result == 'success' && needs.test-e2e.result == 'success'
+    if: |
+      startsWith(github.ref, 'refs/tags/v') && 
+      needs.test-unit.result == 'success' && 
+      needs.test-server.result == 'success' && 
+      needs.test-e2e.result == 'success'
     runs-on: ubuntu-latest
     needs:
       - test-unit
@@ -447,7 +454,9 @@ jobs:
 
   release:
     name: Релиз
-    if: startsWith(github.ref, 'refs/tags/v') && needs.deploy-production.result == 'success'
+    if: |
+      startsWith(github.ref, 'refs/tags/v') && 
+      needs.deploy-production.result == 'success'
     runs-on: ubuntu-latest
     needs:
       - deploy-production
