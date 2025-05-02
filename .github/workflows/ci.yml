@@ -249,7 +249,7 @@ jobs:
 
   deploy-staging:
     name: Деплой / Staging
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' && !contains(github.event.head_commit.message, 'skip deploy')
     runs-on: ubuntu-latest
     needs:
       - test-unit
@@ -346,7 +346,7 @@ jobs:
 
   deploy-production:
     name: Деплой / Production
-    if: github.ref == 'refs/heads/main' && needs.test-unit.result == 'success' && needs.test-server.result == 'success' && needs.test-e2e.result == 'success'
+    if: github.ref == 'refs/heads/main' && needs.test-unit.result == 'success' && needs.test-server.result == 'success' && needs.test-e2e.result == 'success' && !contains(github.event.head_commit.message, 'skip deploy')
     runs-on: ubuntu-latest
     needs:
       - test-unit
