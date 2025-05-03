@@ -10,7 +10,7 @@ export abstract class UserRepository implements IRepository<User, UserError> {
   abstract delete(id: string): Promise<boolean | UserError>
   abstract exists(login: string): Promise<boolean | UserError>
   abstract findMore(
-    paginationParams: IPaginationParams,
+    paginationParams: Partial<IPaginationParams>,
     queryParams: IUserQueryParams
   ): Promise<IPaginationResult<User> | UserError>
   abstract findById(id: string): Promise<User | UserError>

@@ -9,6 +9,7 @@ export const mockGuests: IGuestModel[] = [
     role: GuestRole.BRIDE,
     side: GuestSide.BRIDE,
     createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: 'd815e52d-0f69-4769-8ec6-c581f4794459',
@@ -17,5 +18,6 @@ export const mockGuests: IGuestModel[] = [
     role: GuestRole.GUEST,
     side: GuestSide.GROOM,
     createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ]

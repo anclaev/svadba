@@ -9,6 +9,7 @@ export const mockSocialLinks: SocialLink[] = [
     icon: null,
     title: 'Telegram',
     createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
     id: '8aef09fb-d437-9864-b457-1b78142c7e15',
@@ -18,5 +19,6 @@ export const mockSocialLinks: SocialLink[] = [
     icon: null,
     title: 'Instagram',
     createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ]

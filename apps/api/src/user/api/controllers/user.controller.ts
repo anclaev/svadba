@@ -1,16 +1,19 @@
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import {
   BadRequestException,
   Body,
   ConflictException,
   Controller,
   Delete,
+  Get,
   InternalServerErrorException,
   NotFoundException,
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common'
-import { CommandBus } from '@nestjs/cqrs'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   ApiBody,
   ApiConflictResponse,
@@ -23,7 +26,9 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { IPaginationResult } from '@repo/shared'
 
+import { TTL_MS } from '#/common/constants'
 import { IdQueryParamsDto } from '#/common/query-params'
 
 import { Auth } from '#/auth/api'
@@ -33,16 +38,111 @@ import {
   CreateUserInput,
   DeleteUserCommand,
   UpdateUserCommand,
+  UserByIdQuery,
+  UserByLoginQuery,
+  UsersDto,
+  UsersQuery,
 } from '#/user/app'
 
 import { User, USER_ERRORS, UserError } from '#/user/domain'
 
-import { CreateUserDto, UpdateUserDto } from '../dtos'
+import { CreateUserDto, UpdateUserDto, UserByLoginDto } from '../dtos'
 
 @ApiTags('Пользователь')
 @Controller('users')
 export class UserController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus
+  ) {}
+
+  @ApiOperation({ summary: 'Получение пользователя по ID' })
+  @ApiQuery({ type: IdQueryParamsDto })
+  @ApiNotFoundResponse({ description: 'Пользователь не найден' })
+  @ApiOkResponse({
+    description: 'Пользователь успешно получен',
+    type: User,
+  })
+  @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
+  @ApiCookieAuth()
+  @CacheKey('user_by_id')
+  @CacheTTL(TTL_MS.DAY)
+  @Auth()
+  @Get(':id')
+  async userById(@Param() { id }: IdQueryParamsDto): Promise<User> {
+    const user = await this.queryBus.execute(new UserByIdQuery(id))
+
+    if (user instanceof UserError) {
+      switch (user.message) {
+        case USER_ERRORS.USER_NOT_FOUND: {
+          throw new NotFoundException('Пользователь с данным ID не найден.')
+        }
+        default: {
+          throw new InternalServerErrorException('Неизвестная ошибка.')
+        }
+      }
+    }
+
+    return user
+  }
+
+  @ApiOperation({ summary: 'Получение пользователя по логину' })
+  @ApiQuery({ type: UserByLoginDto })
+  @ApiNotFoundResponse({ description: 'Пользователь не найден' })
+  @ApiOkResponse({
+    description: 'Пользователь успешно получен',
+    type: User,
+  })
+  @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
+  @ApiCookieAuth()
+  @CacheKey('user_by_login')
+  @CacheTTL(TTL_MS.DAY)
+  @Auth()
+  @Get('login/:login')
+  async userByLogin(@Param() { login }: UserByLoginDto): Promise<User> {
+    const user = await this.queryBus.execute(new UserByLoginQuery(login))
+
+    if (user instanceof UserError) {
+      switch (user.message) {
+        case USER_ERRORS.USER_NOT_FOUND: {
+          throw new NotFoundException(
+            'Пользователь с данным логином не найден.'
+          )
+        }
+        default: {
+          throw new InternalServerErrorException('Неизвестная ошибка.')
+        }
+      }
+    }
+
+    return user
+  }
+
+  @ApiOperation({ summary: 'Получение списка пользователей' })
+  @ApiQuery({ type: UsersDto })
+  @ApiOkResponse({
+    description: 'Список пользователей успешно получен',
+  })
+  @ApiNotFoundResponse({ description: 'Пользователь не найден' })
+  @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
+  @ApiCookieAuth()
+  @CacheKey('users')
+  @CacheTTL(TTL_MS.DAY)
+  @Auth()
+  @Get()
+  async users(@Query() query: UsersDto): Promise<IPaginationResult<User>> {
+    const res = await this.queryBus.execute(new UsersQuery(query))
+
+    if (res instanceof UserError) {
+      switch (res.message) {
+        default: {
+          throw new InternalServerErrorException('Неизвестная ошибка.')
+        }
+      }
+    }
+
+    return res
+  }
 
   @ApiOperation({ summary: 'Создание пользователя' })
   @ApiBody({

@@ -1,5 +1,6 @@
-import { IUserModel } from '#/user/domain'
 import { UserRole, UserStatus } from '#prisma'
+
+import { IUserModel } from '#/user/domain'
 
 import { mockGuests } from './guests.mock'
 
