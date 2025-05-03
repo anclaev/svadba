@@ -123,10 +123,8 @@ export class User extends AggregateRoot implements IUserProps {
   }
 
   async updatePassword(newPassword: string) {
-    let lastCredentialsVersion = this.credentialsVersion
-
     const credentials = new Credentials({
-      version: lastCredentialsVersion++,
+      version: this.credentialsVersion + 1,
       lastPassword: this.password,
       passwordUpdatedAt: new Date(),
     })

@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
   AUTH_PROFILE: '/auth/profile',
   AUTH_SIGN_UP: '/auth/sign-up',
   SOCIAL_LINKS: '/social-links',
+  GUESTS: '/users',
   CREATE_SOCIAL_LINK: '/social-links',
   UPDATE_SOCIAL_LINK: '/social-links',
   DELETE_SOCIAL_LINK: '/social-links',

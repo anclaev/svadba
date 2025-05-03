@@ -2,7 +2,13 @@
 import { UserRole, UserStatus } from '#prisma'
 import { Test } from '@nestjs/testing'
 import { mockDeep } from 'jest-mock-extended'
-import { User, USER_ERRORS, UserError, UserRepository } from '../../../domain'
+import {
+  Credentials,
+  User,
+  USER_ERRORS,
+  UserError,
+  UserRepository,
+} from '../../../domain'
 import { UpdateUserCommand } from './update-user.command'
 import { UpdateUserHandler } from './update-user.handler'
 
@@ -20,7 +26,13 @@ describe('UpdateUserHandler', () => {
     telegramId: null,
     guestId: null,
     isTelegramVerified: false,
-    credentials: [],
+    credentials: [
+      new Credentials({
+        version: 0,
+        lastPassword: 'lastPass',
+        passwordUpdatedAt: new Date(),
+      }),
+    ],
   })
 
   beforeEach(async () => {

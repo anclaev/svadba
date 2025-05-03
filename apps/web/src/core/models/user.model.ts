@@ -9,6 +9,7 @@ export interface GuestModel {
   role: GuestRole
   answers: JSON
   createdAt: string
+  updatedAt: string
 }
 
 export interface AuthorizedUser {
@@ -23,5 +24,6 @@ export interface AuthorizedUser {
 export interface UserModel extends AuthorizedUser {
   isTelegramVerified: boolean
   createdAt: string
+  updatedAt: string
   guest: GuestModel
 }
