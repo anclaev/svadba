@@ -1,6 +1,7 @@
 import { UserRole, UserStatus } from '#prisma'
 import { AggregateRoot } from '@nestjs/cqrs'
 import { ApiProperty, ApiSchema } from '@nestjs/swagger'
+import * as argon2 from 'argon2'
 import { Exclude } from 'class-transformer'
 
 import { Guest } from '#/svadba/domain'
@@ -121,7 +122,7 @@ export class User extends AggregateRoot implements IUserProps {
     return 0
   }
 
-  updatePassword(newPassword: string) {
+  async updatePassword(newPassword: string) {
     let lastCredentialsVersion = this.credentialsVersion
 
     const credentials = new Credentials({
@@ -131,7 +132,7 @@ export class User extends AggregateRoot implements IUserProps {
     })
 
     this.credentials.push(credentials)
-    this.password = newPassword
+    this.password = await argon2.hash(newPassword)
 
     return this
   }
