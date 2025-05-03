@@ -130,7 +130,9 @@ async function bootstrap() {
   // Запуск микросервисов и приложения
   await app.startAllMicroservices()
   await app.listen(port).finally(() => {
-    logger.log(`Сервис успешно запущен! (https://${host}:${port})`, 'App')
+    logger.log(`Версия сервиса: \x1b[33m${version}`, 'App')
+    logger.log(`Адрес сервиса: \x1b[33mhttps://${host}:${port}`, 'App')
+    logger.log('Сервис успешно запущен!', 'App')
   })
 }
 
