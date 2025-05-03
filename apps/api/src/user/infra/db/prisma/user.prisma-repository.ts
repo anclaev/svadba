@@ -104,6 +104,21 @@ export class UserPrismaRepository extends UserRepository {
     }
   }
 
+  async findByTelegramId(telegramId: number): Promise<User | UserError> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { telegramId },
+        include: { guest: true },
+      })
+
+      return user
+        ? UserPrismaMapper.toEntity(user as IUserPrismaModel)
+        : new UserError('USER_NOT_FOUND')
+    } catch {
+      return new UserError('USER_UNKNOWN_ERROR')
+    }
+  }
+
   async findByLogin(login: string): Promise<User | UserError> {
     try {
       const user = await this.prisma.user.findUnique({
@@ -116,6 +131,27 @@ export class UserPrismaRepository extends UserRepository {
         : new UserError('USER_NOT_FOUND')
     } catch (e) {
       console.log(e)
+      return new UserError('USER_UNKNOWN_ERROR')
+    }
+  }
+
+  async findByGuestId(guestId: string): Promise<User | UserError> {
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          guest: {
+            id: {
+              equals: guestId.trim(),
+            },
+          },
+        },
+        include: { guest: true },
+      })
+
+      return user
+        ? UserPrismaMapper.toEntity(user as IUserPrismaModel)
+        : new UserError('USER_NOT_FOUND')
+    } catch {
       return new UserError('USER_UNKNOWN_ERROR')
     }
   }

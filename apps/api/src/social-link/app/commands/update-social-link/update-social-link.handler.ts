@@ -10,7 +10,8 @@ import { UpdateSocialLinkCommand } from './update-social-link.command'
 
 @CommandHandler(UpdateSocialLinkCommand)
 export class UpdateSocialLinkHandler
-  implements ICommandHandler<UpdateSocialLinkCommand>
+  implements
+    ICommandHandler<UpdateSocialLinkCommand, SocialLink | SocialLinkError>
 {
   constructor(private readonly repository: SocialLinkRepository) {}
 
