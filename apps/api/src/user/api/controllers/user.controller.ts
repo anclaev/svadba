@@ -19,6 +19,7 @@ import {
   ApiConflictResponse,
   ApiCookieAuth,
   ApiCreatedResponse,
+  ApiExcludeEndpoint,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -95,6 +96,7 @@ export class UserController {
   })
   @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
   @ApiCookieAuth()
+  @ApiExcludeEndpoint()
   @CacheKey('user_by_login')
   @CacheTTL(TTL_MS.DAY)
   @Auth()
