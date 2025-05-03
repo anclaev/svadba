@@ -4,6 +4,7 @@ services:
     restart: always
     environment:
       APP_VERSION: ${VERSION}
+      HOST: ${API_HOST}
       DATABASE_URL: ${DATABASE_URL}
       COOKIE_SECRET: ${API_COOKIE_SECRET}
       PORT: ${API_PORT}
@@ -65,7 +66,7 @@ services:
 
   web:
     image: anclaev/svadba-web:${VERSION}
-    restart: no
+    restart: always
     depends_on:
       api:
         condition: "service_healthy"  
