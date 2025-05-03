@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/anclaev/svadba/compare/v1.0.0...v1.0.1) (2025-05-03)
+
+### Исправлено
+
+- **deployment:** версия приложения при сборке в прод. [skip ci] ([2959c03](https://github.com/anclaev/svadba/commit/2959c03857b171180418e8dbac9d9ce199106220))
+
 ## 1.0.0 (2025-05-03)
 
 ### Добавлено
