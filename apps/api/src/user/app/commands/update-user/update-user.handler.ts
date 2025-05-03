@@ -32,7 +32,7 @@ export class UpdateUserHandler
     }
 
     if (dto.password) {
-      existUser.updatePassword(dto.password.trim())
+      await existUser.updatePassword(dto.password.trim())
     }
 
     if (dto.role) {
