@@ -14,5 +14,7 @@ export abstract class UserRepository implements IRepository<User, UserError> {
     queryParams: IUserQueryParams
   ): Promise<IPaginationResult<User> | UserError>
   abstract findById(id: string): Promise<User | UserError>
+  abstract findByGuestId(guestId: string): Promise<User | UserError>
+  abstract findByTelegramId(telegramId: number): Promise<User | UserError>
   abstract findByLogin(login: string): Promise<User | UserError>
 }
