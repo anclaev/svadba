@@ -191,6 +191,7 @@ export class UserPrismaRepository extends UserRepository {
                 }
               : undefined,
           },
+          include: { guest: true },
         }),
         await this.prisma.user.count(),
       ])
