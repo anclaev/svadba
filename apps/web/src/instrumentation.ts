@@ -9,6 +9,10 @@ export async function register() {
 
   const NODE_ENV: NodeEnv = process.env.NODE_ENV as NodeEnv
 
+  console.log(
+    ` \x1b[32m✓\x1b[0m Версия приложения: \x1b[36m${process.env.NEXT_PUBLIC_APP_VERSION}`
+  )
+
   if (NODE_ENV !== 'production' && NODE_ENV !== 'staging') {
     return
   }

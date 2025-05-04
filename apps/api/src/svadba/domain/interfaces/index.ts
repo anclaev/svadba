@@ -13,6 +13,7 @@ export * from './timing-event-query-params.interface'
 
 export interface IGuestModel {
   id: string
+  user: User | null
   userId?: string
   side: GuestSide
   role: GuestRole

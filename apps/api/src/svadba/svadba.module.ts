@@ -1,5 +1,9 @@
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
+
+import { UserModule } from '#/user/user.module'
+
+import { GuestController } from './api'
 
 import { guestCommandHandlers, guestQueryHandlers } from './app'
 
@@ -31,9 +35,10 @@ const guestRepositoryProvider = {
 }
 
 @Module({
-  imports: [CqrsModule],
-  controllers: [],
+  imports: [CqrsModule, UserModule],
+  controllers: [GuestController],
   providers: [
+    Logger,
     timingEventRepositoryProvider,
     dresscodeRepositoryProvider,
     guestRepositoryProvider,
