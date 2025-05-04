@@ -78,13 +78,14 @@ services:
       JWT_REFRESH_TIME: ${WEB_JWT_REFRESH_TIME}
       SENTRY_AUTH_TOKEN: ${WEB_SENTRY_AUTH_TOKEN}
       NEXT_PUBLIC_ALLOWED_SIGN_UP: ${ALLOWED_SIGN_UP}
-      NEXT_PUBLIC_NODE_ENV: ${NODE_ENV}
       NEXT_PUBLIC_APP_VERSION: ${VERSION}
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://0.0.0.0:${WEB_PORT}"]
       interval: 10s
       timeout: 5s
       start_period: 5s
+    volumes:
+      - svadba_web_staging_cache:./apps/web/.next/cache
     networks:
       - dokploy-network
     labels:
@@ -101,3 +102,6 @@ networks:
     external: true
   svadba-minio-staging-network:
     external: true
+
+volumes:
+  svadba_web_staging_cache:

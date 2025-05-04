@@ -1,51 +1,61 @@
-ARG VERSION=null
-ARG SENTRY_AUTH_TOKEN=""
+ARG VERSION="latest"
+ARG TURBO_VERSION="2.4.4"
 
-FROM node:18-alpine AS base
+# ----------------- Base stage with minimal dependencies -----------------
+FROM node:20-alpine AS base
 WORKDIR /app
-RUN apk update \
-    apk add --no-cache libc6-compat
+RUN apk add --no-cache --update libc6-compat && \
+    corepack enable
 
-# ----------------- Setup a turbo partial monorepo -----------------
-FROM base AS builder
-
-RUN yarn global add turbo@2.4.4
+# ----------------- Turbo prune stage (cached separately) -----------------
+FROM base AS pruner
+ARG TURBO_VERSION
+RUN yarn global add turbo@${TURBO_VERSION}
 
 COPY . .
- 
 RUN turbo prune web --docker
- 
-# ---------------- Install and build the project -----------------
-FROM base AS installer
-RUN corepack enable 
- 
-ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
-COPY --from=builder /app/out/json/ .
-RUN yarn install --frozen-lockfile
- 
-COPY --from=builder /app/out/full/ .
-RUN yarn turbo run build
-RUN mkdir -p ./apps/web/.next/cache 
- 
-# ----------------- Run the production image -----------------
-LABEL version=$VERSION
-FROM base AS runner
+# ----------------- Dependencies stage (cached separately) -----------------
+FROM base AS deps
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/yarn.lock .
+RUN yarn install --frozen-lockfile --network-timeout 1000000
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# ----------------- Builder stage with build artifacts -----------------
+FROM base AS builder
+ARG VERSION
+ENV NEXT_PUBLIC_APP_VERSION=$VERSION
+
+COPY --from=pruner /app/out/full/ .
+COPY --from=pruner /app/out/yarn.lock .
+COPY --from=deps /app/node_modules ./node_modules
+RUN yarn turbo run build --filter=web --force && \
+    mkdir -p ./apps/web/.next/cache
+
+# ----------------- Final production image -----------------
+FROM node:20-alpine AS runner
+ARG VERSION
+
+# Install runtime dependencies only
+RUN apk add --no-cache --update dumb-init
+
+WORKDIR /app
+ENV NEXT_TELEMETRY_DISABLED=1 \
+    NEXT_PUBLIC_APP_VERSION=$VERSION \
+    HOSTNAME="0.0.0.0"
+
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -u 1001 -S nextjs -G nodejs
+
+# Copy only necessary files from builder
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/cache ./apps/web/.next/cache
+
 USER nextjs
- 
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/.next/cache ./apps/web/.next/cache
-COPY --from=installer --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
-
-ENV NEXT_TELEMETRY_DISABLED=1
-
 EXPOSE 3000
 
-ENV HOSTNAME="0.0.0.0"
-
-# ENTRYPOINT [ "sh", "-c", "bun run db:deploy && bun next start" ]
-ENTRYPOINT [ "sh", "-c", "node apps/web/server.js" ]
+# Use dumb-init as entrypoint for better signal handling
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["node", "apps/web/server.js"]

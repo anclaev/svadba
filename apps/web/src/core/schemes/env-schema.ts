@@ -16,10 +16,6 @@ export const EnvSchema = z.object({
   JWT_REFRESH_TIME: z.coerce
     .number({ message: 'Некорректное время жизни refresh_token.' })
     .default(604800),
-  NEXT_PUBLIC_NODE_ENV: z.enum(
-    ['local', 'test', 'development', 'staging', 'production'],
-    { message: 'Некорректное окружение.' }
-  ),
   NEXT_PUBLIC_APP_VERSION: z
     .string({ message: 'Не предоставлена версия приложения.' })
     .nonempty({ message: 'Версия приложения не может быть пустой.' }),
