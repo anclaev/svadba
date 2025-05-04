@@ -30,7 +30,6 @@ ENV APP_VERSION=${VERSION}
 COPY --from=pruner /app/out/full/ .
 COPY --from=deps /app .
 
-RUN yarn turbo run db:generate
 RUN yarn turbo run build --filter=api --force
 
 # ----------------- Final production image -----------------
