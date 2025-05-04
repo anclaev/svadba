@@ -102,3 +102,6 @@ networks:
     external: true
   svadba-minio-production-network:
     external: true
+
+volumes:
+  svadba_web_production_cache:
