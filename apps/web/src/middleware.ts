@@ -6,8 +6,8 @@ import { parseJwt } from '@/core/utils'
 import type { TokenPayload } from './core/types'
 
 const AUTH_ROUTES: string[] = ['/auth']
-const PROTECTED_ROUTES: string[] = ['/-']
-const ADMIN_ROUTES: string[] = ['/-/files', '/-/guests', '/-/system']
+const PROTECTED_ROUTES: string[] = []
+const ADMIN_ROUTES: string[] = ['/-']
 export const UNVERIFIED_PAGE = '/-/unverified'
 export const BLOCKED_PAGE = '/-/blocked'
 

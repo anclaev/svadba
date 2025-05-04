@@ -104,6 +104,21 @@ export class UserPrismaRepository extends UserRepository {
     }
   }
 
+  async findByTelegramId(telegramId: number): Promise<User | UserError> {
+    try {
+      const user = await this.prisma.user.findUnique({
+        where: { telegramId },
+        include: { guest: true },
+      })
+
+      return user
+        ? UserPrismaMapper.toEntity(user as IUserPrismaModel)
+        : new UserError('USER_NOT_FOUND')
+    } catch {
+      return new UserError('USER_UNKNOWN_ERROR')
+    }
+  }
+
   async findByLogin(login: string): Promise<User | UserError> {
     try {
       const user = await this.prisma.user.findUnique({
@@ -120,43 +135,69 @@ export class UserPrismaRepository extends UserRepository {
     }
   }
 
+  async findByGuestId(guestId: string): Promise<User | UserError> {
+    try {
+      const user = await this.prisma.user.findFirst({
+        where: {
+          guest: {
+            id: {
+              equals: guestId.trim(),
+            },
+          },
+        },
+        include: { guest: true },
+      })
+
+      return user
+        ? UserPrismaMapper.toEntity(user as IUserPrismaModel)
+        : new UserError('USER_NOT_FOUND')
+    } catch {
+      return new UserError('USER_UNKNOWN_ERROR')
+    }
+  }
+
   async findMore(
     paginationParams: IPaginationParams,
     queryParams: IUserQueryParams
   ): Promise<IPaginationResult<User> | UserError> {
+    const where = {
+      status: queryParams.status
+        ? {
+            equals: queryParams.status,
+          }
+        : undefined,
+      role: queryParams.role
+        ? {
+            equals: queryParams.role,
+          }
+        : undefined,
+      login: queryParams.login
+        ? {
+            contains: queryParams.login,
+          }
+        : undefined,
+      name: queryParams.name
+        ? {
+            contains: queryParams.name,
+          }
+        : undefined,
+      isTelegramVerified: queryParams.isTelegramVerified
+        ? {
+            equals: queryParams.isTelegramVerified,
+          }
+        : undefined,
+    }
+
     try {
       const [users, total] = await Promise.all([
         await this.prisma.user.findMany({
           ...paginate(paginationParams),
-          where: {
-            status: queryParams.status
-              ? {
-                  equals: queryParams.status,
-                }
-              : undefined,
-            role: queryParams.role
-              ? {
-                  equals: queryParams.role,
-                }
-              : undefined,
-            login: queryParams.login
-              ? {
-                  contains: queryParams.login,
-                }
-              : undefined,
-            name: queryParams.name
-              ? {
-                  contains: queryParams.name,
-                }
-              : undefined,
-            isTelegramVerified: queryParams.isTelegramVerified
-              ? {
-                  equals: queryParams.isTelegramVerified,
-                }
-              : undefined,
-          },
+          where,
+          include: { guest: true },
         }),
-        await this.prisma.user.count(),
+        await this.prisma.user.count({
+          where,
+        }),
       ])
 
       return paginateOutput<User>(

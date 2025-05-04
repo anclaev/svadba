@@ -1,5 +1,10 @@
 import type { RegistrationLinkStatus } from '../models/(registration-links)'
-import type { GuestRole, GuestSide, UserRole } from '../models/user.model'
+import type {
+  GuestRole,
+  GuestSide,
+  UserRole,
+  UserStatus,
+} from '../models/user.model'
 
 const guestRoleDictionary: {
   [key in GuestRole]: string
@@ -18,6 +23,14 @@ const guestSideDictionary: {
   GROOM: 'Жених',
 } as const
 
+const userStatusDictionary: {
+  [key in UserStatus]: string
+} = {
+  ACCEPTED: 'Подтверждён',
+  BLOCKED: 'Заблокирован',
+  CREATED: 'Создан',
+} as const
+
 const userRoleDictionary: {
   [key in UserRole]: string
 } = {
@@ -33,6 +46,8 @@ const registationListStatusDictionary: {
 } as const
 
 export const parseUserRole = (role: UserRole) => userRoleDictionary[role]
+export const parseUserStatus = (status: UserStatus) =>
+  userStatusDictionary[status]
 export const parseGuestRole = (role: GuestRole) => guestRoleDictionary[role]
 export const parseGuestSide = (side: GuestSide) => guestSideDictionary[side]
 export const parseRegistrationLinkStatus = (status: RegistrationLinkStatus) =>

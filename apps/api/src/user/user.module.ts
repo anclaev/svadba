@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common'
 import { CqrsModule } from '@nestjs/cqrs'
 
-import { UserController } from './api'
 import { userCommandHandlers, userQueryHandlers } from './app'
 import { UserRepository } from './domain'
 import { UserPrismaRepository } from './infra'
@@ -18,7 +17,7 @@ export const userRepositoryProvider = {
     ...userCommandHandlers,
     ...userQueryHandlers,
   ],
-  controllers: [UserController],
+  controllers: [],
   exports: [...userCommandHandlers, ...userQueryHandlers],
 })
 export class UserModule {}

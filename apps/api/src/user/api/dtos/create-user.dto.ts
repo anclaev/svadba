@@ -8,7 +8,7 @@ import {
   USER_PASSWORD_MIN_LENGTH,
 } from '#/common/constants'
 
-const CreateUserSchema = z.object({
+export const CreateUserSchema = z.object({
   telegramId: z
     .number({ message: 'telegramId должен быть числом.' })
     .optional(),

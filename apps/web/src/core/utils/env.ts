@@ -1,7 +1,4 @@
 import { EnvSchema } from '@/core/schemes/env-schema'
-// import type { PublicEnv } from '@/core/types/public-env'
-
-// export const getPublicEnv = async (): Promise<PublicEnv> => ({})
 
 export const validateEnvs = () => {
   const envs = EnvSchema.safeParse(process.env)
@@ -14,5 +11,5 @@ export const validateEnvs = () => {
     throw new Error()
   }
 
-  console.log(' ✓ Переменные окружения успешно загружены!')
+  console.log(' \x1b[32m✓\x1b[0m Переменные окружения успешно загружены!')
 }

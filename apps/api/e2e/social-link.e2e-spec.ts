@@ -1,4 +1,4 @@
-import { PrismaClient, SocialLink, User, UserRole } from '#prisma'
+import { PrismaClient, SocialLink, UserRole } from '#prisma'
 import { ClassSerializerInterceptor, INestApplication } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { Test, TestingModule } from '@nestjs/testing'
@@ -12,6 +12,7 @@ import { PrismaService } from '#/core/prisma.service'
 import { CreateSocialLinkDto, UpdateSocialLinkDto } from '#/social-link/api'
 import { IPaginationResult } from '@repo/shared'
 
+import { IUserModel } from '#/user/domain'
 import { mockSocialLinks } from './mocks/social-links.mock'
 import { mockUsers } from './mocks/users.mock'
 
@@ -26,9 +27,9 @@ describe('SocialLink Controller (e2e)', () => {
   let prisma: DeepMockProxy<PrismaClient>
 
   let adminAuthCookie: any
-  let adminUser: User
+  let adminUser: IUserModel
   let publicAuthCookie: any
-  let publicUser: User
+  let publicUser: IUserModel
 
   beforeAll(async () => {
     prisma = mockDeep<PrismaClient>()
@@ -165,6 +166,7 @@ describe('SocialLink Controller (e2e)', () => {
         title: args.data.title,
         icon: args.data.icon ?? null,
         createdAt: new Date(),
+        updatedAt: new Date(),
       }
 
       mockSocialLinks.push(newSocialLink)

@@ -1,6 +1,8 @@
 import { GuestRole, GuestSide } from '#prisma'
 
-export interface IGuestQueryParams {
-  side: GuestSide[]
-  role: GuestRole[]
+import { IUserQueryParams } from '#/user/domain'
+
+export interface IGuestQueryParams extends IUserQueryParams {
+  side: GuestSide
+  guestRole: GuestRole
 }

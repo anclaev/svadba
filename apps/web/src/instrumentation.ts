@@ -2,8 +2,20 @@ import * as Sentry from '@sentry/nextjs'
 
 import { validateEnvs } from '@/core/utils/env'
 
+type NodeEnv = 'local' | 'test' | 'development' | 'staging' | 'production'
+
 export async function register() {
   validateEnvs()
+
+  const NODE_ENV: NodeEnv = process.env.NODE_ENV as NodeEnv
+
+  console.log(
+    ` \x1b[32m✓\x1b[0m Версия приложения: \x1b[36m${process.env.NEXT_PUBLIC_APP_VERSION}`
+  )
+
+  if (NODE_ENV !== 'production' && NODE_ENV !== 'staging') {
+    return
+  }
 
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     Sentry.init({
@@ -16,6 +28,7 @@ export async function register() {
       debug: false,
 
       environment: process.env.NODE_ENV,
+      release: process.env.APP_VERSION,
     })
   }
 

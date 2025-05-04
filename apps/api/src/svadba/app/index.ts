@@ -1,8 +1,16 @@
-import { CreateGuestHandler } from './commands'
-import { GuestByIdHandler, GuestByUserIdHandler } from './queries'
+import { CreateGuestHandler, RegisterGuestHandler } from './commands'
+import {
+  GuestByIdHandler,
+  GuestByUserIdHandler,
+  GuestsHandler,
+} from './queries'
 
 export * from './commands'
 export * from './queries'
 
-export const guestCommandHandlers = [CreateGuestHandler]
-export const guestQueryHandlers = [GuestByUserIdHandler, GuestByIdHandler]
+export const guestCommandHandlers = [CreateGuestHandler, RegisterGuestHandler]
+export const guestQueryHandlers = [
+  GuestByUserIdHandler,
+  GuestByIdHandler,
+  GuestsHandler,
+]

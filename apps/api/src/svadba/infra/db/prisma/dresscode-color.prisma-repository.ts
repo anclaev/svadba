@@ -130,34 +130,36 @@ export class DresscodeColorPrismaRepository extends DresscodeColorRepository {
     paginationParams: IPaginationParams,
     queryParams: IDresscodeColorQueryParams
   ): Promise<IPaginationResult<DresscodeColor> | DresscodeColorError> {
+    const where = {
+      hex: queryParams.hex
+        ? {
+            contains: queryParams.hex,
+          }
+        : undefined,
+      description: queryParams.description
+        ? {
+            contains: queryParams.description,
+          }
+        : undefined,
+      isHidden: queryParams.isHidden
+        ? {
+            equals: queryParams.isHidden,
+          }
+        : undefined,
+      ownerId: queryParams.ownerId
+        ? {
+            equals: queryParams.ownerId,
+          }
+        : undefined,
+    }
+
     try {
       const [dresscodeColors, total] = await Promise.all([
         await this.prisma.dresscodeColor.findMany({
           ...paginate(paginationParams),
-          where: {
-            hex: queryParams.hex
-              ? {
-                  contains: queryParams.hex,
-                }
-              : undefined,
-            description: queryParams.description
-              ? {
-                  contains: queryParams.description,
-                }
-              : undefined,
-            isHidden: queryParams.isHidden
-              ? {
-                  equals: queryParams.isHidden,
-                }
-              : undefined,
-            ownerId: queryParams.ownerId
-              ? {
-                  equals: queryParams.ownerId,
-                }
-              : undefined,
-          },
+          where,
         }),
-        await this.prisma.dresscodeColor.count(),
+        await this.prisma.dresscodeColor.count({ where }),
       ])
 
       return paginateOutput<DresscodeColor>(

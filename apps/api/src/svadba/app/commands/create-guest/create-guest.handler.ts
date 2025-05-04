@@ -7,7 +7,9 @@ import { Guest, GuestError, GuestRepository } from '../../../domain'
 import { CreateGuestCommand } from './create-guest.command'
 
 @CommandHandler(CreateGuestCommand)
-export class CreateGuestHandler implements ICommandHandler<CreateGuestCommand> {
+export class CreateGuestHandler
+  implements ICommandHandler<CreateGuestCommand, Guest | GuestError>
+{
   constructor(private readonly repository: GuestRepository) {}
 
   async execute(command: CreateGuestCommand): Promise<Guest | GuestError> {

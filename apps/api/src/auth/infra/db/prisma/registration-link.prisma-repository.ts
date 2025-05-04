@@ -137,31 +137,32 @@ export class RegistrationLinkPrismaRepository extends RegistrationLinkRepository
     queryParams: IRegistrationLinkQueryParams
   ): Promise<IPaginationResult<RegistrationLink> | RegistrationLinkError> {
     const query = queryParams.meta ? this.createMetaQuery(queryParams.meta) : []
+    const where = {
+      isActive: queryParams.isActive
+        ? {
+            equals: queryParams.isActive,
+          }
+        : undefined,
+      status: queryParams.status
+        ? {
+            equals: queryParams.status,
+          }
+        : undefined,
+      ownerId: queryParams.ownerId
+        ? {
+            equals: queryParams.ownerId,
+          }
+        : undefined,
+      AND: query,
+    }
 
     try {
       const [registrationLinks, total] = await Promise.all([
         await this.prisma.registrationLink.findMany({
           ...paginate(paginationParams),
-          where: {
-            isActive: queryParams.isActive
-              ? {
-                  equals: queryParams.isActive,
-                }
-              : undefined,
-            status: queryParams.status
-              ? {
-                  equals: queryParams.status,
-                }
-              : undefined,
-            ownerId: queryParams.ownerId
-              ? {
-                  equals: queryParams.ownerId,
-                }
-              : undefined,
-            AND: query,
-          },
+          where,
         }),
-        await this.prisma.registrationLink.count(),
+        await this.prisma.registrationLink.count({ where }),
       ])
 
       return paginateOutput<RegistrationLink>(
