@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/anclaev/svadba/compare/v1.1.0...v1.1.1) (2025-05-04)
+
+### Добавлено
+
+- **web:** разметка OpenGraph. ([308de72](https://github.com/anclaev/svadba/commit/308de72456a816468817ace55e568d683906609e))
+
+### Исправлено
+
+- **deployment:** кэш web в volume. ([2a63ff5](https://github.com/anclaev/svadba/commit/2a63ff501e730e94c1f2198f441ef308e4511a78))
+
 ## [1.1.0](https://github.com/anclaev/svadba/compare/v1.0.1...v1.1.0) (2025-05-04)
 
 ### Исправлено
