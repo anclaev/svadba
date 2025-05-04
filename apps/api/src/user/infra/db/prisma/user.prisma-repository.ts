@@ -160,40 +160,44 @@ export class UserPrismaRepository extends UserRepository {
     paginationParams: IPaginationParams,
     queryParams: IUserQueryParams
   ): Promise<IPaginationResult<User> | UserError> {
+    const where = {
+      status: queryParams.status
+        ? {
+            equals: queryParams.status,
+          }
+        : undefined,
+      role: queryParams.role
+        ? {
+            equals: queryParams.role,
+          }
+        : undefined,
+      login: queryParams.login
+        ? {
+            contains: queryParams.login,
+          }
+        : undefined,
+      name: queryParams.name
+        ? {
+            contains: queryParams.name,
+          }
+        : undefined,
+      isTelegramVerified: queryParams.isTelegramVerified
+        ? {
+            equals: queryParams.isTelegramVerified,
+          }
+        : undefined,
+    }
+
     try {
       const [users, total] = await Promise.all([
         await this.prisma.user.findMany({
           ...paginate(paginationParams),
-          where: {
-            status: queryParams.status
-              ? {
-                  equals: queryParams.status,
-                }
-              : undefined,
-            role: queryParams.role
-              ? {
-                  equals: queryParams.role,
-                }
-              : undefined,
-            login: queryParams.login
-              ? {
-                  contains: queryParams.login,
-                }
-              : undefined,
-            name: queryParams.name
-              ? {
-                  contains: queryParams.name,
-                }
-              : undefined,
-            isTelegramVerified: queryParams.isTelegramVerified
-              ? {
-                  equals: queryParams.isTelegramVerified,
-                }
-              : undefined,
-          },
+          where,
           include: { guest: true },
         }),
-        await this.prisma.user.count(),
+        await this.prisma.user.count({
+          where,
+        }),
       ])
 
       return paginateOutput<User>(

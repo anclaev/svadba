@@ -13,8 +13,8 @@ export abstract class GuestRepository
   abstract delete(id: string): Promise<boolean | GuestError>
   abstract exists(userId: string): Promise<boolean | GuestError>
   abstract findMore(
-    paginationParams: IPaginationParams,
-    queryParams: IGuestQueryParams
+    paginationParams: Partial<IPaginationParams>,
+    queryParams: Partial<IGuestQueryParams>
   ): Promise<IPaginationResult<Guest> | GuestError>
   abstract findById(id: string): Promise<Guest | GuestError>
   abstract findByUserId(userId: string): Promise<Guest | GuestError>

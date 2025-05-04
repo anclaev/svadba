@@ -141,39 +141,41 @@ export class TimingEventPrismaRepository extends TimingEventRepository {
     paginationParams: IPaginationParams,
     queryParams: ITimingEventQueryParams
   ): Promise<IPaginationResult<TimingEvent> | TimingEventError> {
+    const where = {
+      time: queryParams.time
+        ? {
+            contains: queryParams.time,
+          }
+        : undefined,
+      title: queryParams.title
+        ? {
+            contains: queryParams.title,
+          }
+        : undefined,
+      isPublic: queryParams.isPublic
+        ? {
+            equals: queryParams.isPublic,
+          }
+        : undefined,
+      iconId: queryParams.iconId
+        ? {
+            equals: queryParams.iconId,
+          }
+        : undefined,
+      ownerId: queryParams.ownerId
+        ? {
+            equals: queryParams.ownerId,
+          }
+        : undefined,
+    }
+
     try {
       const [timingEvents, total] = await Promise.all([
         await this.prisma.timingEvent.findMany({
           ...paginate(paginationParams),
-          where: {
-            time: queryParams.time
-              ? {
-                  contains: queryParams.time,
-                }
-              : undefined,
-            title: queryParams.title
-              ? {
-                  contains: queryParams.title,
-                }
-              : undefined,
-            isPublic: queryParams.isPublic
-              ? {
-                  equals: queryParams.isPublic,
-                }
-              : undefined,
-            iconId: queryParams.iconId
-              ? {
-                  equals: queryParams.iconId,
-                }
-              : undefined,
-            ownerId: queryParams.ownerId
-              ? {
-                  equals: queryParams.ownerId,
-                }
-              : undefined,
-          },
+          where,
         }),
-        await this.prisma.timingEvent.count(),
+        await this.prisma.timingEvent.count({ where }),
       ])
 
       return paginateOutput<TimingEvent>(

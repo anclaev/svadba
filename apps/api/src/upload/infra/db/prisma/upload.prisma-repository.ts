@@ -106,39 +106,40 @@ export class UploadPrismaRepository extends UploadRepository {
     paginationParams: IPaginationParams,
     queryParams: IUploadQueryParams
   ): Promise<IPaginationResult<Upload> | UploadError> {
+    const where = {
+      name: queryParams.name
+        ? {
+            contains: queryParams.name,
+          }
+        : undefined,
+      filename: queryParams.filename
+        ? {
+            contains: queryParams.filename,
+          }
+        : undefined,
+      ext: queryParams.ext
+        ? {
+            contains: queryParams.ext,
+          }
+        : undefined,
+      mimetype: queryParams.mimetype
+        ? {
+            contains: queryParams.mimetype,
+          }
+        : undefined,
+      ownerId: queryParams.ownerId
+        ? {
+            equals: queryParams.ownerId,
+          }
+        : undefined,
+    }
     try {
       const [uploads, total] = await Promise.all([
         await this.prisma.upload.findMany({
           ...paginate(paginationParams),
-          where: {
-            name: queryParams.name
-              ? {
-                  contains: queryParams.name,
-                }
-              : undefined,
-            filename: queryParams.filename
-              ? {
-                  contains: queryParams.filename,
-                }
-              : undefined,
-            ext: queryParams.ext
-              ? {
-                  contains: queryParams.ext,
-                }
-              : undefined,
-            mimetype: queryParams.mimetype
-              ? {
-                  contains: queryParams.mimetype,
-                }
-              : undefined,
-            ownerId: queryParams.ownerId
-              ? {
-                  equals: queryParams.ownerId,
-                }
-              : undefined,
-          },
+          where,
         }),
-        await this.prisma.upload.count(),
+        await this.prisma.upload.count({ where }),
       ])
 
       return paginateOutput<Upload>(

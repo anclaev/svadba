@@ -1,25 +1,38 @@
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager'
 import {
   BadRequestException,
   Body,
   ConflictException,
   Controller,
+  Get,
   InternalServerErrorException,
   Post,
+  Query,
 } from '@nestjs/common'
-import { CommandBus } from '@nestjs/cqrs'
+import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import {
   ApiBody,
   ApiConflictResponse,
   ApiCookieAuth,
   ApiCreatedResponse,
+  ApiOkResponse,
   ApiOperation,
+  ApiQuery,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
+import { IPaginationResult } from '@repo/shared'
+
+import { TTL_MS } from '#/common/constants'
 
 import { Auth } from '#/auth/api'
 
-import { RegisterGuestCommand, RegisterGuestInput } from '../../app'
+import {
+  GuestsDto,
+  GuestsQuery,
+  RegisterGuestCommand,
+  RegisterGuestInput,
+} from '../../app'
 import { Guest, GUEST_ERRORS, GuestError } from '../../domain'
 
 import { RegisterGuestDto } from '../dtos'
@@ -27,7 +40,35 @@ import { RegisterGuestDto } from '../dtos'
 @ApiTags('Гость')
 @Controller('guests')
 export class GuestController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus
+  ) {}
+
+  @ApiOperation({ summary: 'Получение списка гостей' })
+  @ApiQuery({ type: GuestsDto })
+  @ApiOkResponse({
+    description: 'Список гостей успешно получен',
+  })
+  @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
+  @ApiCookieAuth()
+  @CacheKey('guests')
+  @CacheTTL(TTL_MS.DAY)
+  @Auth()
+  @Get()
+  async guests(@Query() query: GuestsDto): Promise<IPaginationResult<Guest>> {
+    const res = await this.queryBus.execute(new GuestsQuery(query))
+
+    if (res instanceof GuestError) {
+      switch (res.message) {
+        default: {
+          throw new InternalServerErrorException('Неизвестная ошибка.')
+        }
+      }
+    }
+
+    return res
+  }
 
   @ApiOperation({ summary: 'Создание гостя' })
   @ApiBody({

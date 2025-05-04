@@ -19,6 +19,7 @@ import {
   ApiConflictResponse,
   ApiCookieAuth,
   ApiCreatedResponse,
+  ApiExcludeController,
   ApiExcludeEndpoint,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -50,6 +51,7 @@ import { User, USER_ERRORS, UserError } from '#/user/domain'
 import { CreateUserDto, UpdateUserDto, UserByLoginDto } from '../dtos'
 
 @ApiTags('Пользователь')
+@ApiExcludeController()
 @Controller('users')
 export class UserController {
   constructor(
@@ -125,7 +127,6 @@ export class UserController {
   @ApiOkResponse({
     description: 'Список пользователей успешно получен',
   })
-  @ApiNotFoundResponse({ description: 'Пользователь не найден' })
   @ApiUnauthorizedResponse({ description: 'Ошибка авторизации' })
   @ApiCookieAuth()
   @CacheKey('users')

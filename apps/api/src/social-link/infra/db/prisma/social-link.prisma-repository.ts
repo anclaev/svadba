@@ -110,36 +110,38 @@ export class SocialLinkPrismaRepository extends SocialLinkRepository {
     paginationParams: IPaginationParams,
     queryParams: ISocialLinkQueryParams
   ): Promise<IPaginationResult<SocialLink> | SocialLinkError> {
+    const where = {
+      alias: queryParams.alias
+        ? {
+            contains: queryParams.alias,
+          }
+        : undefined,
+      title: queryParams.title
+        ? {
+            contains: queryParams.title,
+          }
+        : undefined,
+      href: queryParams.href
+        ? {
+            contains: queryParams.href,
+          }
+        : undefined,
+      creator: queryParams.creatorLogin
+        ? {
+            login: {
+              contains: queryParams.creatorLogin,
+            },
+          }
+        : undefined,
+    }
+
     try {
       const [socialLinks, total] = await Promise.all([
         await this.prisma.socialLink.findMany({
           ...paginate(paginationParams),
-          where: {
-            alias: queryParams.alias
-              ? {
-                  contains: queryParams.alias,
-                }
-              : undefined,
-            title: queryParams.title
-              ? {
-                  contains: queryParams.title,
-                }
-              : undefined,
-            href: queryParams.href
-              ? {
-                  contains: queryParams.href,
-                }
-              : undefined,
-            creator: queryParams.creatorLogin
-              ? {
-                  login: {
-                    contains: queryParams.creatorLogin,
-                  },
-                }
-              : undefined,
-          },
+          where,
         }),
-        await this.prisma.socialLink.count(),
+        await this.prisma.socialLink.count({ where }),
       ])
 
       return paginateOutput<SocialLink>(

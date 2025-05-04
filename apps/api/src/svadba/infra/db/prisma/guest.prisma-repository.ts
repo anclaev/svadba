@@ -117,29 +117,61 @@ export class GuestPrismaRepository extends GuestRepository {
     paginationParams: IPaginationParams,
     queryParams: IGuestQueryParams
   ): Promise<IPaginationResult<Guest> | GuestError> {
+    const where = {
+      side: queryParams.side
+        ? {
+            equals: queryParams.side,
+          }
+        : undefined,
+      role: queryParams.guestRole
+        ? {
+            equals: queryParams.guestRole,
+          }
+        : undefined,
+      user: {
+        status: queryParams.status
+          ? {
+              equals: queryParams.status,
+            }
+          : undefined,
+        role: queryParams.role
+          ? {
+              equals: queryParams.role,
+            }
+          : undefined,
+        login: queryParams.login
+          ? {
+              contains: queryParams.login,
+            }
+          : undefined,
+        name: queryParams.name
+          ? {
+              contains: queryParams.name,
+            }
+          : undefined,
+        isTelegramVerified: queryParams.isTelegramVerified
+          ? {
+              equals: queryParams.isTelegramVerified,
+            }
+          : undefined,
+      },
+    }
+
     try {
       const [guests, total] = await Promise.all([
         await this.prisma.guest.findMany({
           ...paginate(paginationParams),
-          where: {
-            side: queryParams.side
-              ? {
-                  in: queryParams.side,
-                }
-              : undefined,
-            role: queryParams.role
-              ? {
-                  in: queryParams.role,
-                }
-              : undefined,
-          },
+          where,
+          include: { user: true },
         }),
-        await this.prisma.guest.count(),
+        await this.prisma.guest.count({
+          where,
+        }),
       ])
 
       return paginateOutput<Guest>(
-        (guests as IGuestPrismaModel[]).map((timingEvent) =>
-          GuestPrismaMapper.toEntity(timingEvent)
+        (guests as unknown as IGuestPrismaModel[]).map((guest) =>
+          GuestPrismaMapper.toEntity(guest)
         ),
         total,
         paginationParams

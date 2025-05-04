@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { QueryPaginationSchema } from '#/common/dtos'
 
-const UsersSchema = QueryPaginationSchema.extend({
+export const UsersSchema = QueryPaginationSchema.extend({
   status: z.nativeEnum(UserStatus, { message: 'Некорректный статус.' }),
   role: z.nativeEnum(UserRole, { message: 'Некорректная роль.' }),
   login: z
