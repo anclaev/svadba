@@ -13,6 +13,8 @@ export async function register() {
     ` \x1b[32m✓\x1b[0m Версия приложения: \x1b[36m${process.env.NEXT_PUBLIC_APP_VERSION}`
   )
 
+  console.log(` \x1b[32m✓\x1b[0m Окружение: \x1b[36m${process.env.NODE_ENV}`)
+
   if (NODE_ENV !== 'production' && NODE_ENV !== 'staging') {
     return
   }
@@ -28,7 +30,7 @@ export async function register() {
       debug: false,
 
       environment: process.env.NODE_ENV,
-      release: process.env.APP_VERSION,
+      release: process.env.NEXT_PUBLIC_APP_VERSION,
     })
   }
 

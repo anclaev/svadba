@@ -1,43 +1,52 @@
-ARG VERSION=null
+ARG VERSION="latest"
+ARG TURBO_VERSION="2.4.4"
 
+# ----------------- Base stage with minimal dependencies -----------------
 FROM node:20-alpine AS base
 WORKDIR /app
-RUN apk update \
-    apk add --no-cache libc6-compat
+RUN apk add --no-cache --update libc6-compat && \
+    corepack enable
 
-# ----------------- Setup a turbo partial monorepo -----------------
-FROM base AS builder
-
-RUN yarn global add turbo@2.4.4
+# ----------------- Turbo prune stage (cached separately) -----------------
+FROM base AS pruner
+ARG TURBO_VERSION
+RUN yarn global add turbo@${TURBO_VERSION}
 
 COPY . .
- 
 RUN turbo prune api --docker
- 
-# ---------------- Install and build the project -----------------
-FROM base AS installer
-RUN corepack enable 
- 
-COPY --from=builder /app/out/json/ .
-RUN yarn --frozen-lockfile
- 
-COPY --from=builder /app/out/full/ .
 
+# ----------------- Dependencies stage (cached separately) -----------------
+FROM base AS deps
+COPY --from=pruner /app/out/json/ .
+COPY --from=pruner /app/out/yarn.lock .
+RUN yarn install --frozen-lockfile --network-timeout 1000000
+
+ 
+# ----------------- Builder stage with build artifacts -----------------
+FROM base AS builder
+ARG VERSION
+ENV APP_VERSION=${VERSION}
+
+COPY --from=pruner /app/out/full/ .
+COPY --from=deps /app .
 
 RUN yarn turbo run db:generate
-RUN yarn turbo run build
- 
-# ----------------- Run the production image -----------------
+RUN yarn turbo run build --filter=api --force
+
+# ----------------- Final production image -----------------
 FROM base AS runner
-LABEL version=$VERSION
+ARG VERSION
+LABEL version=${VERSION}
 RUN corepack enable
+
+ENV APP_VERSION=${VERSION}
 
 RUN addgroup --system --gid 1001 nestjs
 RUN adduser --system --uid 1001 nestjs
-USER nestjs
+USER nestjs 
 
-COPY --from=installer --chown=nestjs:nestjs /app .
- 
+COPY --from=builder --chown=nestjs:nestjs /app .
+
 EXPOSE 3001
 
 ENTRYPOINT [ "sh", "-c", "yarn turbo db:deploy && node apps/api/dist/main" ]

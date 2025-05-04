@@ -22,6 +22,4 @@ if (
   })
 }
 
-console.log(
-  `Svadba Web \nRelease: ${process.env.NEXT_PUBLIC_APP_VERSION}\nEnvironment: ${process.env.NEXT_PUBLIC_NODE_ENV}`
-)
+console.log(`Svadba Web \nRelease: ${process.env.NEXT_PUBLIC_APP_VERSION}`)

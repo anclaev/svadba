@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/anclaev/svadba/compare/v1.0.1...v1.1.0) (2025-05-04)
+
+### Исправлено
+
+- **api:** версионирование credentials у пользователя. [#83](https://github.com/anclaev/svadba/issues/83) ([02c4518](https://github.com/anclaev/svadba/commit/02c4518f6cef3f81438c4aeb932257137a1a783b))
+- **api:** хеширование пароля пользователя при изменении. [#82](https://github.com/anclaev/svadba/issues/82) ([bf1c408](https://github.com/anclaev/svadba/commit/bf1c408845ae638512ff782a734c4af2c82580d6))
+- **web:** эндпойнт гостей. ([4f4244b](https://github.com/anclaev/svadba/commit/4f4244b4b70aeec68e8897d43d1a81fb9f5bf346))
+
+### Добавлено
+
+- **api:** получение пользователя. [#9](https://github.com/anclaev/svadba/issues/9) ([2518870](https://github.com/anclaev/svadba/commit/2518870730cc89daec69fb9f0fc341aa029672dd))
+- **api:** получение списка гостей. ([e5175f1](https://github.com/anclaev/svadba/commit/e5175f184be116fd9fe52c9ff07c6103feb0e31a))
+- **api:** регистрация гостя. ([a2f43a3](https://github.com/anclaev/svadba/commit/a2f43a3da19fb4da89227bb321c9e47dea34a55e))
+- **api:** эндпойнты CRUD пользователя. [#12](https://github.com/anclaev/svadba/issues/12) ([b8125e3](https://github.com/anclaev/svadba/commit/b8125e3b8cd2bf62e6dcd9919dde1fda8efe40b7))
+- **config:** опциональное разрешение регистрации. ([ff1d159](https://github.com/anclaev/svadba/commit/ff1d1593bea69872d8df581b56a276cbb827cbd6))
+- **web:** подготовка списка гостей. ([6c6fe21](https://github.com/anclaev/svadba/commit/6c6fe212a6084aaedded2d2b6ae3193d67f18b84))
+- **web:** sentry в разработке. [#86](https://github.com/anclaev/svadba/issues/86) ([0815152](https://github.com/anclaev/svadba/commit/08151526c483c03d6032dcc0ab2c4265c52390d6))
+
 ### [1.0.1](https://github.com/anclaev/svadba/compare/v1.0.0...v1.0.1) (2025-05-03)
 
 ### Исправлено
