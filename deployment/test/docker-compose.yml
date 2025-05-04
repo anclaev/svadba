@@ -132,6 +132,8 @@ services:
       JWT_ACCESS_TIME: ${WEB_JWT_ACCESS_TIME}
       JWT_REFRESH_TIME: ${WEB_JWT_REFRESH_TIME}
       SENTRY_AUTH_TOKEN: ${WEB_SENTRY_AUTH_TOKEN}
+      NEXT_PUBLIC_NODE_ENV: ${NODE_ENV}
+      NEXT_PUBLIC_APP_VERSION: ${VERSION}
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://0.0.0.0:${WEB_PORT}"]
       interval: 10s

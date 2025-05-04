@@ -1,7 +1,4 @@
 import { EnvSchema } from '@/core/schemes/env-schema'
-// import type { PublicEnv } from '@/core/types/public-env'
-
-// export const getPublicEnv = async (): Promise<PublicEnv> => ({})
 
 export const validateEnvs = () => {
   const envs = EnvSchema.safeParse(process.env)

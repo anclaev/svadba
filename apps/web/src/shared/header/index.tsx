@@ -5,10 +5,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
+import { EVENT_DATE } from '@/core/constants/ui/event-date'
 import { useScroll } from '@/core/hooks'
 import { useAuthStore } from '@/core/providers/auth-store-provider'
 import { useDialogStore } from '@/core/providers/dialog-store-provider'
-
 import { parseGuestRole } from '@/core/utils/parsers'
 
 import { ConfirmLogoutDialog } from '@/features/(auth)/confirm-logout-dialog'
@@ -42,7 +42,7 @@ export const Header = () => {
       <Logo className="min-w-[33%]" />
 
       <span className="min-w-[33%] font-trajan text-[#D3A75E] text-center">
-        23/08/25
+        {EVENT_DATE.format('DD/MM/YY')}
       </span>
 
       <div className="min-w-[33%] flex items-center justify-end">
