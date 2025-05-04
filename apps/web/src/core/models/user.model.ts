@@ -8,6 +8,7 @@ export interface GuestModel {
   side: GuestSide
   role: GuestRole
   answers: JSON
+  user: Omit<UserModel, 'guest'>
   createdAt: string
   updatedAt: string
 }

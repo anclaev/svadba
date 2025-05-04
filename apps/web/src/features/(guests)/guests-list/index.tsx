@@ -14,7 +14,7 @@ import {
 } from '@/shared/ui/pagination'
 
 import { usePagination } from '@/core/hooks'
-import { UserModel } from '@/core/models'
+import { GuestModel } from '@/core/models'
 import { getGuestsQuery } from '@/core/queries/(guests)'
 
 import { GuestListItem } from './GuestListItem'
@@ -44,7 +44,7 @@ export const GuestsList = () => {
     })
   )
 
-  const [guests, setGuests] = useState<UserModel[]>([])
+  const [guests, setGuests] = useState<GuestModel[]>([])
 
   const paginationItems = useMemo(() => {
     const items = []
@@ -95,16 +95,7 @@ export const GuestsList = () => {
             <GuestListItemSkeleton />
           </>
         ) : (
-          guests.map((item, key) => (
-            <>
-              <GuestListItem item={item} key={key * 1} />
-              <GuestListItem item={item} key={key * 2} />
-              <GuestListItem item={item} key={key * 3} />
-              <GuestListItem item={item} key={key * 4} />
-              <GuestListItem item={item} key={key * 5} />
-              <GuestListItem item={item} key={key * 6} />
-            </>
-          ))
+          guests.map((item, key) => <GuestListItem item={item} key={key} />)
         )}
       </div>
       <Pagination className="pt-5">
