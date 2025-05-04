@@ -1,6 +1,6 @@
 import { Guest, User } from '#prisma'
 
 export interface IUserPrismaModel extends User {
-  guest: Guest
+  guest?: Guest
   guestId: string
 }

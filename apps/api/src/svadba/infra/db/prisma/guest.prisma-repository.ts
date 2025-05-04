@@ -30,12 +30,15 @@ export class GuestPrismaRepository extends GuestRepository {
         data: {
           ...model,
           answers: model.answers as InputJsonValue,
+          user: undefined,
           userId,
         },
         include: { user: true },
       })
 
-      return GuestPrismaMapper.toEntity(createdGuest as IGuestPrismaModel)
+      return GuestPrismaMapper.toEntity(
+        createdGuest as unknown as IGuestPrismaModel
+      )
     } catch {
       return new GuestError('GUEST_UNKNOWN_ERROR')
     }
@@ -51,6 +54,7 @@ export class GuestPrismaRepository extends GuestRepository {
         },
         data: {
           ...model,
+          user: undefined,
           answers: model.answers
             ? (model.answers as InputJsonValue)
             : undefined,

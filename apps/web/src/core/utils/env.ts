@@ -11,5 +11,5 @@ export const validateEnvs = () => {
     throw new Error()
   }
 
-  console.log(' ✓ Переменные окружения успешно загружены!')
+  console.log(' \x1b[32m✓\x1b[0m Переменные окружения успешно загружены!')
 }
