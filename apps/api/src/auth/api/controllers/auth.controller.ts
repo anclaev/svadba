@@ -3,6 +3,7 @@ import {
   Body,
   ConflictException,
   Controller,
+  ForbiddenException,
   Get,
   HttpCode,
   Post,
@@ -55,12 +56,14 @@ import {
 @UseGuards(ThrottlerGuard)
 export class AuthController {
   private NODE_ENV
+  private ALLOWED_SIGN_UP
 
   constructor(
     private auth: AuthService,
     private config: ConfigService<Config>
   ) {
     this.NODE_ENV = this.config.env('NODE_ENV')
+    this.ALLOWED_SIGN_UP = this.config.env('ALLOWED_SIGN_UP') === 'true'
   }
 
   @ApiOperation({ summary: 'Получение данных о себе' })
@@ -94,6 +97,10 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
     @Query() authParams: AuthDto
   ): Promise<Authorized> {
+    if (!this.ALLOWED_SIGN_UP) {
+      throw new ForbiddenException()
+    }
+
     const result = await this.auth.signUp(dto)
 
     if (result instanceof UserError) {

@@ -1,16 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import {
-  Bolt,
-  CalendarDays,
-  Folder,
-  Gauge,
-  Scroll,
-  ShieldUser,
-  Shirt,
-  UsersRound,
-} from 'lucide-react'
+import { UsersRound } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FC, useMemo } from 'react'
@@ -36,50 +27,36 @@ type NavItem = {
 }
 
 const navItems: NavItem[] = [
+  // {
+  //   title: 'Панель',
+  //   href: '/dashboard',
+  //   icon: Gauge,
+  // },
+  // {
+  //   title: 'План дня',
+  //   href: '/timing',
+  //   icon: CalendarDays,
+  // },
+  // {
+  //   title: 'Дресс-код',
+  //   href: '/dresscode',
+  //   icon: Shirt,
+  // },
+  // {
+  //   title: 'Квесты',
+  //   href: '/quests',
+  //   icon: Scroll,
+  // },
+  // {
+  //   title: 'Профиль',
+  //   href: '/profile',
+  //   icon: ShieldUser,
+  // },
   {
-    title: 'Панель',
-    href: '/dashboard',
-    icon: Gauge,
-  },
-  {
-    title: 'План дня',
-    href: '/timing',
-    icon: CalendarDays,
-  },
-  {
-    title: 'Дресс-код',
-    href: '/dresscode',
-    icon: Shirt,
-  },
-  {
-    title: 'Квесты',
-    href: '/quests',
-    icon: Scroll,
-  },
-  {
-    title: 'Профиль',
-    href: '/profile',
-    icon: ShieldUser,
-  },
-  {
-    separator: true,
     title: 'Гости',
     href: '/guests',
     icon: UsersRound,
     roles: ['BRIDE', 'PARENT', 'GROOM'],
-  },
-  {
-    title: 'Файлы',
-    href: '/files',
-    icon: Folder,
-    roles: ['BRIDE', 'PARENT', 'GROOM'],
-  },
-  {
-    separator: true,
-    title: 'Система',
-    href: '/system',
-    icon: Bolt,
-    roles: ['GROOM'],
   },
 ]
 

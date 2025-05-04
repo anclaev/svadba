@@ -20,16 +20,20 @@ export const AuthForm: FC<AuthFormProps> = ({
 }) => {
   return (
     <Tabs defaultValue={defaultValue} className={className}>
-      <TabsList className="grid w-full grid-cols-2 mb-2.5 mt-2 select-none">
-        <TabsTrigger value="sign-in">Вход</TabsTrigger>
-        <TabsTrigger value="sign-up">Регистрация</TabsTrigger>
-      </TabsList>
+      {process.env.NEXT_PUBLIC_ALLOWED_SIGN_UP === 'true' && (
+        <TabsList className="grid w-full grid-cols-2 mb-2.5 mt-2 select-none">
+          <TabsTrigger value="sign-in">Вход</TabsTrigger>
+          {<TabsTrigger value="sign-up">Регистрация</TabsTrigger>}
+        </TabsList>
+      )}
       <TabsContent value="sign-in">
         <SignInForm redirectUrl={redirectUrl} />
       </TabsContent>
-      <TabsContent value="sign-up">
-        <SignUpForm redirectUrl={redirectUrl} />
-      </TabsContent>
+      {process.env.NEXT_PUBLIC_ALLOWED_SIGN_UP === 'true' && (
+        <TabsContent value="sign-up">
+          <SignUpForm redirectUrl={redirectUrl} />
+        </TabsContent>
+      )}
     </Tabs>
   )
 }

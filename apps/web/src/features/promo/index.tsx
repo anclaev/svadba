@@ -12,7 +12,8 @@ export const Promo = () => {
   const user = useAuthStore((store) => store.user)
 
   return (
-    !user && (
+    !user &&
+    process.env.NEXT_PUBLIC_ALLOWED_SIGN_UP === 'true' && (
       <section className="flex flex-row relative">
         <div
           className="

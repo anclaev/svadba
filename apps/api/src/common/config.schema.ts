@@ -101,6 +101,17 @@ export const configSchema = z.object({
     .string({ message: 'URL базы данных не установлен.' })
     .url({ message: 'Некорректный URL базы данных.' }),
 
+  /**
+   * Флаг разрешения регистрации
+   * @type {z.ZodBoolean}
+   */
+  ALLOWED_SIGN_UP: z
+    .string()
+    .toLowerCase()
+    .transform((x) => x === 'true')
+    .pipe(z.boolean())
+    .default('true'),
+
   // S3 Storage Configuration
   /**
    * Конфигурация S3 хранилища
@@ -316,6 +327,7 @@ export const configSchema = z.object({
  * @property {string} APP_VERSION - Версия приложения (обязательная)
  * @property {string} DATABASE_URL - URL базы данных
  * @property {string} SENTRY_DSN - Sentry DSN
+ * @property {boolean} ALLOWED_SIGN_UP - Флаг разрешения регистрации
  * @property {string} S3_ENDPOINT - Хост S3 хранилища
  * @property {number} S3_PORT - Порт S3 хранилища (1-10000)
  * @property {string} S3_BUCKET - Имя бакета S3

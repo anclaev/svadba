@@ -23,6 +23,9 @@ export const EnvSchema = z.object({
   NEXT_PUBLIC_APP_VERSION: z
     .string({ message: 'Не предоставлена версия приложения.' })
     .nonempty({ message: 'Версия приложения не может быть пустой.' }),
+  NEXT_PUBLIC_ALLOWED_SIGN_UP: z.coerce.boolean({
+    message: 'Не предоставлен флаг разрешения регистрации.',
+  }),
 })
 
 export type Env = z.infer<typeof EnvSchema>
