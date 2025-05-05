@@ -1,67 +1,49 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { getImageProps } from 'next/image'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useMemo } from 'react'
 
 import { PrimaryButton } from '@/shared/primary-button'
 import { Section } from '@/shared/section'
 
-import { DRESS_CODE_COLORS } from '@/core/constants/ui/dress-code'
 import { ALBUM_LINK } from '@/core/constants/ui/social-links'
 
 import type { withSection } from '@/core/types/ui'
 
-import './index.css'
-
 export const DressCode: FC<withSection> = ({ section }) => {
+  const weImageProps = useMemo(() => {
+    const { props } = getImageProps({
+      alt: 'Мы',
+      src: '/assets/we.webp',
+      width: 597,
+      height: 712,
+    })
+
+    return props
+  }, [])
+
   return (
     <Section
       {...section}
-      className="flex flex-col items-center pl-5 pr-5 text-center"
+      className="flex flex-col items-center pl-5 pr-5 text-center !mb-0"
     >
-      <span className="mb-8 max-w-[500px]">
-        Мы будем признательны, если вы поддержите цветовую гамму нашего
-        праздника!
-      </span>
-      <Link href={ALBUM_LINK} target="_blank" rel="noopener noreferrer">
-        <PrimaryButton className="mb-10 sm:mb-12">
-          <span>Перейти к примерам</span>
-        </PrimaryButton>
-      </Link>
-      <div className="grid dress-code-colors max-w-[990px] w-[90%]">
-        {DRESS_CODE_COLORS.map((color, index) => (
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: 'easeIn' }}
-            viewport={{ once: true }}
-            key={index}
-            className={`
-              flex
-              items-center
-              justify-center
-              flex-col
-              space-y-1
-              w-[100px] h-[100px]
-              md:w-[150px] md:h-[150px] 
-              select-none
-              hover:!bg-[var(--background)]
-              border-solid
-              border-1
-              border-[var(--primary)]
-              transition-all
-              text-[9px]
-              md:text-sm
-              rounded-full`}
-            style={{ backgroundColor: color.code }}
-          >
-            <span className="block">{color.name}</span>
-            <span className="block">
-              {color.code.slice(1, color.code.length)}
-            </span>
-          </motion.div>
-        ))}
+      <div className="relative items-center flex flex-col sm:flex-row md:space-x-4 w-full md:w-auto sm:h-[250px] md:h-auto">
+        <img
+          {...weImageProps}
+          className="order-1 sm:order-0 relative sm:absolute md:relative left-0 top-0 block w-auto h-auto max-w-[250px] sm:max-w-none sm:max-h-[250px] md:max-h-none md:max-w-[400px]"
+        />
+        <div className="flex justify-center flex-col sm:pl-[220px] md:pl-0">
+          <span className="mb-8 max-w-auto md:max-w-[500px]">
+            Мы будем признательны, если вы поддержите цветовую гамму нашего
+            праздника!
+          </span>
+          <Link href={ALBUM_LINK} target="_blank" rel="noopener noreferrer">
+            <PrimaryButton className="mb-10 sm:mb-12">
+              <span>Перейти к примерам</span>
+            </PrimaryButton>
+          </Link>
+        </div>
       </div>
     </Section>
   )
