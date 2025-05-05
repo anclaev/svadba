@@ -38,11 +38,29 @@ export const DressCode: FC<withSection> = ({ section }) => {
             viewport={{ once: true }}
             key={index}
             className={`
+              flex
+              items-center
+              justify-center
+              flex-col
+              space-y-1
               w-[100px] h-[100px]
               md:w-[150px] md:h-[150px] 
+              select-none
+              hover:!bg-[var(--background)]
+              border-solid
+              border-1
+              border-[var(--primary)]
+              transition-all
+              text-[9px]
+              md:text-sm
               rounded-full`}
-            style={{ backgroundColor: color }}
-          ></motion.div>
+            style={{ backgroundColor: color.code }}
+          >
+            <span className="block">{color.name}</span>
+            <span className="block">
+              {color.code.slice(1, color.code.length)}
+            </span>
+          </motion.div>
         ))}
       </div>
     </Section>

@@ -15,6 +15,11 @@
   transition: width 0.5s;
 }
 
+.primary-button--outline:after,
+.primary-button--outline:before {
+  background-color: var(--color-chamoisee-200);
+}
+
 .primary-button:before {
   left: 0;
 }

@@ -1,4 +1,5 @@
 export const TELEGRAM_LINK = 'https://t.me/anclaev'
+export const ALINA_LINK = 'https://vk.com/allina777'
 export const ALBUM_LINK =
   'https://ru.pinterest.com/cloonmean/the-svadba-dress-code/'
 export const PLACE_LINK = 'https://park-otel.com/'
