@@ -85,7 +85,7 @@ services:
       timeout: 5s
       start_period: 5s
     volumes:
-      - svadba_web_production_cache:./apps/web/.next/cache
+      - svadba_web_production_cache:/app/apps/web/.next/cache
     networks:
       - dokploy-network
     labels:
@@ -102,3 +102,6 @@ networks:
     external: true
   svadba-minio-production-network:
     external: true
+
+volumes:
+  svadba_web_production_cache:
